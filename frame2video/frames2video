@@ -1,0 +1,13 @@
+#!/bin/bash
+
+WIDTH=500
+HEIGHT=400
+FPS=24
+DEST_VIDEO=output.avi
+
+for file in `dir -d *.flv *.mp4` ; do
+    ffmpegthumbnailer -i "$file" -o "$file".jpg -s$WIDTH -q10
+    convert "$file".jpg -gravity center -background black -resize "$WIDTH"x"$HEIGHT" -extent "$WIDTH"x"$HEIGHT" "$file".jpg
+done
+
+mencoder mf://*.jpg -mf w=$WIDTH:h=$HEIGHT:fps=$FPS:type=jpg -ovc lavc -lavcopts vcodec=mpeg4 -oac copy -o $DEST_VIDEO
