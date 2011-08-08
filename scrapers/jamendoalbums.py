@@ -18,6 +18,8 @@
 # Arguments 1 and 2 are the range of albums IDs to download (mandatory)
 # Argument 3 is the download speed in kb/s (optional)
 
+# More info (and XML database with albums metadata) http://developer.jamendo.com/en/wiki/NewDatabaseDumps
+
 import os
 import re
 import time
