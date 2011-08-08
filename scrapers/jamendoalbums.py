@@ -1,10 +1,22 @@
 # -*- coding: utf-8 -*-
 
-#license: gpl v3
+# Copyright (C) 2011 emijrp
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#help: python jamendo.py 0 10000
-#arguments 1 and 2 are the range of albums IDs to download (mandatory)
-#argument 3 is the download speed in kb/s (optional)
+# HOWTO: python jamendoalbums.py 0 10000
+# Arguments 1 and 2 are the range of albums IDs to download (mandatory)
+# Argument 3 is the download speed in kb/s (optional)
 
 import os
 import re
@@ -26,11 +38,13 @@ def unzip_file_into_dir(file, dir):
             outfile.close()
 
 a = 0
-b = 90000
+b = 100000
 speed = '1000000k'
-#your bittorrent client options
-incoming = '/media/.../Torrent'
-incomingtorrents = '/media/.../Torrent/torrentfiles'
+
+# Your bittorrent client options (if you want to load the albums into your bittorrent)
+# Disabled with comments below
+# incoming = '/media/.../Torrent'
+# incomingtorrents = '/media/.../Torrent/torrentfiles'
 
 if len(sys.argv)==1:
     pass
@@ -76,7 +90,7 @@ for id in range(a, b):
         os.system('wget "%s" -O "%s/%s%s" -c --limit-rate=%s' % (torrentoggurl, pathtorrentogg, prefix, torrentoggname, speed))
         time.sleep(2)
         
-        #download .zip
+        #download .zip album (in OGG format), if you want mp3, use ?are=mp32
         urloggzip = 'http://www.jamendo.com/get/album/id/album/archiverestricted/redirect/%d/?are=ogg3' % (id)
         pathoggzip = subdir
         oggzipname = '%s%s.zip' % (prefix, oggname)
