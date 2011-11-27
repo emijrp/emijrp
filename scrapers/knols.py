@@ -90,12 +90,18 @@ while len(tags) > 0:
                         userurl.append(userurl1)
                     userurl = '|'.join(userurl)
                     username = '|'.join(username)
-                    
-                    knols.append([i.group('knolurl'), i.group('knoltitle'), userurl, username, i.group('description') and i.group('description') or '', i.group('views') and i.group('views') or '', i.group('publishedrevision'), i.group('date'), lang])
+                    knoltitle = i.group('knoltitle')
+                    knoltitle = re.sub(ur"\n", ur" ", knoltitle) #removing new lines if any
+                    description = i.group('description') and i.group('description') or ''
+                    description = re.sub(ur"\n", ur" ", description) #removing new lines if any
+                    knols.append([i.group('knolurl'), knoltitle, userurl, username, description, i.group('views') and i.group('views') or '', i.group('publishedrevision'), i.group('date'), lang])
                 
-                    for newtag in re.sub(ur"(?im)[^a-z]", ur" ", removetildes(i.group('knoltitle').lower())).split(' '):
-                        if len(newtag) >= 4 and newtag not in tags and newtag not in tagsdone: #min 4 for knol
-                            tags.add(newtag)
+                    try: #codification errors sometimes
+                        for newtag in re.sub(ur"(?im)[^a-z]", ur" ", removetildes(i.group('knoltitle').lower())).split(' '):
+                            if len(newtag) >= 4 and newtag not in tags and newtag not in tagsdone: #min 4 for knol
+                                tags.add(newtag)
+                    except:
+                        pass
             
             knolstxt = open('knols.txt', 'w')
             knolstxt.write('\n'.join(['\t'.join(knol) for knol in knols]))
