@@ -90,10 +90,14 @@ while len(tags) > 0:
                         userurl.append(userurl1)
                     userurl = '|'.join(userurl)
                     username = '|'.join(username)
-                    knoltitle = i.group('knoltitle')
-                    knoltitle = re.sub(ur"\n", ur" ", knoltitle) #removing new lines if any
-                    description = i.group('description') and i.group('description') or ''
-                    description = re.sub(ur"\n", ur" ", description) #removing new lines if any
+                    try: #codification errors sometimes
+                        knoltitle = i.group('knoltitle')
+                        knoltitle = re.sub(ur"(?m)[\t\n]", ur" ", knoltitle) #removing new lines if any
+                        description = i.group('description') and i.group('description') or ''
+                        description = re.sub(ur"(?m)[\t\n]", ur" ", description) #removing new lines if any
+                    except:
+                        continue #skip to next knol in results page
+                    
                     knols.append([i.group('knolurl'), knoltitle, userurl, username, description, i.group('views') and i.group('views') or '', i.group('publishedrevision'), i.group('date'), lang])
                 
                     try: #codification errors sometimes
@@ -104,13 +108,17 @@ while len(tags) > 0:
                         pass
             
             knolstxt = open('knols.txt', 'w')
-            knolstxt.write('\n'.join(['\t'.join(knol) for knol in knols]))
+            for knol in knols:
+                try:
+                    knolstxt.write(u'%s\n' % ('\t'.join(knol)))
+                except:
+                    pass
             knolstxt.close()
+            print '%d knols explored, %d tags done, %d tags left' % (len(knols), len(tagsdone), len(tags))
             
-            time.sleep(random.randint(5, 15))
+            time.sleep(random.randint(3, 10))
             start += num
     
-    print '%d knols explored, %d tags done, %d tags left' % (len(knols), len(tagsdone), len(tags))
     tagsdone.add(tag)
     tags = tags - tagsdone
     f = open('tags.txt', 'w')
