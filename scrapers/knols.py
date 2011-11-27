@@ -1,5 +1,19 @@
 # -*- coding: utf-8 -*-
 
+# Copyright (C) 2011 emijrp
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 import os
 import random
 import re
@@ -27,7 +41,10 @@ knolstxt = open(knolsfilename, 'r')
 knols = [line.split('\t') for line in knolstxt.read().splitlines()]
 knolstxt.close()
 
-knol_r = re.compile(ur"(?im)<a class=\"knol-search-knol-title\" href=\"(?P<knolurl>[^>]+)\" target=\"\">(?P<knoltitle>[^<]+)</a></div><div class=\"knol-search-knol-author\"><span>[^<>]+<a href=\"(?P<userurl>[^>]+)\">(?P<username>[^<]+)</a></span></div>(<div class=\"knol-search-knol-snippet\">(?P<description>[^<]+)</div>)?<div id=\"knol-search-redirect[^=]+\" class=\"knol-search-redirect-url\"></div></div><div class=\"knol-search-right\"><div class=\"knol-search-knol-author\">(<div class=\"knol-search-knol-info knol-search-knol-info-pageviews\">[^<]+<span class=\"knol-search-knol-info-details\">(?P<views>\d+)</span></div><div class=\"knol-clearer-div\"></div>)?<div class=\"knol-clearer-div\"></div><span class=\"knol-search-knol-info knol-search-knol-info-version\">[^<]+<span class=\"knol-search-knol-info-details\">(?P<publishedrevision>\d+)</span></span><div class=\"knol-clearer-div\"></div><span class=\"knol-search-knol-info knol-search-knol-info-edited\">[^<]+<span class=\"knol-search-knol-info-details\">(?P<date>[^<]+)</span></span>")
+print 'Loaded %d knols metadata' % (len(knols))
+
+#campo username es difícil de capturar, puede tener varios autores, lo limitamos a 1500 chars que serían unos 10 autores, suficiente...
+knol_r = re.compile(ur"(?im)<a class=\"knol-search-knol-title\" href=\"(?P<knolurl>[^>]+)\" target=\"\">(?P<knoltitle>[^<]+)</a></div><div class=\"knol-search-knol-author\"><span>[^<>]+(?P<username>.{,1500})</span></div>(<div class=\"knol-search-knol-snippet\">(?P<description>[^<]+)</div>)?<div id=\"knol-search-redirect[^=]+\" class=\"knol-search-redirect-url\">(<span id=\"knol-search-redirect-url-display-[^=]+\" class=\"knol-search-redirect-url-display\"></span><span id=\"knol-search-redirect-url-set-[^=]+\" class=\"knol-search-redirect-url-set\"></span>)?</div></div><div class=\"knol-search-right\"><div class=\"knol-search-knol-author\">(<div class=\"knol-search-knol-info knol-search-knol-info-pageviews\">[^<]+<span class=\"knol-search-knol-info-details\">(?P<views>\d+)</span></div><div class=\"knol-clearer-div\"></div>)?<div class=\"knol-clearer-div\"></div><span class=\"knol-search-knol-info knol-search-knol-info-version\">[^<]+<span class=\"knol-search-knol-info-details\">(?P<publishedrevision>\d+)</span></span><div class=\"knol-clearer-div\"></div><span class=\"knol-search-knol-info knol-search-knol-info-edited\">[^<]+<span class=\"knol-search-knol-info-details\">(?P<date>[^<]+)</span></span>")
 
 langs = ['es', 'en', 'fr', 'de', 'pt', 'it', 'nl', ] #other codifications ko, ru, ar, iw, ja
 tags = set([])
@@ -62,8 +79,19 @@ while len(tags) > 0:
                         dupe = True
                         break
                 
-                if not dupe:
-                    knols.append([i.group('knolurl'), i.group('knoltitle'), i.group('userurl'), i.group('username'), i.group('description') and i.group('description') or '', i.group('views') and i.group('views') or '', i.group('publishedrevision'), i.group('date')])
+                if dupe:
+                    continue
+                else:
+                    #split usernames if needed
+                    username = []
+                    userurl = []
+                    for userurl1, username1 in re.findall(ur"<a href=\"([^<]+)\">([^<]+)</a>", i.group('username')):
+                        username.append(username1)
+                        userurl.append(userurl1)
+                    userurl = '|'.join(userurl)
+                    username = '|'.join(username)
+                    
+                    knols.append([i.group('knolurl'), i.group('knoltitle'), userurl, username, i.group('description') and i.group('description') or '', i.group('views') and i.group('views') or '', i.group('publishedrevision'), i.group('date'), lang])
                 
                     for newtag in re.sub(ur"(?im)[^a-z]", ur" ", removetildes(i.group('knoltitle').lower())).split(' '):
                         if len(newtag) >= 4 and newtag not in tags and newtag not in tagsdone: #min 4 for knol
@@ -73,7 +101,7 @@ while len(tags) > 0:
             knolstxt.write('\n'.join(['\t'.join(knol) for knol in knols]))
             knolstxt.close()
             
-            time.sleep(random.randint(10, 15))
+            time.sleep(random.randint(5, 15))
             start += num
     
     print '%d knols explored, %d tags done, %d tags left' % (len(knols), len(tagsdone), len(tags))
