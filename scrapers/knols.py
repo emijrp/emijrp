@@ -38,7 +38,7 @@ def removetildes(t):
 
 knolsfilename = 'knols.txt'
 knolstxt = open(knolsfilename, 'r')
-knols = [line.split('\t') for line in knolstxt.read().splitlines()]
+knols = [line.split('\t') for line in unicode(knolstxt.read(), 'utf-8').splitlines()]
 knolstxt.close()
 
 print 'Loaded %d knols metadata' % (len(knols))
@@ -49,11 +49,11 @@ knol_r = re.compile(ur"(?im)<a class=\"knol-search-knol-title\" href=\"(?P<knolu
 langs = ['es', 'en', 'fr', 'de', 'pt', 'it', 'nl', ] #other codifications ko, ru, ar, iw, ja
 tags = set([])
 f = open('tags.txt', 'r')
-tags = tags.union(set(f.read().splitlines()))
+tags = tags.union(set(unicode(f.read(), 'utf-8').splitlines()))
 f.close()
 tagsdone = set([])
 f = open('tagsdone.txt', 'r')
-tagsdone = tagsdone.union(set(f.read().splitlines()))
+tagsdone = tagsdone.union(set(unicode(f.read(), 'utf-8').splitlines()))
 f.close()
 tags = tags - tagsdone
 while len(tags) > 0:
@@ -67,7 +67,7 @@ while len(tags) > 0:
             
             url = 'http://knol.google.com/k/knol/Search?' + urllib.urlencode({'q': 'incategory:%s' % (tag), 'start': str(start), 'num': str(num), 'hl': lang})
             f = urllib.urlopen(url)
-            raw = f.read()
+            raw = unicode(f.read(), 'utf-8')
             f.close()
             
             m = re.finditer(knol_r, raw)
@@ -108,22 +108,26 @@ while len(tags) > 0:
                         pass
             
             knolstxt = open('knols.txt', 'w')
+            errors = 0
             for knol in knols:
                 try:
-                    knolstxt.write(u'%s\n' % ('\t'.join(knol)))
+                    outputline = u'%s\n' % ('\t'.join(knol))
+                    knolstxt.write(outputline.encode('utf-8'))
                 except:
-                    pass
+                    errors += 1
             knolstxt.close()
-            print '%d knols explored, %d tags done, %d tags left' % (len(knols), len(tagsdone), len(tags))
+            print '%d knols explored, %d tags done, %d tags left, %d errors' % (len(knols), len(tagsdone), len(tags), errors)
             
-            time.sleep(random.randint(3, 10))
+            time.sleep(random.randint(1, 5))
             start += num
     
     tagsdone.add(tag)
     tags = tags - tagsdone
     f = open('tags.txt', 'w')
-    f.write('\n'.join(tags))
+    output = '\n'.join(tags)
+    f.write(output.encode('utf-8'))
     f.close()
     f = open('tagsdone.txt', 'w')
-    f.write('\n'.join(tagsdone))
+    output = '\n'.join(tagsdone)
+    f.write(output.encode('utf-8'))
     f.close()
