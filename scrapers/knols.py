@@ -118,7 +118,7 @@ while len(tags) > 0:
             knolstxt.close()
             print '%d knols explored, %d tags done, %d tags left, %d errors' % (len(knols), len(tagsdone), len(tags), errors)
             
-            time.sleep(random.randint(1, 5))
+            #time.sleep(random.randint(1, 5))
             start += num
     
     tagsdone.add(tag)
