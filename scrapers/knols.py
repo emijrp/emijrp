@@ -99,25 +99,16 @@ while len(tags) > 0:
                         continue #skip to next knol in results page
                     
                     knols.append([i.group('knolurl'), knoltitle, userurl, username, description, i.group('views') and i.group('views') or '', i.group('publishedrevision'), i.group('date'), lang])
-                
+                    
+                    """ disabling new tags
                     try: #codification errors sometimes
                         for newtag in re.sub(ur"(?im)[^a-z]", ur" ", removetildes(i.group('knoltitle').lower())).split(' '):
                             if len(newtag) >= 4 and newtag not in tags and newtag not in tagsdone: #min 4 for knol
                                 tags.add(newtag)
                     except:
                         pass
-            
-            knolstxt = open('knols.txt', 'w')
-            errors = 0
-            for knol in knols:
-                try:
-                    outputline = u'%s\n' % ('\t'.join(knol))
-                    knolstxt.write(outputline.encode('utf-8'))
-                except:
-                    errors += 1
-            knolstxt.close()
-            print '%d knols explored, %d tags done, %d tags left, %d errors' % (len(knols), len(tagsdone), len(tags), errors)
-            
+                    """
+
             #time.sleep(random.randint(1, 5))
             start += num
     
@@ -131,3 +122,14 @@ while len(tags) > 0:
     output = '\n'.join(tagsdone)
     f.write(output.encode('utf-8'))
     f.close()
+    
+    knolstxt = open('knols.txt', 'w')
+    errors = 0
+    for knol in knols:
+        try:
+            outputline = u'%s\n' % ('\t'.join(knol))
+            knolstxt.write(outputline.encode('utf-8'))
+        except:
+            errors += 1
+    knolstxt.close()
+    print '%d knols explored, %d tags done, %d tags left, %d errors' % (len(knols), len(tagsdone), len(tags), errors)
