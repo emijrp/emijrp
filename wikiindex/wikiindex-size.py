@@ -18,13 +18,18 @@
 import catlib
 import re
 import pagegenerators
+import sys
 import urllib
 import wikipedia
 
 s = wikipedia.Site('wikiindex', 'wikiindex')
 cat = catlib.Category(s, 'Category:MediaWiki')
 
-gen = pagegenerators.CategorizedPageGenerator(cat)
+start = '!'
+if len(sys.argv) == 2:
+    start = sys.argv[1]
+
+gen = pagegenerators.CategorizedPageGenerator(cat, start=start)
 pre = pagegenerators.PreloadingGenerator(gen, pageNumber=50)
 
 """
@@ -63,9 +68,13 @@ for page in pre:
         #get new values
         n = re.findall(ur"(http://[^\|\}\]]+\?action=raw)", pagesurl_value)
         if n:
-            f = urllib.urlopen(n[0])
-            raw = unicode(f.read(), 'utf-8')
-            f.close()
+            raw = ''
+            try:
+                f = urllib.urlopen(n[0])
+                raw = unicode(f.read(), 'utf-8')
+                f.close()
+            except:
+                break
             o = re.findall(ur"total=\d+;good=(\d+);views=\d+;edits=\d+;users=\d+;admins=\d+;images=\d+;jobs=\d+", raw)
             if o:
                 if int(pages_value) != int(o[0]):
@@ -99,5 +108,3 @@ for page in pre:
             wikipedia.showDiff(wtext, newtext)
             page.put(newtext, summary)
             
-        
-
