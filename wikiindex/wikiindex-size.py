@@ -48,6 +48,9 @@ wiki statistics URL, wiki_statistics_URL
 size_r = re.compile(ur"""(?im)(?P<all>\{\{\s*Size\s*((\s*\|\s*(?P<pages>pages|wiki[ _]pages)\s*=\s*(?P<pages_value>\d*)\s*[^\|\}]*\s*)|(\s*\|\s*(?P<pagesurl>statistics[ _]URL|wiki[ _]statistics[ _]URL)\s*=\s*(?P<pagesurl_value>https?://[^ \|\}\<]*)\s*[^\|\}]*\s*)|(\s*\|\s*(?P<wikifactor>wikiFactor)\s*=\s*(?P<wikifactor_value>\d*)\s*[^\|\}]*\s*)|(\s*\|\s*(?P<wikifactorurl>wikiFactor[ _]URL)\s*=\s*(?P<wikifactorurl_value>http://[^ \|\}\<]*)\s*[^\|\}]*\s*))+\s*\|?\s*\}\})""")
 
 for page in pre:
+    if not page.exists() or page.isRedirectPage():
+        continue
+    
     wikipedia.output('--> %s <--' % (page.title()))
     wtext = page.get()
     newtext = wtext
@@ -111,3 +114,4 @@ for page in pre:
             wikipedia.showDiff(wtext, newtext)
             page.put(newtext, summary)
             
+        break
