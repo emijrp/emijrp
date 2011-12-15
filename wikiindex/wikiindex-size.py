@@ -66,11 +66,14 @@ for page in pre:
         wikifactorurl_value = i.group('wikifactorurl_value') and i.group('wikifactorurl_value').strip() or ''
         
         #get new values
-        n = re.findall(ur"(http://[^\|\}\]]+\?action=raw)", pagesurl_value)
+        n = re.findall(ur"(https?://[^\|\}\]]+\?action=raw|https?://[^\|\}\]]+Special:Statistics)", pagesurl_value)
         if n:
             raw = ''
             try:
-                f = urllib.urlopen(n[0])
+                url = n[0]
+                if url.endswith("Special:Statistics"):
+                    url += '?action=raw'
+                f = urllib.urlopen(url)
                 raw = unicode(f.read(), 'utf-8')
                 f.close()
             except:
