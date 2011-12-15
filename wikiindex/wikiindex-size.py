@@ -45,7 +45,7 @@ wiki statistics URL, wiki_statistics_URL
 }}
 """
 
-size_r = re.compile(ur"""(?im)(?P<all>\{\{\s*Size\s*((\s*\|\s*(?P<pages>pages|wiki[ _]pages)\s*=\s*(?P<pages_value>[^\|\}]*)\s*)|(\s*\|\s*(?P<pagesurl>statistics[ _]URL|wiki[ _]statistics[ _]URL)\s*=\s*(?P<pagesurl_value>http://[^\|\}]*)\s*)|(\s*\|\s*(?P<wikifactor>wikiFactor)\s*=\s*(?P<wikifactor_value>[^\|\}]*)\s*)|(\s*\|\s*(?P<wikifactorurl>wikiFactor[ _]URL)\s*=\s*(?P<wikifactorurl_value>http://[^\|\}]*)\s*))+\s*\|?\s*\}\})""")
+size_r = re.compile(ur"""(?im)(?P<all>\{\{\s*Size\s*((\s*\|\s*(?P<pages>pages|wiki[ _]pages)\s*=\s*(?P<pages_value>\d*)\s*[^\|\}]*\s*)|(\s*\|\s*(?P<pagesurl>statistics[ _]URL|wiki[ _]statistics[ _]URL)\s*=\s*(?P<pagesurl_value>https?://[^ \|\}\<]*)\s*[^\|\}]*\s*)|(\s*\|\s*(?P<wikifactor>wikiFactor)\s*=\s*(?P<wikifactor_value>\d*)\s*[^\|\}]*\s*)|(\s*\|\s*(?P<wikifactorurl>wikiFactor[ _]URL)\s*=\s*(?P<wikifactorurl_value>http://[^ \|\}\<]*)\s*[^\|\}]*\s*))+\s*\|?\s*\}\})""")
 
 for page in pre:
     wikipedia.output('--> %s <--' % (page.title()))
@@ -66,19 +66,19 @@ for page in pre:
         wikifactorurl_value = i.group('wikifactorurl_value') and i.group('wikifactorurl_value').strip() or ''
         
         #get new values
-        n = re.findall(ur"(https?://[^\|\}\]]+\?action=raw|https?://[^\|\}\]]+Special:Statistics)", pagesurl_value)
+        n = re.findall(ur"(https?://[^\|\}\]]+\?action=raw|https?://[^\|\}\]]+:Statistics)", pagesurl_value)
         if n:
             raw = ''
             try:
                 url = n[0]
-                if url.endswith("Special:Statistics"):
+                if url.endswith(":Statistics"):
                     url += '?action=raw'
                 f = urllib.urlopen(url)
                 raw = unicode(f.read(), 'utf-8')
                 f.close()
             except:
                 break
-            o = re.findall(ur"total=\d+;good=(\d+);views=\d+;edits=\d+;users=\d+;admins=\d+;images=\d+;jobs=\d+", raw)
+            o = re.findall(ur"total=\d+;good=(\d+);", raw)
             if o:
                 if int(pages_value) != int(o[0]):
                     summary = u"BOT - Updating size: %s -> %s" % (pages_value, o[0])
