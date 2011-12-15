@@ -60,7 +60,7 @@ for page in pre:
         wikifactor = i.group('wikifactor') and i.group('wikifactor').strip() or ''
         wikifactorurl = i.group('wikifactorurl') and i.group('wikifactorurl').strip() or ''
         
-        pages_value = i.group('pages_value') and i.group('pages_value').strip() or ''
+        pages_value = i.group('pages_value') and i.group('pages_value').strip() or '0'
         pagesurl_value = i.group('pagesurl_value') and i.group('pagesurl_value').strip() or ''
         wikifactor_value = i.group('wikifactor_value') and i.group('wikifactor_value').strip() or ''
         wikifactorurl_value = i.group('wikifactorurl_value') and i.group('wikifactorurl_value').strip() or ''
@@ -80,7 +80,7 @@ for page in pre:
                 break
             o = re.findall(ur"total=\d+;good=(\d+);", raw)
             if o:
-                if int(pages_value) != int(o[0]):
+                if o[0] and int(pages_value) != int(o[0]):
                     summary = u"BOT - Updating size: %s -> %s" % (pages_value, o[0])
                     pages_value = o[0]
                 else:
