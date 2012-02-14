@@ -123,6 +123,7 @@ for line in lines:
 
 dic = {}
 for nick, project, api in projects:
+    print '\n', nick, '@', project
     apiquery = '?action=query&list=usercontribs&ucuser=%s&uclimit=500&ucprop=timestamp|title|comment&format=json&ucstart=' % (nick)
     dic[project] = {}
     ucstart = '2099-01-01T00:00:00Z'
@@ -143,8 +144,7 @@ for nick, project, api in projects:
         else:
             ucstart = ''
         #print ucstart
-    
-    print dic[project].items()
+    #print dic[project].items()
 
 var = []
 for nick, project, api in projects:
@@ -168,7 +168,7 @@ js = """function p() {
     
     var placeholder = $("#placeholder");
     var data = [%s];
-    var options = { xaxis: { mode: "time" }, lines: { show: true }, points: { show: true }, legend: { noColumns: %s }, grid: { hoverable: true }, };
+    var options = { xaxis: { mode: "time" }, lines: { show: true }, points: { show: true }, legend: { noColumns: %s , noRows: 2 }, grid: { hoverable: true }, };
     $.plot(placeholder, data, options);
 }
 p();""" % (var_, data_, len(var))
