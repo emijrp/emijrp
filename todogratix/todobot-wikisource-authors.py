@@ -28,7 +28,7 @@ category = catlib.Category(s, u'Category:DP-Autores-100')
 gen = pagegenerators.CategorizedPageGenerator(category, recurse=False, start='!')
 pre = pagegenerators.PreloadingGenerator(gen)
 
-skip = u'Francisco de Rioja'
+skip = u'Cayetano Rosell'
 for page in pre:
     if not page.exists() or page.isRedirectPage() or page.namespace() != 0:
         continue
@@ -87,7 +87,7 @@ for page in pre:
     #nombre, apellidos
     nombre = ''
     apellidos = ''
-    for r in [ur"(?im)\{\{\s*DEFAULTSORT\s*:\s*([^,]+)\s*,\s*([^\}]+)\s*\}\}", ur"(?im)\{\{\s*(?:BD|NF)\s*\|\s*\d+\s*\|\s*\d+\s*\|\s*([^,]+)\s*,\s*([^\}]+)\s*\}\}"]:
+    for r in [ur"(?im)\{\{\s*DEFAULTSORT\s*:\s*([^,\}]+)\s*,\s*([^\}]+)\s*\}\}", ur"(?im)\{\{\s*(?:BD|NF)\s*\|\s*\d+\s*\|\s*\d+\s*\|\s*([^,\}]+)\s*,\s*([^\}]+)\s*\}\}"]:
         m = re.findall(r, wtext)
         if m:
             print m
@@ -109,18 +109,106 @@ for page in pre:
     #lugar nacimiento
     #las nacionalidades con más autores de momento
     lugarnacimiento = ''
-    if re.search(ur"(?im)Autores españoles", stext):
+    if re.search(ur"(?im)Autores alemanes", stext):
+        lugarnacimiento = u'Alemania'
+    elif re.search(ur"(?im)Autores argentinos", stext):
+        lugarnacimiento = u'Argentina'
+    elif re.search(ur"(?im)Autores australianos", stext):
+        lugarnacimiento = u'Australia'
+    elif re.search(ur"(?im)Autores austríacos", stext):
+        lugarnacimiento = u'Austria'
+    elif re.search(ur"(?im)Autores bolivianos", stext):
+        lugarnacimiento = u'Bolivia'
+    elif re.search(ur"(?im)Autores brasileños", stext):
+        lugarnacimiento = u'Brasil'
+    elif re.search(ur"(?im)Autores chilenos", stext):
+        lugarnacimiento = u'Chile'
+    elif re.search(ur"(?im)Autores chinos", stext):
+        lugarnacimiento = u'China'
+    elif re.search(ur"(?im)Autores colombianos", stext):
+        lugarnacimiento = u'Colombia'
+    elif re.search(ur"(?im)Autores cubanos", stext):
+        lugarnacimiento = u'Cuba'
+    elif re.search(ur"(?im)Autores daneses", stext):
+        lugarnacimiento = u'Dinamarca'
+    elif re.search(ur"(?im)Autores ecuatorianos", stext):
+        lugarnacimiento = u'Ecuador'
+    elif re.search(ur"(?im)Autores egipcios", stext):
+        lugarnacimiento = u'Egipto'
+    elif re.search(ur"(?im)Autores salvadoreños", stext):
+        lugarnacimiento = u'El Salvador'
+    elif re.search(ur"(?im)Autores escoceses", stext):
+        lugarnacimiento = u'Escocia'
+    elif re.search(ur"(?im)Autores españoles", stext):
         lugarnacimiento = u'España'
     elif re.search(ur"(?im)Autores estadounidenses", stext):
         lugarnacimiento = u'Estados Unidos'
+    elif re.search(ur"(?im)Autores filipinos", stext):
+        lugarnacimiento = u'Filipinas'
     elif re.search(ur"(?im)Autores franceses", stext):
         lugarnacimiento = u'Francia'
+    elif re.search(ur"(?im)Autores galeses", stext):
+        lugarnacimiento = u'Gales'
+    elif re.search(ur"(?im)Autores griegos", stext):
+        lugarnacimiento = u'Grecia'
+    elif re.search(ur"(?im)Autores guatemaltecos", stext):
+        lugarnacimiento = u'Guatemala'
+    elif re.search(ur"(?im)Autores húngaros", stext):
+        lugarnacimiento = u'Hungría'
+    elif re.search(ur"(?im)Autores hindúes", stext):
+        lugarnacimiento = u'India'
+    elif re.search(ur"(?im)Autores ingleses", stext):
+        lugarnacimiento = u'Inglaterra'
+    elif re.search(ur"(?im)Autores irlandeses", stext):
+        lugarnacimiento = u'Irlanda'
+    elif re.search(ur"(?im)Autores islandeses", stext):
+        lugarnacimiento = u'Islandia'
     elif re.search(ur"(?im)Autores italianos", stext):
         lugarnacimiento = u'Italia'
-    elif re.search(ur"(?im)Autores argentinos", stext):
-        lugarnacimiento = u'Argentina'
-    elif re.search(ur"(?im)Autores alemanes", stext):
-        lugarnacimiento = u'Alemania'
+    elif re.search(ur"(?im)Autores japoneses", stext):
+        lugarnacimiento = u'Japón'
+    elif re.search(ur"(?im)Autores libaneses", stext):
+        lugarnacimiento = u'Líbano'
+    elif re.search(ur"(?im)Autores mexicanos", stext):
+        lugarnacimiento = u'México'
+    elif re.search(ur"(?im)Autores nicaragüenses", stext):
+        lugarnacimiento = u'Nicaragua'
+    elif re.search(ur"(?im)Autores noruegos", stext):
+        lugarnacimiento = u'Noruega'
+    elif re.search(ur"(?im)Autores panameños", stext):
+        lugarnacimiento = u'Panamá'
+    elif re.search(ur"(?im)Autores paraguayos", stext):
+        lugarnacimiento = u'Paraguay'
+    elif re.search(ur"(?im)Autores peruanos", stext):
+        lugarnacimiento = u'Perú'
+    elif re.search(ur"(?im)Autores polacos", stext):
+        lugarnacimiento = u'Polonia'
+    elif re.search(ur"(?im)Autores portugueses", stext):
+        lugarnacimiento = u'Portugal'
+    elif re.search(ur"(?im)Autores puertorriqueños", stext):
+        lugarnacimiento = u'Puerto Rico'
+    elif re.search(ur"(?im)Autores dominicanos", stext):
+        lugarnacimiento = u'República Dominicana'
+    elif re.search(ur"(?im)Autores rumanos", stext):
+        lugarnacimiento = u'Rumanía'
+    elif re.search(ur"(?im)Autores rusos", stext):
+        lugarnacimiento = u'Rusia'
+    elif re.search(ur"(?im)Autores santalucianos", stext):
+        lugarnacimiento = u'Santa Lucía'
+    elif re.search(ur"(?im)Autores serbios", stext):
+        lugarnacimiento = u'Serbia'
+    elif re.search(ur"(?im)Autores sudafricanos", stext):
+        lugarnacimiento = u'Sudáfrica'
+    elif re.search(ur"(?im)Autores suecos", stext):
+        lugarnacimiento = u'Suecia'
+    elif re.search(ur"(?im)Autores suizos", stext):
+        lugarnacimiento = u'Suiza'
+    elif re.search(ur"(?im)Autores turcos", stext):
+        lugarnacimiento = u'Turquía'
+    elif re.search(ur"(?im)Autores uruguayos", stext):
+        lugarnacimiento = u'Uruguay'
+    elif re.search(ur"(?im)Autores venezolanos", stext):
+        lugarnacimiento = u'Venezuela'
     
     #ocupacion
     ocupacion = []
@@ -152,6 +240,9 @@ for page in pre:
         
         todogratix = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), stitle)
         if not todogratix.exists():
+            print output
+            todogratix.put(output, output)
+        elif lugarnacimiento and not todogratix.isRedirectPage() and  re.search(ur"(?im)lugarnacimiento=\n\|", todogratix.get()):
             print output
             todogratix.put(output, output)
     
