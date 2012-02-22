@@ -12,7 +12,7 @@ def removeaccute(s):
     return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
 
 def remove1(s):
-    s = re.sub(ur"[\.\:\;\,\"]", ur"", s)
+    s = re.sub(ur"[\.\:\;\,\"\!\¡\«\»]", ur"", s)
     return s
 
 def remove2(s):
@@ -23,7 +23,7 @@ def unquote(s):
     s = re.sub(ur"&#34;", ur'"', s)
     return s
 
-skip = u''
+skip = sys.argv[2]
 site = ''
 site = wikipedia.Site(sys.argv[1], sys.argv[1])
 gen = pagegenerators.AllpagesPageGenerator(start = skip, namespace=0, site=site)
