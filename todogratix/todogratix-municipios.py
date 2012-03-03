@@ -32,6 +32,7 @@ for page in pre:
         print page.title()
         props = {'title': page.title(), 'nombre': '', 'escudo': '', 'bandera': '', 'imagen': '', 'pie': '', 'cod_provincia': '', 'cod_municipio': '', 'coord': '', 'localizacion': '', 'altitud': '', 'superficie': '', 'pob': '', 'anyopob': '', 'gentilicio': '', 'cp': '', 'alcalde': '', 'partido': '', 'patron': '', 'patrona': '', 'web': '', 'latd': 0, 'latm': 0, 'lats': 0, 'latns': '', 'longd': 0, 'longm': 0, 'longs': 0, 'longew': ''}
         m = re.findall(ur"(?im)\|\s*(cod[ _]provincia|cod[ _]municipio|escudo|bandera|nombre|imagen|pie[ _]de[ _]imagen|superficie|altitud|gentilicio|cp|alcalde|patr[óo]n|patrona|sitio[ _]web|web|latd|latm|latNS|longd|longm|longEW)\s*=\s*([^\n\r\|]+)\s*[\n\r\|]", page.get())
+        print m
         for i in m:
             if i[0].lower() == 'nombre' and not props['nombre']:
                 props['nombre'] = i[1].strip()
