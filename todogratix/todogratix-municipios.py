@@ -13,11 +13,15 @@ def formatnum(n):
     n = re.sub(ur"\.", ur",", n)
     return n
 
+provincia = u'Sevilla'
+ccaa = u'Andalucía'
 sitetg = wikipedia.Site('todogratix', 'todogratix')
 sitees = wikipedia.Site('es', 'wikipedia')
-category = catlib.Category(title=u"Categoría:Municipios de la provincia de Almería", site=sitees)
+category = catlib.Category(title=u"Categoría:Municipios de la provincia de %s" % (provincia), site=sitees)
 gen = pagegenerators.CategorizedPageGenerator(category, recurse=False, start=sys.argv[1])
 pre = pagegenerators.PreloadingGenerator(gen)
+
+localizacion = [u"Provincia de %s" % (provincia), ccaa, u"España"]
 
 #load poblacion
 pagepob = wikipedia.Page(sitees, u"Plantilla:Población municipios de España")
@@ -106,7 +110,7 @@ for page in pre:
                 props['longew'] = i[1].strip()
             
         #localización
-        props['localizacion'] = [u"Provincia de Almería", u"Andalucía", u"España"]
+        props['localizacion'] = localizacion
         if props['cod_provincia'] and props['cod_municipio']:
             props['pob'] = pob['%s%s' % (props['cod_provincia'], props['cod_municipio'])]
         else:
