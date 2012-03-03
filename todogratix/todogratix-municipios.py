@@ -41,9 +41,9 @@ for page in pre:
             elif i[0].lower() == 'bandera' and not props['bandera']:
                 props['bandera'] = i[1].strip()
             elif i[0].lower() == 'imagen' and not props['imagen']:
-                if re.search(ur"(?:Archivo|Imagen?|File)", i[1]):
-                    props['imagen'] = re.sub(ur"(?im)^.*(?:Archivo|Imagen?|File)\s*\:\s*([^\|]+)\s*[\|].*$", ur"\1", i[1].strip())
-                else:
+                try:
+                    props['imagen'] = i[1].split(':')[1].split('|')[0].strip()
+                except:
                     props['imagen'] = ''
             elif i[0].lower() in ['pie de imagen', 'pie_de_image'] and not props['pie']:
                 props['pie'] = i[1].strip()
