@@ -37,9 +37,9 @@ for page in pre:
             if i[0].lower() == 'nombre' and not props['nombre']:
                 props['nombre'] = i[1].strip()
             elif i[0].lower() == 'escudo' and not props['escudo']:
-                props['escudo'] = i[1].strip()
+                props['escudo'] = i[1].strip() != 'no' and i[1].strip() or ''
             elif i[0].lower() == 'bandera' and not props['bandera']:
-                props['bandera'] = i[1].strip()
+                props['bandera'] = i[1].strip() != 'no' and i[1].strip() or ''
             elif i[0].lower() == 'imagen' and not props['imagen']:
                 try:
                     props['imagen'] = i[1].split(':')[1].split('|')[0].strip()
