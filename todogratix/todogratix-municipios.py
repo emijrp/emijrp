@@ -31,7 +31,7 @@ for page in pre:
     if page.exists() and not page.isRedirectPage() and page.namespace() == 0 and re.search(ur"\{\{\s*Ficha de localidad de España", page.get()):
         print page.title()
         props = {'title': page.title(), 'nombre': '', 'escudo': '', 'bandera': '', 'imagen': '', 'pie': '', 'cod_provincia': '', 'cod_municipio': '', 'coord': '', 'localizacion': '', 'altitud': '', 'superficie': '', 'pob': '', 'anyopob': '', 'gentilicio': '', 'cp': '', 'alcalde': '', 'partido': '', 'patron': '', 'patrona': '', 'web': '', 'latd': 0, 'latm': 0, 'lats': 0, 'latns': '', 'longd': 0, 'longm': 0, 'longs': 0, 'longew': ''}
-        m = re.findall(ur"(?im)\|\s*(cod[ _]provincia|cod[ _]municipio|escudo|bandera|nombre|imagen|pie[ _]de[ _]imagen|superficie|altitud|gentilicio|cp|alcalde|patr[óo]n|patrona|sitio[ _]web|web|latd|latm|latNS|longd|longm|longEW)\s*=\s*([^\n\r\|]+)\s*[\n\r\|]", page.get())
+        m = re.findall(ur"(?im)(cod[ _]provincia|cod[ _]municipio|escudo|bandera|nombre|imagen|pie[ _]de[ _]imagen|superficie|altitud|gentilicio|cp|alcalde|patr[óo]n|patrona|sitio[ _]web|web|latd|latm|latNS|longd|longm|longEW)\s*=\s*([^\n\r\|]*?)\s*[\n\r\|]", page.get())
         print m
         for i in m:
             if i[0].lower() == 'nombre' and not props['nombre']:
@@ -59,7 +59,7 @@ for page in pre:
                 props['gentilicio'] = i[1].split(',')[0].strip().split('<')[0].strip()
             elif i[0].lower() == 'cp' and not props['cp']:
                 props['cp'] = i[1].strip()
-                if re.search(ur" ", props['cp']):
+                if re.search(ur"[^0-9\.]", props['cp']):
                     props['cp'] = ''
             elif i[0].lower() in [u'patrón', u'patron'] and not props['patron']:
                 t = re.sub(ur"\[\[([^\|\]]+)\|[^\]]+\]\]", ur"\1", i[1])
