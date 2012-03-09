@@ -23,7 +23,10 @@ import wikipedia
 #http://ocw.upm.es/rss
 
 tgsite = wikipedia.Site('todogratix', 'todogratix')
-rsss = ['http://ocw.uc3m.es/front-page/courses/rss']
+rsss = [
+'http://ocw.upm.es/rss',
+#'http://ocw.uc3m.es/front-page/courses/rss',
+]
 
 for rss in rsss:
     raw = unicode(urllib.urlopen(rss).read(), 'utf-8')
@@ -43,7 +46,9 @@ for rss in rsss:
             else:
                 creators = [creators_]
         #print creators
-        tags_ = t.split('<dc:subject>')[1].split('</dc:subject>')[0].strip().lower()
+        tags_ = ''
+        if re.search(ur'<dc:subject>', t):
+            tags_ = t.split('<dc:subject>')[1].split('</dc:subject>')[0].strip().lower()
         tags = []
         if tags_:
             if re.search(ur"<rdf:li>", tags_):
