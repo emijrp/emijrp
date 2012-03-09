@@ -66,5 +66,6 @@ for rss in rsss:
 * %s
 """ % (title, u', '.join(creators), u', '.join(tags), lic, description, link)
         print output
-        page = wikipedia.Page(tgsite, title)
-        page.put(output, output)
+        page = wikipedia.Page(tgsite, u'%s (%s)' % (title, ocw))
+        if not page.exists():
+            page.put(output, output)
