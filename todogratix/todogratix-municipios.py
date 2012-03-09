@@ -112,7 +112,10 @@ for page in pre:
         #localización
         props['localizacion'] = localizacion
         if props['cod_provincia'] and props['cod_municipio']:
-            props['pob'] = pob['%s%s' % (props['cod_provincia'], props['cod_municipio'])]
+            if pob.has_key('%s%s' % (props['cod_provincia'], props['cod_municipio'])):
+                props['pob'] = pob['%s%s' % (props['cod_provincia'], props['cod_municipio'])]
+            else:
+                continue
         else:
             print props['cod_provincia'], props['cod_municipio']
             sys.exit()
@@ -135,7 +138,7 @@ for page in pre:
 |gentilicio=%s
 |código postal=%s
 |alcalde=%s
-|partido del alcalde=%s
+|partido gobernante=%s
 |patrón=%s
 |patrona=%s
 |web=%s
