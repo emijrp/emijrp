@@ -20,10 +20,32 @@ import urllib
 import wikipedia
 
 #http://ocw.uca.es/rss/rss.xml
-#http://ocw.upm.es/rss
+#http://ocw.uv.es/rss
+#http://ocw.ua.es/front-page/rss
+#http://ocw.usal.es/rss
+#http://ocw.unizar.es/ocw/rss
+#http://ocwus.us.es/front-page/rss
+#http://ocw.uib.es/ocw/courselist/rss
+#http://ocw.bib.upct.es/rss/rss_ocw.xml
+#http://www.unav.es/ocw/rss/ocw.rss
+#http://ocw.ceu.es/rss
+#http://ocw.uoc.edu/rss
+#http://ocw.uva.es/rss/file.php/rss.xml
+#http://www.uhu.es/sevirtual/ocw/rss/
+#http://ocw.ulpgc.es/front-page/courselist/rss
+#http://ocw.uab.cat/cursos/rss
+#http://edunetworks.ugr.es/ocw/file.php/1/opencoursewareugr.xml
+#
+#
+#
+#
 
 tgsite = wikipedia.Site('todogratix', 'todogratix')
 rsss = [
+'http://ocw.unican.es/rss_all',
+'http://ocw.uniovi.es/ocw/rss/file.php/rss.xml',
+'http://ocw.innova.uned.es/ocwuniversia/RSS',
+'http://ocw.ehu.es/front-page/rss',
 'http://ocw.upm.es/rss',
 #'http://ocw.uc3m.es/front-page/courses/rss',
 ]
@@ -35,8 +57,13 @@ for rss in rsss:
     print len(raw), ocw, rss
     
     for t in raw.split('</item>'):
-        title = re.findall(ur"(?im)<title>([^<]*)</title>", t)[0].strip()
-        link = re.findall(ur"(?im)<link>([^<]*)</link>", t)[0].strip()
+        try:
+            title = re.findall(ur"(?im)<title>([^<]*)</title>", t)[0].strip()
+        except:
+            pass
+        title = re.sub('\[', '(', title)
+        title = re.sub('\]', ')', title)
+        link = re.sub(ur"&amp;", "&", re.findall(ur"(?im)<link>([^<]*)</link>", t)[0].strip())
         description = re.findall(ur"(?im)<description>([^<]*)</description>", t)[0].strip()
         creators_ = t.split('<dc:creator>')[1].split('</dc:creator>')[0].strip()
         creators = []
@@ -57,8 +84,10 @@ for rss in rsss:
                 tags = [tags_]
         #print tags
         #<cc:license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/3.0/"/>
-        lic = re.findall(ur"(?im)<cc:license rdf:resource=\"([^\"]+?)\"/>", t)[0].strip()
-        lic = u'CC %s' % (re.sub(ur"[\-\/]", ur" ", lic.split('licenses/')[1]).upper().strip())
+        lic = ''
+        if re.search(ur"<cc:license", t):
+            lic = re.findall(ur"(?im)<cc:license rdf:resource=\"([^\"]+?)\"/>", t)[0].strip()
+            lic = u'CC %s' % (re.sub(ur"[\-\/]", ur" ", lic.split('licenses/')[1]).upper().strip())
         output = u"""{{Infobox Obra
 |tipo=ocw
 |título=%s
