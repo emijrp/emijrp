@@ -19,23 +19,23 @@ import urllib
 import wikipedia
 
 #más en http://ocw.universia.net/es/instituciones-integrantes-iberoamericanas-opencourseware.php
+#codification errors: 'http://www.unav.es/ocw/rss/ocw.rss',
 
 tgsite = wikipedia.Site('todogratix', 'todogratix')
 rsss = [
-'http://ocw.unican.es/rss_all',
-'http://ocw.uniovi.es/ocw/rss/file.php/rss.xml',
-'http://ocw.innova.uned.es/ocwuniversia/RSS',
-'http://ocw.ehu.es/front-page/rss',
-'http://ocw.upm.es/rss',
-'http://ocw.uca.es/rss/rss.xml',
-'http://ocw.uv.es/rss',
-'http://ocw.ua.es/front-page/rss',
-'http://ocw.usal.es/rss',
-'http://ocw.unizar.es/ocw/rss',
-'http://ocwus.us.es/front-page/rss',
-'http://ocw.uib.es/ocw/courselist/rss',
-'http://ocw.bib.upct.es/rss/rss_ocw.xml',
-'http://www.unav.es/ocw/rss/ocw.rss',
+#'http://ocw.unican.es/rss_all',
+#'http://ocw.uniovi.es/ocw/rss/file.php/rss.xml',
+#'http://ocw.innova.uned.es/ocwuniversia/RSS',
+#'http://ocw.ehu.es/front-page/rss',
+#'http://ocw.upm.es/rss',
+#'http://ocw.uca.es/rss/rss.xml',
+#'http://ocw.uv.es/rss',
+#'http://ocw.ua.es/front-page/rss',
+#'http://ocw.usal.es/rss',
+#'http://ocw.unizar.es/ocw/rss',
+#'http://ocwus.us.es/front-page/rss',
+#'http://ocw.uib.es/ocw/courselist/rss',
+
 'http://ocw.ceu.es/rss',
 'http://ocw.uoc.edu/rss',
 'http://ocw.uva.es/rss/file.php/rss.xml',
@@ -46,9 +46,13 @@ rsss = [
 #'http://ocw.uc3m.es/front-page/courses/rss',
 ]
 
-skip = u'Cuantificación de las Cargas en el Entrenamiento de los Deportes de Equipo'
+skip = u'TRADUCCION GENERAL (ALEMAN)'
 for rss in rsss:
-    raw = unicode(urllib.urlopen(rss).read(), 'utf-8')
+    raw = urllib.urlopen(rss).read()
+    try:
+        raw = unicode(raw, 'utf-8')
+    except:
+        pass
     raw = raw.split('</channel>')[1]
     ocw = re.sub(ur"(?im)^https?://([^/]+)/.*$", ur"\1", rss)
     print len(raw), ocw, rss
@@ -57,7 +61,7 @@ for rss in rsss:
         try:
             title = re.findall(ur"(?im)<title>([^<]*)</title>", t)[0].strip()
         except:
-            pass
+            continue
         title = re.sub('\[', '(', title)
         title = re.sub('\]', ')', title)
         if skip:
@@ -68,17 +72,17 @@ for rss in rsss:
         try:
             link = re.sub(ur"&amp;", "&", re.findall(ur"(?im)<link>([^<]*)</link>", t)[0].strip())
         except:
-            pass
+            continue
         try:
             description = re.findall(ur"(?im)<description>([^<]*)</description>", t)[0].strip()
             if len(description) <= 10:
                 description = ''
         except:
-            pass
+            continue
         try:
             creators_ = t.split('<dc:creator>')[1].split('</dc:creator>')[0].strip()
         except:
-            pass
+            continue
         creators = []
         if creators_:
             if re.search(ur"<rdf:li>", creators_):
@@ -99,9 +103,12 @@ for rss in rsss:
         #<cc:license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/3.0/"/>
         lic = ''
         if re.search(ur"<cc:license", t):
-            lic = re.findall(ur"(?im)<cc:license rdf:resource=\"([^\"]+?)\"/>", t)[0].strip()
+            try:
+                lic = re.findall(ur"(?im)<cc:license rdf:resource=\"([^\"]+?)\"/>", t)[0].strip()
+            except:
+                continue
             lic = u'CC %s' % (re.sub(ur"[\-\/]", ur" ", lic.split('licenses/')[1]).upper().strip())
-        output = u"""{{Infobox Obra
+        output = """{{Infobox Obra
 |tipo=ocw
 |título=%s
 |autor=%s
@@ -111,8 +118,8 @@ for rss in rsss:
 |sinopsis=%s
 }}
 * %s
-""" % (title, u', '.join(creators), u', '.join(tags), lic, description, link)
+""" % (title, ', '.join(creators), ', '.join(tags), lic, description, link)
         print output
-        page = wikipedia.Page(tgsite, u'%s (%s)' % (title, ocw))
+        page = wikipedia.Page(tgsite, '%s (%s)' % (title, ocw))
         if not page.exists():
             page.put(output, output)
