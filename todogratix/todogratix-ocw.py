@@ -16,29 +16,9 @@
 
 import re
 import urllib
-
 import wikipedia
 
-#http://ocw.uca.es/rss/rss.xml
-#http://ocw.uv.es/rss
-#http://ocw.ua.es/front-page/rss
-#http://ocw.usal.es/rss
-#http://ocw.unizar.es/ocw/rss
-#http://ocwus.us.es/front-page/rss
-#http://ocw.uib.es/ocw/courselist/rss
-#http://ocw.bib.upct.es/rss/rss_ocw.xml
-#http://www.unav.es/ocw/rss/ocw.rss
-#http://ocw.ceu.es/rss
-#http://ocw.uoc.edu/rss
-#http://ocw.uva.es/rss/file.php/rss.xml
-#http://www.uhu.es/sevirtual/ocw/rss/
-#http://ocw.ulpgc.es/front-page/courselist/rss
-#http://ocw.uab.cat/cursos/rss
-#http://edunetworks.ugr.es/ocw/file.php/1/opencoursewareugr.xml
-#
-#
-#
-#
+#más en http://ocw.universia.net/es/instituciones-integrantes-iberoamericanas-opencourseware.php
 
 tgsite = wikipedia.Site('todogratix', 'todogratix')
 rsss = [
@@ -47,9 +27,26 @@ rsss = [
 'http://ocw.innova.uned.es/ocwuniversia/RSS',
 'http://ocw.ehu.es/front-page/rss',
 'http://ocw.upm.es/rss',
+'http://ocw.uca.es/rss/rss.xml',
+'http://ocw.uv.es/rss',
+'http://ocw.ua.es/front-page/rss',
+'http://ocw.usal.es/rss',
+'http://ocw.unizar.es/ocw/rss',
+'http://ocwus.us.es/front-page/rss',
+'http://ocw.uib.es/ocw/courselist/rss',
+'http://ocw.bib.upct.es/rss/rss_ocw.xml',
+'http://www.unav.es/ocw/rss/ocw.rss',
+'http://ocw.ceu.es/rss',
+'http://ocw.uoc.edu/rss',
+'http://ocw.uva.es/rss/file.php/rss.xml',
+'http://www.uhu.es/sevirtual/ocw/rss/',
+'http://ocw.ulpgc.es/front-page/courselist/rss',
+'http://ocw.uab.cat/cursos/rss',
+'http://edunetworks.ugr.es/ocw/file.php/1/opencoursewareugr.xml',
 #'http://ocw.uc3m.es/front-page/courses/rss',
 ]
 
+skip = u'Cuantificación de las Cargas en el Entrenamiento de los Deportes de Equipo'
 for rss in rsss:
     raw = unicode(urllib.urlopen(rss).read(), 'utf-8')
     raw = raw.split('</channel>')[1]
@@ -63,9 +60,25 @@ for rss in rsss:
             pass
         title = re.sub('\[', '(', title)
         title = re.sub('\]', ')', title)
-        link = re.sub(ur"&amp;", "&", re.findall(ur"(?im)<link>([^<]*)</link>", t)[0].strip())
-        description = re.findall(ur"(?im)<description>([^<]*)</description>", t)[0].strip()
-        creators_ = t.split('<dc:creator>')[1].split('</dc:creator>')[0].strip()
+        if skip:
+            if title == skip:
+                skip = ''
+            else:
+                continue
+        try:
+            link = re.sub(ur"&amp;", "&", re.findall(ur"(?im)<link>([^<]*)</link>", t)[0].strip())
+        except:
+            pass
+        try:
+            description = re.findall(ur"(?im)<description>([^<]*)</description>", t)[0].strip()
+            if len(description) <= 10:
+                description = ''
+        except:
+            pass
+        try:
+            creators_ = t.split('<dc:creator>')[1].split('</dc:creator>')[0].strip()
+        except:
+            pass
         creators = []
         if creators_:
             if re.search(ur"<rdf:li>", creators_):
