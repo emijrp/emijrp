@@ -25,6 +25,7 @@ import wikipedia
 s = wikipedia.Site('wikiindex', 'wikiindex')
 #cat = catlib.Category(s, 'Category:MediaWiki')
 
+cats = { 'wikia.com': '{{wikia}}', }
 langs = {'en': 'English', 'en-gb': 'English', 'es': 'Spanish', 'it': 'Italian', 'pt-br': 'Brazilian Portuguese', 'ru': 'Russian'}
 start = ''
 if len(sys.argv) == 2:
@@ -106,10 +107,10 @@ for wiki in wikis:
 ==Description==
 {{add}}
 
-{{wikia}}
+%s
 
 [[Category:FoundedIn20xx]]
-""" % (name, logo, url, rc, language, engine, lic, pagenum, stats)
+""" % (name, logo, url, rc, language, engine, lic, pagenum, stats, cats[wikifarm])
     
     p = wikipedia.Page(s, name)
     if not p.exists():
