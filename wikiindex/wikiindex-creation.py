@@ -46,7 +46,7 @@ for wiki in wikis:
        log.put(u'%s\n* [http://wikiindex.org/index.php?title=Special:LinkSearch&target=%s&namespace=0 %s] exists' % (log.get(), re.sub(ur"(?i)(https?://)(www\.)?", ur"", wiki), wiki), u'BOT - Adding %s' % (wiki))
        continue
     
-    print 'Creating', wiki
+    print 'Analysing...', wiki
     
     raw = unicode(urllib.urlopen(wiki+'/wiki/').read(), 'utf-8')
     #print raw
