@@ -42,7 +42,7 @@ for wiki in wikis:
     if not re.search(ur"(?i)There are no results for this report", urllib.urlopen('http://wikiindex.org/index.php?title=Special:LinkSearch&target=%s&namespace=0' % (re.sub(ur"(?i)(https?://)(www\.)?", ur"", wiki))).read()):
        print wiki, 'exists, skiping...'
        log = wikipedia.Page(s, u'User:Emijrp/Log')
-       log.put(u'%s\n* [http://%s/index.php?title=Special:LinkSearch&target=%s&namespace=0 %s] exists' % (log.get(), wikifarm, re.sub(ur"(?i)(https?://)(www\.)?", ur"", wiki), wiki), u'BOT - Adding %s' % (wiki))
+       log.put(u'%s\n* [http://wikiindex.org/index.php?title=Special:LinkSearch&target=%s&namespace=0 %s] exists' % (log.get(), re.sub(ur"(?i)(https?://)(www\.)?", ur"", wiki), wiki), u'BOT - Adding %s' % (wiki))
        continue
     
     print 'Creating', wiki
