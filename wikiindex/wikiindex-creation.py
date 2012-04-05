@@ -30,7 +30,7 @@ start = ''
 if len(sys.argv) == 2:
     start = sys.argv[1]
 
-wikifarm = 'wikkii.com'
+wikifarm = 'wikia.com'
 wikis = urllib.urlopen('http://wikiteam.googlecode.com/svn/trunk/listsofwikis/%s' % (wikifarm)).read().splitlines()
 for wiki in wikis:
     if start:
@@ -77,6 +77,10 @@ for wiki in wikis:
     except:
         pass
     
+    if not pagenum or int(pagenum) < 10:
+        print 'Less than 10 pages... skiping...'
+        continue
+    
     output = u"""{{Wiki
 |name              = %s
 |logo              = %s
@@ -101,6 +105,8 @@ for wiki in wikis:
 
 ==Description==
 {{add}}
+
+{{wikia}}
 
 [[Category:FoundedIn20xx]]
 """ % (name, logo, url, rc, language, engine, lic, pagenum, stats)
