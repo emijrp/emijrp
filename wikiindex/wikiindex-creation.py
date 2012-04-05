@@ -102,4 +102,4 @@ for wiki in wikis:
         log.put(u'%s\n* [[%s]] (%s) has been created' % (log.get(), name, url), u'BOT - Adding %s' % (url))
     else:
         log = wikipedia.Page(s, u'User:Emijrp/Log')
-        log.put(u'%s\n* [[%s]] (%s) exists' % (log.get(), p.get(), url), u'BOT - Adding %s' % (url))
+        log.put(u'%s\n* [[%s]] (%s) exists' % (log.get(), name, url), u'BOT - Adding %s' % (url))
