@@ -26,22 +26,29 @@ s = wikipedia.Site('wikiindex', 'wikiindex')
 #cat = catlib.Category(s, 'Category:MediaWiki')
 
 langs = {'en': 'English', 'en-gb': 'English', 'es': 'Spanish', 'it': 'Italian', 'pt-br': 'Brazilian Portuguese', 'ru': 'Russian'}
-start = '!'
+start = ''
 if len(sys.argv) == 2:
     start = sys.argv[1]
 
-wikis = urllib.urlopen('http://wikiteam.googlecode.com/svn/trunk/listsofwikis/referata.com').read().splitlines()
+wikifarm = 'wikkii.com'
+wikis = urllib.urlopen('http://wikiteam.googlecode.com/svn/trunk/listsofwikis/%s' % (wikifarm)).read().splitlines()
 for wiki in wikis:
+    if start:
+        if wiki == start:
+            start = ''
+        continue
+    
     #exists?
     if not re.search(ur"(?i)There are no results for this report", urllib.urlopen('http://wikiindex.org/index.php?title=Special:LinkSearch&target=%s&namespace=0' % (re.sub(ur"(?i)(https?://)(www\.)?", ur"", wiki))).read()):
        print wiki, 'exists, skiping...'
        log = wikipedia.Page(s, u'User:Emijrp/Log')
-       log.put(u'%s\n* [http://wikiindex.org/index.php?title=Special:LinkSearch&target=%s&namespace=0 %s] exists' % (log.get(), re.sub(ur"(?i)(https?://)(www\.)?", ur"", wiki), wiki), u'BOT - Adding %s' % (wiki))
+       log.put(u'%s\n* [http://%s/index.php?title=Special:LinkSearch&target=%s&namespace=0 %s] exists' % (log.get(), wikifarm, re.sub(ur"(?i)(https?://)(www\.)?", ur"", wiki), wiki), u'BOT - Adding %s' % (wiki))
        continue
     
     print 'Creating', wiki
     
-    raw = unicode(urllib.urlopen(wiki).read(), 'utf-8')
+    raw = unicode(urllib.urlopen(wiki+'/wiki/').read(), 'utf-8')
+    #print raw
     if re.search(ur"(?i)404 Error\: Page Not Found", raw):
         print "Wiki was deleted?"
         log = wikipedia.Page(s, u'User:Emijrp/Log')
@@ -49,7 +56,7 @@ for wiki in wikis:
         continue
     
     name = u''
-    name = re.findall(ur"<title>([^<]+)</title>", raw)[0]
+    name = re.findall(ur"wgSiteName=\"([^\"]+)\"", raw)[0]
     logo = u'[[Image:NoLogo.png]]'
     if re.search(ur'<div id="p-logo"><a style="background-image: url\((/w/skins/[^\)]+)\);', raw):
         logo = u"%s%s" % (wiki, re.findall(ur'<div id="p-logo"><a style="background-image: url\((/w/skins/[^\)]+)\);', raw)[0])
