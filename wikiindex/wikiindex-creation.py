@@ -56,7 +56,11 @@ for wiki in wikis:
         continue
     
     name = u''
-    name = re.findall(ur"wgSiteName=\"([^\"]+)\"", raw)[0]
+    try:
+        name = re.findall(ur"wgSiteName=\"([^\"]+)\"", raw)[0]
+    except:
+        print 'ERROR in name'
+        continue
     logo = u'[[Image:NoLogo.png]]'
     if re.search(ur'<div id="p-logo"><a style="background-image: url\((/w/skins/[^\)]+)\);', raw):
         logo = u"%s%s" % (wiki, re.findall(ur'<div id="p-logo"><a style="background-image: url\((/w/skins/[^\)]+)\);', raw)[0])
