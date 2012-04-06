@@ -62,7 +62,7 @@ for wiki in wikis:
     except:
         print 'ERROR in name'
         continue
-    name = re.sub(ur"\x26", "&", name)
+    name = re.sub(ur"\\x26", "&", name)
     name = re.sub(ur"\\", "", name)
     logo = u'[[Image:NoLogo.png]]'
     if re.search(ur'<div id="p-logo"><a style="background-image: url\((/w/skins/[^\)]+)\);', raw):
