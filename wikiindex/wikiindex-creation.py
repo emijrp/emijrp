@@ -26,7 +26,7 @@ s = wikipedia.Site('wikiindex', 'wikiindex')
 #cat = catlib.Category(s, 'Category:MediaWiki')
 
 cats = { 'wikia.com': '{{wikia}}', }
-langs = {'ace': 'Acehnese', 'de': 'German', 'en': 'English', 'en-gb': 'English', 'es': 'Spanish', 'fi': 'Finnish', 'fr': 'French', 'it': 'Italian', 'pl': 'Polish', 'pt': 'Portuguese', 'pt-br': 'Brazilian Portuguese', 'ru': 'Russian', 'zh': 'Chinese', 'zh-cn': 'Chinese', 'zh-tw': 'Taiwanese Mandarin', }
+langs = {'ace': 'Acehnese', 'af': 'Afrikaans', 'de': 'German', 'en': 'English', 'en-gb': 'English', 'es': 'Spanish', 'fi': 'Finnish', 'fr': 'French', 'it': 'Italian', 'pl': 'Polish', 'pt': 'Portuguese', 'pt-br': 'Brazilian Portuguese', 'ru': 'Russian', 'sk': 'Slovak', 'zh': 'Chinese', 'zh-cn': 'Chinese', 'zh-tw': 'Taiwanese Mandarin', }
 start = ''
 if len(sys.argv) == 2:
     start = sys.argv[1]
