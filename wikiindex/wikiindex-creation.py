@@ -26,7 +26,7 @@ s = wikipedia.Site('wikiindex', 'wikiindex')
 #cat = catlib.Category(s, 'Category:MediaWiki')
 
 cats = { 'wikia.com': '{{wikia}}', }
-langs = {'ace': 'Acehnese', 'af': 'Afrikaans', 'de': 'German', 'en': 'English', 'en-gb': 'English', 'es': 'Spanish', 'fi': 'Finnish', 'fr': 'French', 'it': 'Italian', 'pl': 'Polish', 'pt': 'Portuguese', 'pt-br': 'Brazilian Portuguese', 'ru': 'Russian', 'sk': 'Slovak', 'zh': 'Chinese', 'zh-cn': 'Chinese', 'zh-tw': 'Taiwanese Mandarin', }
+langs = {'ace': 'Acehnese', 'af': 'Afrikaans', 'aln': 'Gheg Albanian', 'am': 'Amharic', 'an': 'Aragonese', 'ang': 'Old English', 'ar': 'Arabic', 'da': 'Danish', 'de': 'German', 'el': 'Greek', 'en': 'English', 'en-gb': 'English', 'es': 'Spanish', 'fi': 'Finnish', 'fr': 'French', 'hu': 'Hungarian', 'it': 'Italian', 'ka': 'Georgian', 'nl': 'Dutch', 'pl': 'Polish', 'pt': 'Portuguese', 'pt-br': 'Brazilian Portuguese', 'ru': 'Russian', 'sk': 'Slovak', 'sq': 'Albanian', 'sv': 'Swedish', 'zh': 'Chinese', 'zh-cn': 'Chinese', 'zh-tw': 'Taiwanese Mandarin', }
 start = ''
 if len(sys.argv) == 2:
     start = sys.argv[1]
@@ -48,7 +48,10 @@ for wiki in wikis:
     
     print 'Analysing...', wiki
     
-    raw = unicode(urllib.urlopen(wiki+'/wiki/').read(), 'utf-8')
+    try:
+        raw = unicode(urllib.urlopen(wiki+'/wiki/').read(), 'utf-8')
+    except:
+        continue
     #print raw
     if re.search(ur"(?i)404 Error\: Page Not Found", raw):
         print "Wiki was deleted?"
