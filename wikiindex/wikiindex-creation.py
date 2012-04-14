@@ -22,6 +22,8 @@ import sys
 import urllib
 import wikipedia
 
+import pycountry
+
 s = wikipedia.Site('wikiindex', 'wikiindex')
 #cat = catlib.Category(s, 'Category:MediaWiki')
 
@@ -73,7 +75,10 @@ for wiki in wikis:
     url = wiki
     rc = u'%s/wiki/Special:RecentChanges' % (wiki)
     stats = u'%s/wiki/Special:Statistics' % (wiki)
-    language = langs[re.findall(ur"<html lang=\"([^\"]+)\" ", raw)[0]]
+    try:
+        language = pycountry.languages.get(alpha2=re.findall(ur"<html lang=\"([^\"]+)\" ", raw)[0]).name
+    except:
+        language = u''
     engine = u'MediaWiki'
     lic = u''
     pagenum = ''
