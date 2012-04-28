@@ -26,7 +26,7 @@ class MyOpener(urllib.FancyURLopener, object):
     version = 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:12.0) Gecko/20100101 Firefox/12.0'
 
 def convert(t):
-    t = re.sub(ur"(?im)\\\{([^\}]+?)\}", ur"\1", t)
+    t = re.sub(ur"(?im)\\\"\{([^\}]+?)\}", ur"\1", t)
     return t
 
 """
@@ -64,15 +64,19 @@ for i in range(30):
     #print raw
     
     for id in ids:
-        id = id.split('.')[1]
+        print i, id
+        try:
+            id = id.split('.')[1]
+        except:
+            continue
         time.sleep(0.1)
-        print id
+        #print id
         myopener.retrieve("https://dl.acm.org/exportformats.cfm?id=%s&expformat=bibtex" % (id), 'ref.html')
         bibtex = open('ref.html').read()
         os.remove('ref.html')
         
         #get params
-        print bibtex
+        #print bibtex
         try:
             title = convert(re.findall(ur"(?im) title = {([^\n]+?)}", bibtex)[0]) # space before title, to avoi to get booktitle
             authors = re.findall(ur"(?im) author = {([^\n]+?)}", bibtex)[0].split(' and ')
