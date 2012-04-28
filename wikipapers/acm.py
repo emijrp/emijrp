@@ -55,7 +55,7 @@ def convert(t):
 s = wikipedia.Site('wikipapers', 'wikipapers')
 url = "http://dl.acm.org/results.cfm?query=%28Title%3Awikipedia%29&querydisp=%28Title%3Awikipedia%29&srt=meta_published_date%20dsc&short=0&coll=DL&dl=GUIDE&source_disp=&source_query=&since_month=&since_year=&before_month=&before_year=&termshow=matchboolean&range_query=&zadv=1"
 
-for i in range(30):
+for i in range(3,30):
     time.sleep(0.1)
     myopener = MyOpener()
     myopener.retrieve(url+'&start='+str(i*20+1), 'acm.html')
@@ -83,7 +83,7 @@ for i in range(30):
             title = convert(re.findall(ur"(?im) title = {([^\n]+?)}", bibtex)[0]) # space before title, to avoi to get booktitle
             authors = re.findall(ur"(?im) author = {([^\n]+?)}", bibtex)[0].split(' and ')
             authors = [convert('%s %s' % (author.split(', ')[1], author.split(', ')[0])) for author in authors]
-            if re.search(ur"\\", title+''.join(authors)):# \\#  \\
+            if re.search(ur"[\\\[]", title+''.join(authors)):# \\#  \\
                 continue
             year = re.findall(ur"(?im) year = {([^\n]+?)}", bibtex)[0]
             try:
