@@ -81,10 +81,10 @@ for i in range(30):
         #print bibtex
         try:
             title = convert(re.findall(ur"(?im) title = {([^\n]+?)}", bibtex)[0]) # space before title, to avoi to get booktitle
-            if re.search(ur"\\", title):# \\#  \\
-                continue
             authors = re.findall(ur"(?im) author = {([^\n]+?)}", bibtex)[0].split(' and ')
             authors = [convert('%s %s' % (author.split(', ')[1], author.split(', ')[0])) for author in authors]
+            if re.search(ur"\\", title+''.join(authors)):# \\#  \\
+                continue
             year = re.findall(ur"(?im) year = {([^\n]+?)}", bibtex)[0]
             try:
                 journal = convert(re.findall(ur"(?im) journal = {([^\n]+?)}", bibtex)[0])
