@@ -162,7 +162,8 @@ for i in range(30):
         
         #create redirect
         redoutput = u"#redirect [[%s]]" % (title)
-        page2.put(redoutput, redoutput)
+        if not page2.exists():
+            page2.put(redoutput, redoutput)
         
         #create talkpage
         talkoutput = u"<noinclude>{{talk}}</noinclude>"
