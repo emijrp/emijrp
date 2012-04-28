@@ -150,25 +150,28 @@ for i in range(30):
         output += u'\n|abstract='
         output += u'\n}}\n\n{{talk}}'
         print '\n', '#'*50, '\n', output, '\n', '#'*50
-
-        #check if exists
-        page1 = wikipedia.Page(s, title)
-        page2 = wikipedia.Page(s, title.lower())
-        if page1.exists() or page2.exists():
-            print 'Exists', title
-            continue #skip
-        #create page
-        page1.put(output, output)
         
-        #create redirect
-        redoutput = u"#redirect [[%s]]" % (title)
-        if not page2.exists():
-            page2.put(redoutput, redoutput)
-        
-        #create talkpage
-        talkoutput = u"<noinclude>{{talk}}</noinclude>"
-        talk = page1.toggleTalkPage()
-        if not talk.exists():
-            talk.put(talkoutput, talkoutput)
-        
+        try:
+            #check if exists
+            page1 = wikipedia.Page(s, title)
+            page2 = wikipedia.Page(s, title.lower())
+            if page1.exists() or page2.exists():
+                print 'Exists >', title
+                continue #skip
+            #create page
+            page1.put(output, output)
+            
+            #create redirect
+            redoutput = u"#redirect [[%s]]" % (title)
+            if not page2.exists():
+                page2.put(redoutput, redoutput)
+            
+            #create talkpage
+            talkoutput = u"<noinclude>{{talk}}</noinclude>"
+            talk = page1.toggleTalkPage()
+            if not talk.exists():
+                talk.put(talkoutput, talkoutput)
+        except:
+            print 'Skiping, possible char error'
+            pass
 
