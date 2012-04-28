@@ -27,6 +27,7 @@ class MyOpener(urllib.FancyURLopener, object):
 
 def convert(t):
     t = re.sub(ur"(?im)\\\"\{([^\}]+?)\}", ur"\1", t)
+    t = re.sub(ur"\{\\'(.)\}", ur"\1", t)
     return t
 
 """
@@ -68,6 +69,7 @@ for i in range(30):
         try:
             id = id.split('.')[1]
         except:
+            print 'No paper?'
             continue
         time.sleep(0.1)
         #print id
@@ -79,6 +81,8 @@ for i in range(30):
         #print bibtex
         try:
             title = convert(re.findall(ur"(?im) title = {([^\n]+?)}", bibtex)[0]) # space before title, to avoi to get booktitle
+            if re.search(ur"\\", title):# \\#  \\
+                continue
             authors = re.findall(ur"(?im) author = {([^\n]+?)}", bibtex)[0].split(' and ')
             authors = [convert('%s %s' % (author.split(', ')[1], author.split(', ')[0])) for author in authors]
             year = re.findall(ur"(?im) year = {([^\n]+?)}", bibtex)[0]
@@ -110,8 +114,14 @@ for i in range(30):
                 pages = re.sub('--', '-', re.findall(ur"(?im) pages = {([^\n]+?)}", bibtex)[0])
             except:
                 pages = ''
-            doi = re.findall(ur"(?im) doi = {([^\n]+?)}", bibtex)[0]
-            keywords = [convert(keyword) for keyword in re.findall(ur"(?im) keywords = {([^\n]+?)}", bibtex)[0].split(', ')]
+            try:
+                doi = re.findall(ur"(?im) doi = {([^\n]+?)}", bibtex)[0]
+            except:
+                doi = ''
+            try:
+                keywords = [convert(keyword) for keyword in re.findall(ur"(?im) keywords = {([^\n]+?)}", bibtex)[0].split(', ')]
+            except:
+                keywords = []
             
             remotemirror = ''
             type_ = journal and 'journal article' or 'conference paper'
@@ -153,7 +163,6 @@ for i in range(30):
         
         output += u'\n|abstract='
         output += u'\n}}\n\n{{talk}}'
-        print '\n', '#'*50, '\n', output, '\n', '#'*50
         
         try:
             #check if exists
@@ -163,6 +172,7 @@ for i in range(30):
                 print 'Exists >', title
                 continue #skip
             #create page
+            print '\n', '#'*50, '\n', output, '\n', '#'*50
             page1.put(output, output)
             
             #create redirect
