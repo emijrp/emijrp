@@ -118,7 +118,7 @@ for i in m:
                 continue
             t = wikipedia.Page(wikipedia.Site('wikipapers', 'wikipapers'), u"Talk:%s" % title)
             if not t.exists():
-                t.put(u"{{talk}}", u"{{talk}}")
+                t.put(u"<noinclude>{{talk}}</noinclude>", u"<noinclude>{{talk}}</noinclude>")
             
             redirects = [
                 title[0]+title[1:].lower(),
