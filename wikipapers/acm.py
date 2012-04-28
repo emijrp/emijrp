@@ -110,7 +110,7 @@ for i in range(30):
             keywords = [convert(keyword) for keyword in re.findall(ur"(?im) keywords = {([^\n]+?)}", bibtex)[0].split(', ')]
             
             remotemirror = ''
-            type_ = journal and 'journal' or 'conference paper'
+            type_ = journal and 'journal article' or 'conference paper'
             publishedin = journal and journal or conference
         except:
             continue
