@@ -26,6 +26,8 @@ def unquote(s):
 skip = u''
 site = ''
 site = wikipedia.Site(sys.argv[1], sys.argv[1])
+if len(sys.argv) > 2:
+    skip = sys.argv[2]
 gen = pagegenerators.AllpagesPageGenerator(start = skip, namespace=0, site=site)
 pre = pagegenerators.PreloadingGenerator(gen)
 for page in pre:

@@ -53,9 +53,10 @@ def convert(t):
 """
 
 s = wikipedia.Site('wikipapers', 'wikipapers')
-url = "http://dl.acm.org/results.cfm?query=%28Title%3Awikipedia%29&querydisp=%28Title%3Awikipedia%29&srt=meta_published_date%20dsc&short=0&coll=DL&dl=GUIDE&source_disp=&source_query=&since_month=&since_year=&before_month=&before_year=&termshow=matchboolean&range_query=&zadv=1"
+search = 'wiki' #wikipedia (done, 2012-04-28), wiki, wikis, wiktionary
+url = "http://dl.acm.org/results.cfm?query=%%28Title%%3A%s%%29&querydisp=%%28Title%%3A%s%%29&srt=meta_published_date%%20dsc&short=0&coll=DL&dl=GUIDE&source_disp=&source_query=&since_month=&since_year=&before_month=&before_year=&termshow=matchboolean&range_query=&zadv=1" % (search, search)
 
-for i in range(3,30):
+for i in range(0,30):
     time.sleep(0.1)
     myopener = MyOpener()
     myopener.retrieve(url+'&start='+str(i*20+1), 'acm.html')
@@ -131,7 +132,7 @@ for i in range(3,30):
         #end get params
         
         #filter
-        if not 'wiki' in title.lower():
+        if not search in title.lower():
             continue
         
         output = u"""{{Infobox Publication

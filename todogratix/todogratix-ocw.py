@@ -46,11 +46,15 @@ rsss = [
 #'http://ocw.uc3m.es/front-page/courses/rss',
 ]
 
-skip = u'TRADUCCION GENERAL (ALEMAN)'
+skip = 'TRADUCCION GENERAL (ALEMAN)'
 for rss in rsss:
     raw = urllib.urlopen(rss).read()
     try:
         raw = unicode(raw, 'utf-8')
+        try:
+            raw = unicode(raw, 'iso-8859-1')
+        except:
+            continue
     except:
         pass
     raw = raw.split('</channel>')[1]
@@ -108,7 +112,7 @@ for rss in rsss:
             except:
                 continue
             lic = u'CC %s' % (re.sub(ur"[\-\/]", ur" ", lic.split('licenses/')[1]).upper().strip())
-        output = """{{Infobox Obra
+        output = u"""{{Infobox Obra
 |tipo=ocw
 |título=%s
 |autor=%s
@@ -118,7 +122,7 @@ for rss in rsss:
 |sinopsis=%s
 }}
 * %s
-""" % (title, ', '.join(creators), ', '.join(tags), lic, description, link)
+""" % (title, u', '.join(creators), u', '.join(tags), lic, description, link)
         print output
         page = wikipedia.Page(tgsite, '%s (%s)' % (title, ocw))
         if not page.exists():
