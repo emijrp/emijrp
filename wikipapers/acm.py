@@ -53,7 +53,7 @@ def convert(t):
 """
 
 s = wikipedia.Site('wikipapers', 'wikipapers')
-search = 'wiki' #wikipedia (done, 2012-04-28), wiki, wikis, wiktionary, mediawiki, wikibooks, wikimedia
+search = 'wikipedia' #wikipedia (done, 2012-04-28), wiki (done, 2012-04-29), wikis (done, 2012-04-29), wiktionary (done, 2012-04-29), mediawiki (done, 2012-04-29), wikibooks (done, 2012-04-29), wikimedia (done, 2012-04-29)
 url = "http://dl.acm.org/results.cfm?query=%%28Title%%3A%s%%29&querydisp=%%28Title%%3A%s%%29&srt=meta_published_date%%20dsc&short=0&coll=DL&dl=GUIDE&source_disp=&source_query=&since_month=&since_year=&before_month=&before_year=&termshow=matchboolean&range_query=&zadv=1" % (search, search)
 
 for i in range(0,30):
