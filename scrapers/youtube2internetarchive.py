@@ -32,7 +32,7 @@ Required files:
  * keys.txt: accesskey and secretkey (in that order) for IA S3 (in two separated lines) in the current directory
 """
 
-sizelimit = 10*1024*1024 # file size, if you want to skip those videos greater than this size, else put 10000*1024*1024 for 10GB
+sizelimit = 25*1024*1024 # file size, if you want to skip those videos greater than this size, else put 10000*1024*1024 for 10GB
 
 num2month = {'01':'enero', '02': 'febrero', '03':'marzo', '04':'abril', '05':'mayo', '06':'junio', '07':'julio', '08':'agosto','09':'septiembre','10':'octubre', '11':'noviembre', '12':'diciembre'}
 accesskey = open('keys.txt', 'r').readlines()[0].strip()
