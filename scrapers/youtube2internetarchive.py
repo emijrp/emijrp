@@ -104,8 +104,9 @@ while len(videotodourls) > 0:
     title = json_['title']
     language = 'Spanish'
     
-    itemname = 'spanishrevolution-%s' % (videofilename)
+    itemname = removeoddchars('spanishrevolution-%s' % (videofilename))
     itemname = itemname[:100]
+    videofilename_ = removeoddchars(videofilename)
     if not re.search(ur"Item cannot be found", urllib.urlopen('http://archive.org/details/%s' % (itemname)).read()):
         print 'That item exists at Internet Archive', 'http://archive.org/details/%s' % (itemname)
         videotodourls.remove(videotodourl)
@@ -130,13 +131,13 @@ while len(videotodourls) > 0:
         #'--header', "'x-archive-meta-rights:%s'" % (rights),
         '--header', u"'x-archive-meta-originalurl:%s'" % (videotodourl),
         '--upload-file', videofilename,
-            u"http://s3.us.archive.org/%s/%s" % (removeoddchars(itemname), removeoddchars(videofilename)),
+            u"http://s3.us.archive.org/%s/%s" % (itemname, videofilename_),
     ]
-    print 'Uploading to Internet Archive as:', removeoddchars(itemname)
+    print 'Uploading to Internet Archive as:', itemname
     curlline = ' '.join(curl)
     os.system(curlline.encode('utf-8'))
     
-    print 'You can browse it in http://archive.org/details/%s' % (removeoddchars(itemname))
+    print 'You can browse it in http://archive.org/details/%s' % (itemname)
     videotodourls.remove(videotodourl)
     updatetodo(videotodourls)
     os.remove(videofilename)
