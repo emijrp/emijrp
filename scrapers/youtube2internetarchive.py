@@ -42,9 +42,10 @@ videotodourls = [l.strip() for l in open('download/videostodo.txt', 'r').readlin
 def quote(t):
     return re.sub(ur"'", ur"\'", t)
 
-def quitaracentos(s):
+def removeoddchars(s):
     #http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
-    return ''.join((c for c in unicodedata.normalize('NFD', u'%s' % s) if unicodedata.category(c) != 'Mn'))
+    s = ''.join((c for c in unicodedata.normalize('NFD', u'%s' % s) if unicodedata.category(c) != 'Mn'))
+    s = re.sub(ur"/", ur"-", s)
 
 def updatetodo(l):
     f = open('videostodo.txt', 'w')
@@ -65,6 +66,7 @@ while len(videotodourls) > 0:
         continue
     #get tags
     tags = re.findall(ur"search=tag\">([^<]+)</a>", videohtml)
+    tags = [quote(tag) for tag in tags]
     
     os.system('python ../youtube-dl -t -i -c - %s --write-info-json --format 18' % (videotodourl)) #mp4 (18)
     videofilename = ''
@@ -85,7 +87,6 @@ while len(videotodourls) > 0:
             updatetodo(videotodourls)
             os.chdir('..')
             continue
-        print 'Uploading to Internet Archive', videofilename
     else:
         print 'No video downloaded, an error ocurred'
         videotodourls.remove(videotodourl)
@@ -102,7 +103,7 @@ while len(videotodourls) > 0:
     title = json_['title']
     language = 'Spanish'
     
-    itemname = quitaracentos('spanishrevolution-%s' % (videofilename))
+    itemname = 'spanishrevolution-%s' % (videofilename)
     itemname = itemname[:100]
     curl = ['curl', '--location', 
         '--header', u"'x-amz-auto-make-bucket:1'",
@@ -111,7 +112,7 @@ while len(videotodourls) > 0:
         '--header', u"'x-archive-size-hint:%d'" % (os.path.getsize(videofilename)), 
         '--header', u'"authorization: LOW %s:%s"' % (accesskey, secretkey),
         '--header', u"'x-archive-meta-title:%s'" % (quote(title)),
-        '--header', u"'x-archive-meta-description:%s<br/><br/>Source: <a href=\"%s\">%s</a><br/>Uploader: <a href=\"http://www.youtube.com/user/%s\">%s</a><br/>Upload date: %s'" % (quote(description), videotodourl, videotodourl, uploader, uploader, upload_date),
+        '--header', u"'x-archive-meta-description:%s<br/><br/>Source: <a href=\"%s\">%s</a><br/>Uploader: <a href=\"http://www.youtube.com/user/%s\">%s</a><br/>Upload date: %s'" % (quote(description), videotodourl, videotodourl, quote(uploader), quote(uploader), upload_date),
         '--header', u"'x-archive-meta-date:%s'" % (upload_date),
         '--header', u"'x-archive-meta-year:%s'" % (upload_year),
         '--header', u"'x-archive-meta-language:%s'" % (language),
@@ -121,12 +122,13 @@ while len(videotodourls) > 0:
         #'--header', "'x-archive-meta-rights:%s'" % (rights),
         '--header', u"'x-archive-meta-originalurl:%s'" % (videotodourl),
         '--upload-file', videofilename,
-            u"http://s3.us.archive.org/%s/%s" % (itemname, videofilename),
+            u"http://s3.us.archive.org/%s/%s" % (removeoddchars(itemname), removeoddchars(videofilename)),
     ]
+    print 'Uploading to Internet Archive'
     curlline = ' '.join(curl)
     os.system(curlline.encode('utf-8'))
     
-    print 'You can browse it in http://archive.org/details/spanishrevolution-%s' % (videofilename[:80]) 
+    print 'You can browse it in http://archive.org/details/spanishrevolution-%s' % (removeoddchars(itemname))
     videotodourls.remove(videotodourl)
     updatetodo(videotodourls)
     os.remove(videofilename)
