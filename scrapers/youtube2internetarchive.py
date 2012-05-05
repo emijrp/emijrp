@@ -129,7 +129,7 @@ while len(videotodourls) > 0:
     curlline = ' '.join(curl)
     os.system(curlline.encode('utf-8'))
     
-    print 'You can browse it in http://archive.org/details/spanishrevolution-%s' % (removeoddchars(itemname))
+    print 'You can browse it in http://archive.org/details/%s' % (removeoddchars(itemname))
     videotodourls.remove(videotodourl)
     updatetodo(videotodourls)
     os.remove(videofilename)
