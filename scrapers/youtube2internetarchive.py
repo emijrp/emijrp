@@ -106,7 +106,7 @@ while len(videotodourls) > 0:
     upload_month = num2month[json_['upload_date'][4:6]]
     description = json_['description']
     uploader = json_['uploader']
-    title = json_['title']
+    title = re.sub(u"%", u"/", json_['title']) # 6%7
     language = 'Spanish'
     
     itemname = removeoddchars('spanishrevolution-%s' % (videofilename))
