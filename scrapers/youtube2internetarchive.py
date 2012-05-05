@@ -30,8 +30,9 @@ import urllib
 Instructions:
  1) Create a subdirectory "download" and add a videostodo.txt file with YouTube links.
  2) In the current directory, create a keys.txt file with your IA S3 keys. Accesskey and secretkey in two separated lines.
- 3) Modify preferences if desired (see below).
- 4) Run this script: python youtube2internetarchive.py
+ 3) Download youtube-dl to the current directory http://rg3.github.com/youtube-dl/download.html
+ 4) Modify preferences if desired (see below).
+ 5) Run this script: python youtube2internetarchive.py
 """
 
 # Start preferences
