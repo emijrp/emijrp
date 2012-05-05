@@ -106,6 +106,13 @@ while len(videotodourls) > 0:
     
     itemname = 'spanishrevolution-%s' % (videofilename)
     itemname = itemname[:100]
+    if not re.search(ur"Item cannot be found", urllib.urlopen('http://archive.org/details/%s' % (itemname)).read()):
+        print 'That item exists at Internet Archive', 'http://archive.org/details/%s' % (itemname)
+        videotodourls.remove(videotodourl)
+        updatetodo(videotodourls)
+        os.chdir('..')
+        continue
+    
     curl = ['curl', '--location', 
         '--header', u"'x-amz-auto-make-bucket:1'",
         '--header', u"'x-archive-meta01-collection:spanishrevolution'",
