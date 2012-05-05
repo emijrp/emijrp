@@ -52,6 +52,7 @@ def updatetodo(l):
     f.close()
 
 while len(videotodourls) > 0:
+    os.chdir('download')
     videotodourl = videotodourls[0]
     videohtml = unicode(urllib.urlopen(videotodourl).read(), 'utf-8')
     videoid = videotodourl.split('watch?v=')[1]
@@ -60,11 +61,11 @@ while len(videotodourls) > 0:
         print "It is not Creative Commons", videotodourl
         videotodourls.remove(videotodourl)
         updatetodo(videotodourls)
+        os.chdir('..')
         continue
     #get tags
     tags = re.findall(ur"search=tag\">([^<]+)</a>", videohtml)
     
-    os.chdir('download')
     os.system('python ../youtube-dl -t -i -c - %s --write-info-json --format 18' % (videotodourl)) #mp4 (18)
     videofilename = ''
     jsonfilename = ''
@@ -80,10 +81,16 @@ while len(videotodourls) > 0:
         if os.path.getsize(videofilename) > sizelimit:
             print 'Video is greater than', sizelimit, 'bytes'
             print 'Skiping...'
+            videotodourls.remove(videotodourl)
+            updatetodo(videotodourls)
+            os.chdir('..')
             continue
         print 'Uploading to Internet Archive', videofilename
     else:
         print 'No video downloaded, an error ocurred'
+        videotodourls.remove(videotodourl)
+        updatetodo(videotodourls)
+        os.chdir('..')
         continue
     
     json_ = json.loads(unicode(open(jsonfilename, 'r').read(), 'utf-8'))
@@ -95,6 +102,8 @@ while len(videotodourls) > 0:
     title = json_['title']
     language = 'Spanish'
     
+    itemname = 'spanishrevolution-%s' % (videofilename)
+    itemname = itemname[:100]
     curl = ['curl', '--location', 
         '--header', u"'x-amz-auto-make-bucket:1'",
         '--header', u"'x-archive-meta01-collection:spanishrevolution'",
@@ -112,7 +121,7 @@ while len(videotodourls) > 0:
         #'--header', "'x-archive-meta-rights:%s'" % (rights),
         '--header', u"'x-archive-meta-originalurl:%s'" % (videotodourl),
         '--upload-file', videofilename,
-            u"http://s3.us.archive.org/spanishrevolution-%s/%s" % (videofilename[:80], videofilename),
+            u"http://s3.us.archive.org//%s" % (itemname, videofilename),
     ]
     curlline = ' '.join(curl)
     os.system(curlline.encode('utf-8'))
