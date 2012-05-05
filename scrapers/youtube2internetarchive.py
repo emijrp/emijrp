@@ -50,7 +50,7 @@ def quote(t):
 def removeoddchars(s):
     #http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
     s = ''.join((c for c in unicodedata.normalize('NFD', u'%s' % s) if unicodedata.category(c) != 'Mn'))
-    s = re.sub(ur"/", ur"-", s)
+    s = re.sub(ur"(?im)[^a-z0-9_\.-]", ur"", s) # greek chars and others cause errors in item name if not removed
     return s
 
 def updatetodo(l):
@@ -112,7 +112,7 @@ while len(videotodourls) > 0:
     itemname = removeoddchars('spanishrevolution-%s' % (videofilename))
     itemname = itemname[:100]
     videofilename_ = removeoddchars(videofilename)
-    if not re.search(ur"Item cannot be found", unicode(urllib.urlopen('http://archive.org/details/%s' % (itemname), 'utf-8')).read()):
+    if not re.search(ur"Item cannot be found", unicode(urllib.urlopen('http://archive.org/details/%s' % (itemname)).read(), 'utf-8')):
         print 'That item exists at Internet Archive', 'http://archive.org/details/%s' % (itemname)
         videotodourls.remove(videotodourl)
         updatetodo(videotodourls)
