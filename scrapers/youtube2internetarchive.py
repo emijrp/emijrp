@@ -46,6 +46,7 @@ def removeoddchars(s):
     #http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
     s = ''.join((c for c in unicodedata.normalize('NFD', u'%s' % s) if unicodedata.category(c) != 'Mn'))
     s = re.sub(ur"/", ur"-", s)
+    return s
 
 def updatetodo(l):
     f = open('videostodo.txt', 'w')
@@ -124,7 +125,7 @@ while len(videotodourls) > 0:
         '--upload-file', videofilename,
             u"http://s3.us.archive.org/%s/%s" % (removeoddchars(itemname), removeoddchars(videofilename)),
     ]
-    print 'Uploading to Internet Archive'
+    print 'Uploading to Internet Archive as:', removeoddchars(itemname)
     curlline = ' '.join(curl)
     os.system(curlline.encode('utf-8'))
     
