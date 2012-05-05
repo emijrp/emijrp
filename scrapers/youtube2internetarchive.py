@@ -112,7 +112,7 @@ while len(videotodourls) > 0:
     itemname = removeoddchars('spanishrevolution-%s' % (videofilename))
     itemname = itemname[:100]
     videofilename_ = removeoddchars(videofilename)
-    if not re.search(ur"Item cannot be found", urllib.urlopen('http://archive.org/details/%s' % (itemname)).read()):
+    if not re.search(ur"Item cannot be found", unicode(urllib.urlopen('http://archive.org/details/%s' % (itemname), 'utf-8')).read()):
         print 'That item exists at Internet Archive', 'http://archive.org/details/%s' % (itemname)
         videotodourls.remove(videotodourl)
         updatetodo(videotodourls)
