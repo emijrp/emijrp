@@ -28,8 +28,8 @@ import urllib
 
 """
 Required files:
- * videostodo.txt: list of YouTube videos to download
- * keys.txt: accesskey and secretkey (in that order) for IA S3 (in two separated lines)
+ * download/videostodo.txt: list of YouTube videos inside a directory named download
+ * keys.txt: accesskey and secretkey (in that order) for IA S3 (in two separated lines) in the current directory
 """
 
 sizelimit = 10*1024*1024 # file size, if you want to skip those videos greater than this size, else put 10000*1024*1024 for 10GB
@@ -37,7 +37,7 @@ sizelimit = 10*1024*1024 # file size, if you want to skip those videos greater t
 num2month = {'01':'enero', '02': 'febrero', '03':'marzo', '04':'abril', '05':'mayo', '06':'junio', '07':'julio', '08':'agosto','09':'septiembre','10':'octubre', '11':'noviembre', '12':'diciembre'}
 accesskey = open('keys.txt', 'r').readlines()[0].strip()
 secretkey = open('keys.txt', 'r').readlines()[1].strip()
-videotodourls = [l.strip() for l in open('videostodo.txt', 'r').readlines()]
+videotodourls = [l.strip() for l in open('download/videostodo.txt', 'r').readlines()]
 
 def quote(t):
     return re.sub(ur"'", ur"\'", t)
@@ -102,7 +102,7 @@ while len(videotodourls) > 0:
     title = json_['title']
     language = 'Spanish'
     
-    itemname = 'spanishrevolution-%s' % (videofilename)
+    itemname = quitaracentos('spanishrevolution-%s' % (videofilename))
     itemname = itemname[:100]
     curl = ['curl', '--location', 
         '--header', u"'x-amz-auto-make-bucket:1'",
@@ -121,7 +121,7 @@ while len(videotodourls) > 0:
         #'--header', "'x-archive-meta-rights:%s'" % (rights),
         '--header', u"'x-archive-meta-originalurl:%s'" % (videotodourl),
         '--upload-file', videofilename,
-            u"http://s3.us.archive.org//%s" % (itemname, videofilename),
+            u"http://s3.us.archive.org/%s/%s" % (itemname, videofilename),
     ]
     curlline = ' '.join(curl)
     os.system(curlline.encode('utf-8'))
