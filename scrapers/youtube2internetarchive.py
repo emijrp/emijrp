@@ -27,12 +27,16 @@ import unicodedata
 import urllib
 
 """
-Required files:
- * download/videostodo.txt: list of YouTube videos inside a directory named download
- * keys.txt: accesskey and secretkey (in that order) for IA S3 (in two separated lines) in the current directory
+Instructions:
+ 1) Create a subdirectory "download" and add a videostodo.txt file with YouTube links.
+ 2) In the current directory, create a keys.txt file with your IA S3 keys. Accesskey and secretkey in two separated lines.
+ 3) Modify preferences if desired (see below).
+ 4) Run this script: python youtube2internetarchive.py
 """
 
+# Start preferences
 sizelimit = 25*1024*1024 # file size, if you want to skip those videos greater than this size, else put 10000*1024*1024 for 10GB
+# End preferences
 
 num2month = {'01':'enero', '02': 'febrero', '03':'marzo', '04':'abril', '05':'mayo', '06':'junio', '07':'julio', '08':'agosto','09':'septiembre','10':'octubre', '11':'noviembre', '12':'diciembre'}
 accesskey = open('keys.txt', 'r').readlines()[0].strip()
