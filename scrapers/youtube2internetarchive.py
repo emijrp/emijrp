@@ -63,6 +63,13 @@ while len(videotodourls) > 0:
     videotodourl = videotodourls[0]
     videohtml = unicode(urllib.urlopen(videotodourl).read(), 'utf-8')
     videoid = videotodourl.split('watch?v=')[1]
+    #check if it is on IA
+    if not re.search(ur"1 through 0 of <b>0</b>", unicode(urllib.urlopen('http://archive.org/search.php?query=%s' % (videoid)).read(), 'utf-8')):
+        print "It is on Internet Archive http://archive.org/search.php?query=%s" % videoid
+        videotodourls.remove(videotodourl)
+        updatetodo(videotodourls)
+        os.chdir('..')
+        continue
     #verify license in youtube
     if not re.search(ur"(?i)/t/creative_commons", videohtml):
         print "It is not Creative Commons", videotodourl
@@ -109,8 +116,8 @@ while len(videotodourls) > 0:
     title = re.sub(u"%", u"/", json_['title']) # 6%7
     language = 'Spanish'
     
-    itemname = removeoddchars('spanishrevolution-%s' % (videofilename))
-    itemname = itemname[:100]
+    itemname = removeoddchars('spanishrevolution-%s' % ('-'.join(videofilename.split('-')[:-1])))
+    itemname = itemname[:88] + '-' + videofilename.split('-')[-1].split('.')[0]
     videofilename_ = removeoddchars(videofilename)
     if not re.search(ur"Item cannot be found", unicode(urllib.urlopen('http://archive.org/details/%s' % (itemname)).read(), 'utf-8')):
         print 'That item exists at Internet Archive', 'http://archive.org/details/%s' % (itemname)
