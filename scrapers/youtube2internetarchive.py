@@ -124,8 +124,8 @@ while len(videotodourls) > 0:
     title = re.sub(u"%", u"/", json_['title']) # 6%7
     language = 'Spanish'
     
-    itemname = removeoddchars('spanishrevolution-%s' % ('-'.join(videofilename.split('-')[:-1])))
-    itemname = itemname[:88] + '-' + videofilename.split('-')[-1].split('.')[0]
+    itemname = removeoddchars('spanishrevolution-%s' % (videofilename.split(videoid)[0][:-1])) # [:-1] to remove the -
+    itemname = itemname[:88] + '-' + videoid
     videofilename_ = removeoddchars(videofilename)
     if not re.search(ur"Item cannot be found", unicode(urllib.urlopen('http://archive.org/details/%s' % (itemname)).read(), 'utf-8')):
         print 'That item exists at Internet Archive', 'http://archive.org/details/%s' % (itemname)
