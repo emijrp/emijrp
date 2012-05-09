@@ -23,6 +23,7 @@ import json
 import os
 import re
 import subprocess
+import time
 import unicodedata
 import urllib
 
@@ -64,7 +65,14 @@ while len(videotodourls) > 0:
     videohtml = unicode(urllib.urlopen(videotodourl).read(), 'utf-8')
     videoid = videotodourl.split('watch?v=')[1]
     #check if it is on IA
-    if not re.search(ur"1 through 0 of <b>0</b>", unicode(urllib.urlopen('http://archive.org/search.php?query=%s' % (videoid)).read(), 'utf-8')):
+    searchurl = 'http://archive.org/search.php?query=%s' % (re.sub(ur"(?im)^-+", ur"", videoid))
+    rawsearch = unicode(urllib.urlopen(searchurl).read(), 'utf-8')
+    print searchurl
+    while not re.search(ur"\d+ through \d+", rawsearch): #error in IA search engine? retry....
+        print 'Error while searching in IA... waiting some seconds and retry'
+        time.sleep(15)
+        rawsearch = unicode(urllib.urlopen(searchurl).read(), 'utf-8')
+    if not re.search(ur"1 through 0 of <b>0</b>", rawsearch):
         print "It is on Internet Archive http://archive.org/search.php?query=%s" % videoid
         videotodourls.remove(videotodourl)
         updatetodo(videotodourls)
