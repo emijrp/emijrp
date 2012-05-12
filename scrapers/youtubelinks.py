@@ -21,12 +21,15 @@ import re
 import time
 import urllib
 
-tags = ["12m15m", "acampadasol", "spanishrevolution", "democraciarealya", "15menpleno", "nolesvotes", "acampadaacoruna", "acampadacoruna", "acampadaalcala", "acampadaalicante", "acampadaalmeria", "acampadabarcelona", "acampadabcn", "acampadabenicarlo", "acampadabilbao", "acampadacadiz", "acampadacaceres", "acampadacastellon", "acampadachiclana", "acampadacordoba", "acampadadonostia", "acampadaelche", "acampadaferrol", "acampadagasteiz", "acampadagranada", "acampadaibiza", "acampadajerez", "acampadalaspalmas", "acampadapalmas", "acampadaleon", "acampadalleida", "acampadalogrono", "acampadamadrid", "acampadamalaga", "acampadamurcia", "acampadapalencia", "acampadapalma", "acampadamallorca", "acampadapamplona", "acampadaoviedo", "acampadaronda", "acampadasalamanca", "acampadasantiago", "acampadasevilla", "acampadasoria", "acampadatarragona", "acampadaterrasa", "acampadatoledo", "acampadavalencia", "acampadavigo", "acampadavlc", "acampadazamora", "acampadazaragoza", "acampadazgz", "grabatupleno"]
+filenamevideos = "youtube-videos.txt"
+filenametags = "youtube-tags.txt"
+
+tags = [l.strip() for l in open(filenametags, 'r').readlines()]
 videos = []
 for tag in tags:
     for pagenum in range(1, 51):
-        if os.path.exists("videos.txt"):
-            for l in open("videos.txt", "r").readlines():
+        if os.path.exists(filenamevideos):
+            for l in open(filenamevideos, "r").readlines():
                 l = l.strip()
                 if not l in videos:
                     videos.append(l)
@@ -42,7 +45,7 @@ for tag in tags:
             if not videourl in videos:
                 videos.append(videourl)
         videos.sort()
-        f = open("videos.txt", "w")
+        f = open(filenamevideos, "w")
         output = '\n'.join(videos)
         f.write(output.encode('utf-8'))
         f.close()
