@@ -21,12 +21,11 @@ import re
 import time
 import urllib
 
-filenamevideos = "youtube-videos.txt"
 filenametags = "youtube-tags.txt"
-
 tags = [l.strip() for l in open(filenametags, 'r').readlines()]
-videos = []
 for tag in tags:
+    videos = []
+    filenamevideos = "youtube-videos-%s.txt" % (tag)
     for pagenum in range(1, 51):
         print 'tag', tag, 'pagenum', pagenum
         if os.path.exists(filenamevideos):

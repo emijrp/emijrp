@@ -156,7 +156,6 @@ acampadaprat
 acampadareusmercadal
 acampadaripollet
 acampadaronda
-acampadas
 acampadas15m
 acampadasala
 acampadasalamanca
