@@ -46,7 +46,7 @@ for tag in tags:
                 videos.append(videourl)
         videos.sort()
         f = open(filenamevideos, "w")
-        output = '\n'.join(videos)
+        output = '\n'.join(videos) + '\n'
         f.write(output.encode('utf-8'))
         f.close()
         print 'Total videos', len(videos)
