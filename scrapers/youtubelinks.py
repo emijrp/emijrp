@@ -28,6 +28,7 @@ tags = [l.strip() for l in open(filenametags, 'r').readlines()]
 videos = []
 for tag in tags:
     for pagenum in range(1, 51):
+        print 'tag', tag, 'pagenum', pagenum
         if os.path.exists(filenamevideos):
             for l in open(filenamevideos, "r").readlines():
                 l = l.strip()
@@ -52,8 +53,9 @@ for tag in tags:
         print 'Total videos', len(videos)
         
         #es esta la última página?
-        if re.search(ur"(?im)\"yt-uix-button-content\">%d</span></a>&nbsp;\s*</div>" % (pagenum), rawhtml):
+        if re.search(ur"(?im)\"yt-uix-button-content\">%d</span></a>&nbsp;\s*</div>" % (pagenum), rawhtml) or \
+            not re.search(ur"(?im)\"yt-uix-button-content\">\d+</span>", rawhtml):
             print 'No more videos for this tag'
             break
         
-        time.sleep(1)
+        time.sleep(0.2)
