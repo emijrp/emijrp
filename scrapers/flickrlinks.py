@@ -28,11 +28,7 @@ for tag in tags:
         searchurl = "https://secure.flickr.com/search/?q=%s&l=cc&mt=all&adv=1&s=rec&page=%s" % (tag, pagenum)
         rawhtml = unicode(urllib.urlopen(searchurl).read(), 'utf-8')
         
-        if re.search(ur"(?im)You may have reached the limit of how many results", rawhtml):
-            print 'Max pagenum for this tag reachead'
-            break
-        
-        if re.search(ur"(?im)We couldn\'t find anything matching your search", rawhtml):
+        if re.search(ur"(?im)<div class=\"NoneFound\">", rawhtml):
             print 'No more photos for this tag'
             break
         
