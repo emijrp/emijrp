@@ -28,3 +28,11 @@
 
 								
 """
+
+"""
+<span class="ccIcn ccIcnSmall"><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/">
+"""
+
+"""property="dc:title" class="photo-title">Uneix-te!</h1>"""
+
+""" class="photo-desc">"""
