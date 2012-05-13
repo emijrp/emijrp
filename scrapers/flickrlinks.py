@@ -20,11 +20,18 @@ import re
 import time
 import urllib
 
-tags = ['12m15m']
-photoids = []
+filenametags = "flickr-tags.txt"
+tags = [l.strip() for l in open(filenametags, 'r').readlines()]
 for tag in tags:
+    photos = []
+    filenamephotos = "flickr-photos-%s.txt" % (tag)
     for pagenum in range(1,100): #max is around 60-70, but we manage the error below
         print tag, pagenum
+        if os.path.exists(filenamephotos):
+            for l in open(filenamephotos, "r").readlines():
+                l = l.strip()
+                if not l in photos:
+                    photos.append(l)
         searchurl = "https://secure.flickr.com/search/?q=%s&l=cc&mt=all&adv=1&s=rec&page=%s" % (tag, pagenum)
         rawhtml = unicode(urllib.urlopen(searchurl).read(), 'utf-8')
         
@@ -33,8 +40,17 @@ for tag in tags:
             break
         
         for id in re.findall(ur"<span class=\"photo_container pc_t\"><a href=\"(/photos/[^/]+/[^/]+/)\"", rawhtml):
-            if id not in photoids:
-                photoids.append(id)
+            photourl = 'https://secure.flickr.com%s' % (id)
+            if photourl not in photos:
+                photos.append(photourl)
         
-        #print photoids
-        print len(photoids), 'photos'
+        #save
+        photos.sort()
+        f = open(filenamephotos, "w")
+        output = '\n'.join(photos) + '\n'
+        f.write(output.encode('utf-8'))
+        f.close()
+        
+        print len(photos), 'photos'
+        
+        time.sleep(0.2)
