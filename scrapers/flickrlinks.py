@@ -15,13 +15,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"""
+ This script generates a list of links to photos in Flickr, for a tag, posted in a date range.
+"""
+
 import os
 import re
+import sys
 import time
 import urllib
 
+# Configuration
 filenametags = "flickr-tags.txt"
 tags = [l.strip() for l in open(filenametags, 'r').readlines()]
+#posted date filter
+startdate = '20110101'
+enddate = '20111231'
+datefilter = '&d=posted-%s-%s' % (startdate, enddate)
+
+#Start the fun
 for tag in tags:
     photos = []
     filenamephotos = "flickr-photos-%s.txt" % (tag)
@@ -32,7 +44,7 @@ for tag in tags:
                 l = l.strip()
                 if not l in photos:
                     photos.append(l)
-        searchurl = "https://secure.flickr.com/search/?q=%s&l=cc&mt=all&adv=1&s=rec&page=%s" % (tag, pagenum)
+        searchurl = "https://secure.flickr.com/search/?q=%s&l=cc%s&mt=all&adv=1&s=rec&page=%s" % (tag, datefilter, pagenum)
         rawhtml = unicode(urllib.urlopen(searchurl).read(), 'utf-8')
         
         if re.search(ur"(?im)<div class=\"NoneFound\">", rawhtml):
