@@ -112,7 +112,7 @@ for wiki in wikis:
 |statistics URL = %s <!--Preferred, source of page count (often a 'Statistics' page). If unknown leave void.-->
 |wikiFactor = <!--Optional. If unknown leave void. See: Category:wikiFactor.-->
 |wikiFactor URL = <!--Preferred, source of wikiFactor (often 'PopularPages' or 'MostVisitedPages'). If unknown leave void.-->
-}}(As of: 5 April 2012)<!--manually add or amend date when stats are verified and/or updated-->
+}}(As of: {{subst:CURRENTDAY}} {{subst:CURRENTMONTHNAME}} {{subst:CURRENTYEAR}})<!--manually add or amend date when stats are verified and/or updated-->
 
 ==Description==
 {{add}}
