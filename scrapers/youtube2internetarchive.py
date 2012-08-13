@@ -15,6 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"""
+Instructions:
+ 1) Create a subdirectory "download" and add a videostodo.txt file with YouTube links.
+ 2) In the current directory, create a keys.txt file with your IA S3 keys. Accesskey and secretkey in two separated lines.
+ 3) Download youtube-dl to the current directory http://rg3.github.com/youtube-dl/download.html
+ 4) Modify preferences if desired (see below).
+ 5) Run this script: python youtube2internetarchive.py
+"""
+
 # Keys: http://archive.org/account/s3.php
 # Documentation: http://archive.org/help/abouts3.txt
 # https://wiki.archive.org/twiki/bin/view/Main/IAS3BulkUploader
@@ -26,15 +35,6 @@ import subprocess
 import time
 import unicodedata
 import urllib
-
-"""
-Instructions:
- 1) Create a subdirectory "download" and add a videostodo.txt file with YouTube links.
- 2) In the current directory, create a keys.txt file with your IA S3 keys. Accesskey and secretkey in two separated lines.
- 3) Download youtube-dl to the current directory http://rg3.github.com/youtube-dl/download.html
- 4) Modify preferences if desired (see below).
- 5) Run this script: python youtube2internetarchive.py
-"""
 
 # Start preferences
 sizelimit = 10000*1024*1024 # file size, if you want to skip those videos greater than this size, 10000*1024*1024 for 10GB
