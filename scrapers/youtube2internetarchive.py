@@ -37,7 +37,7 @@ Instructions:
 """
 
 # Start preferences
-sizelimit = 25*1024*1024 # file size, if you want to skip those videos greater than this size, else put 10000*1024*1024 for 10GB
+sizelimit = 10000*1024*1024 # file size, if you want to skip those videos greater than this size, 10000*1024*1024 for 10GB
 # End preferences
 
 num2month = {'01':'enero', '02': 'febrero', '03':'marzo', '04':'abril', '05':'mayo', '06':'junio', '07':'julio', '08':'agosto','09':'septiembre','10':'octubre', '11':'noviembre', '12':'diciembre'}
