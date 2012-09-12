@@ -47,7 +47,7 @@ def main():
     if len(sys.argv) > 2:
         skip = sys.argv[2]
     gen = pagegenerators.AllpagesPageGenerator(start=skip, namespace=0, site=site)
-    pre = pagegenerators.PreloadingGenerator(gen)
+    pre = pagegenerators.PreloadingGenerator(gen, pageNumber=250)
     alltitles = []
     for page in pre:
         if not page.exists() or page.isRedirectPage():
