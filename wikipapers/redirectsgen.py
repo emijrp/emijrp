@@ -50,7 +50,7 @@ def main():
     pre = pagegenerators.PreloadingGenerator(gen, pageNumber=250)
     alltitles = []
     for page in pre:
-        if not page.exists() or page.isRedirectPage():
+        if not page.exists(): #do not put .isRedirectPage() or it will never find redirects when checking below before creating
             continue
         alltitles.append(page.title())
         print page.title()
