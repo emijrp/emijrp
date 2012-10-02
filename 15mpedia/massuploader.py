@@ -60,9 +60,13 @@ def main():
     
     #load flickr set metadata
     html = unicode(urllib.urlopen(flickrseturl).read(), 'utf-8')
+    pages = int(re.findall(ur'(?im)<div class="Results">\((\d+) ', html)[0])/72 + 1 # +1 para los picos
     flickrsetname = unquote(re.findall(ur'(?im)<meta property="og:title" content="([^>]*?)" />', html)[0])
     flickruser = re.findall(ur'(?im)<meta property="flickr_photos:by" content="http://www.flickr.com/photos/([^/]+?)/" />', html)[0]
     photoids = re.findall(ur'(?im)data-photo-id="(\d+)"', html)
+    for page in range(2, pages+1): # + 1 para que el range llegue hasta el valor de pages
+        html = unicode(urllib.urlopen('%s?page=%d' % (flickrseturl, page)).read(), 'utf-8')
+        photoids += re.findall(ur'(?im)data-photo-id="(\d+)"', html)
     print 'There are', len(photoids), 'images in the set', flickrsetid, 'by', flickruser
     
     #load flickr images metadata
