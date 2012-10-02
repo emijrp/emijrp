@@ -60,7 +60,7 @@ def main():
     
     #load flickr set metadata
     html = unicode(urllib.urlopen(flickrseturl).read(), 'utf-8')
-    pages = int(re.findall(ur'(?im)<div class="Results">\((\d+) ', html)[0])/72 + 1 # +1 para los picos
+    pages = re.search(ur'(?im)<div class="Results">\((\d+) ', html) and int(re.findall(ur'(?im)<div class="Results">\((\d+) ', html)[0])/72 + 1 or 1 # +1 para los picos
     flickrsetname = unquote(re.findall(ur'(?im)<meta property="og:title" content="([^>]*?)" />', html)[0])
     flickruser = re.findall(ur'(?im)<meta property="flickr_photos:by" content="http://www.flickr.com/photos/([^/]+?)/" />', html)[0]
     photoids = re.findall(ur'(?im)data-photo-id="(\d+)"', html)
