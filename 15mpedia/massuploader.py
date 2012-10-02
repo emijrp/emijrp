@@ -111,7 +111,7 @@ def main():
         #break
     
     #import images
-    os.system('php %s ./%s' % (importimagesphp, flickrsetid))
+    os.system('php %s ./%s --user=BotQuincemayista' % (importimagesphp, flickrsetid))
     
     #create image pages
     cats = u''
