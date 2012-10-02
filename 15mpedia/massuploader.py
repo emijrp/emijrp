@@ -15,7 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# http://www.mediawiki.org/wiki/Manual:ImportImages.php
+# Install: save this script in the pywikipedia directory
+# Usage: python massuploader.py --flickrset:http://www.flickr.com/photos/15mmalagacc/sets/72157629844179358/ --importimagesphp:/path/to/importImages.php
+# More documentation: http://www.mediawiki.org/wiki/Manual:ImportImages.php
 
 import os
 import re
@@ -96,7 +98,8 @@ def main():
             try:
                 urllib.urlretrieve(photourl2, savepath+'/'+photometadata['localfilename'])
             except:
-                continue
+                print 'Error while retrieving image, retry'
+                sys.exit()
     
     #import images
     os.system('php %s ./%s' % (importimagesphp, flickrsetid))
