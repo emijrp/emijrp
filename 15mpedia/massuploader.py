@@ -123,7 +123,7 @@ def main():
 | fuente = %s
 | fecha = %s
 | autor = %s
-| licencia = {{cc-%s}}
+| licencia = %s
 }}""" % (desc, source, date, author, license)
         p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), photometadata['localfilename'])
         if not p.exists():
