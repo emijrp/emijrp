@@ -67,7 +67,7 @@ def main():
     
     #load flickr images metadata
     for photoid in photoids:
-        photourl = 'http://www.flickr.com/photos/%s/%s/in/set-%s' % (flickruser, photoid, flickrsetid)
+        photourl = 'http://www.flickr.com/photos/%s/%s/' % (flickruser, photoid)
         html2 = unicode(urllib.urlopen(photourl).read(), 'utf-8')
         #check license, if not free, do not donwload later
         photolicense = ''
@@ -83,6 +83,7 @@ def main():
             'date-taken': re.search(ur'(?im)/date-taken/(\d+/\d+/\d+)', html2) and re.sub('/', '-', re.findall(ur'(?im)/date-taken/(\d+/\d+/\d+)', html2)[0]) or '', 
             'license': photolicense, 
             'localfilename': u'%s - %s - %s.jpg' % (flickruser, flickrsetid, photoid),
+            'photourl': photourl,
         }
         print photoid
         print photosmetadata[photoid]
@@ -123,7 +124,7 @@ def main():
                 desc = u'%s. %s' % (desc, photometadata['description'])
             else:
                 desc = photometadata['description']
-        source = u'[%s %s]' % (flickrseturl, flickrsetname)
+        source = u'[%s %s] ([%s %s])' % (photometadata['photourl'], photometadata['title'], flickrseturl, flickrsetname)
         date = photometadata['date-taken']
         author = u'{{flickr|%s}}' % (flickruser)
         license = u'{{cc-%s}}' % (photometadata['license'])
