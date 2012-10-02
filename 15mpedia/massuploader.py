@@ -20,6 +20,7 @@
 import os
 import re
 import sys
+import time
 import urllib, urllib2
 import wikipedia
 
@@ -28,7 +29,7 @@ def unquote(s):
     return s
 
 def main():
-    photometadata = {}
+    photosmetadata = {}
     flickrseturl = ''
     importimagesphp = ''
     
@@ -68,34 +69,40 @@ def main():
             print 'Skiping', photoid, 'which is not Creative Commons'
             continue
         
-        photometadata[photoid] = {
+        photosmetadata[photoid] = {
             'title': re.search(ur'<meta property="og:title" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="og:title" content="([^>]*?)" />', html2)[0]).strip() or '',
             'description': re.search(ur'<meta property="og:description" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="og:description" content="([^>]*?)" />', html2)[0]).strip() or '', 
             'date-taken': re.search(ur'(?im)/date-taken/(\d+/\d+/\d+)', html2) and re.sub('/', '-', re.findall(ur'(?im)/date-taken/(\d+/\d+/\d+)', html2)[0]) or '', 
             'license': photolicense, 
+            'localfilename': u'%s - %s - %s.jpg' % (flickruser, flickrsetid, photoid),
         }
         print photoid
-        print photometadata[photoid]
+        print photosmetadata[photoid]
     
     #download flickr images
     savepath = flickrsetid
     if not os.path.exists(savepath): #create subdirectory to save images there
         os.makedirs(savepath)
     
-    for photoid in photometadata.keys(): #this dictionary includes only CC pics
-        photofilename = '%s - %s - %s.jpg' % (flickruser, flickrsetid, photoid)
+    for photoid, photometadata in photosmetadata: #this dictionary includes only CC pics
         photourl = 'http://www.flickr.com/photos/%s/%s/sizes/o/in/set-%s/' % (flickruser, photoid, flickrsetid)
         html3 = urllib.urlopen(photourl).read()
         photourl2 = re.findall(ur'(?im)<dt>[^<]+?</dt>\s*<dd>\s*<a href="(http://[^\">]+?)">', html3)[0]
-        print 'Downloading', photofilename, 'from', photourl2
-        urllib.urlretrieve(photourl2, savepath+'/'+photofilename)
+        print 'Downloading', photometadata['localfilename'], 'from', photourl2
+        try:
+            urllib.urlretrieve(photourl2, savepath+'/'+photometadata['localfilename'])
+        except:
+            time.sleep(10)
+            try:
+                urllib.urlretrieve(photourl2, savepath+'/'+photometadata['localfilename'])
+            except:
+                continue
     
     #import images
-    os.system('php %s' % (importimagesphp))
-    
+    os.system('php %s ./%s' % (importimagesphp, flickrsetid))
     
     #create image pages
-    for photoid in photometadata.keys():
+    for photoid, photometadata in photosmetadata:
         desc = photometadata['title']
         if photometadata['description']:
             if desc:
@@ -113,6 +120,9 @@ def main():
 | autor = %s
 | licencia = {{cc-%s}}
 }}""" % (desc, source, date, author, license)
+        p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), photometadata['localfilename'])
+        if not p.exits():
+            p.put(output, u'BOT - Importing file')
 
 if __name__ == '__main__':
     main()
