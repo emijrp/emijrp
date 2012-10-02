@@ -22,13 +22,14 @@ import pagegenerators
 skip = u'!'
 site = wikipedia.Site('wikipapers', 'wikipapers')
 gen = pagegenerators.AllpagesPageGenerator(start = skip, namespace=0, includeredirects=False, site=site)
-pre = pagegenerators.PreloadingGenerator(gen)
+pre = pagegenerators.PreloadingGenerator(gen, pageNumber=250)
+msg = u"BOT - Creating talk page"
 output = u"<noinclude>{{talk}}</noinclude>"
 for page in pre:
     if page.exists() and not page.isRedirectPage():
         if re.search(ur"(?im)\{\{\s*Infobox Publication", page.get()):
             talk = page.toggleTalkPage()
             if not talk.exists():
-                talk.put(output, output)
+                talk.put(output, msg)
             
             
