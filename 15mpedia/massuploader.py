@@ -66,7 +66,7 @@ def main():
         #check license, if not free, do not donwload later
         photolicense = ''
         if re.search(ur'(?im)<a href="http://creativecommons.org/licenses/(by(-sa)?/2.0)[^=]*?" rel="license cc:license">', html2):
-            photolicense = re.findall(ur'(?im)<a href="http://creativecommons.org/licenses/(by(-sa)?/2.0)[^=]*?" rel="license cc:license">', html2)[0][0]
+            photolicense = re.sub('/', '-', re.findall(ur'(?im)<a href="http://creativecommons.org/licenses/(by(-sa)?/2.0)[^=]*?" rel="license cc:license">', html2)[0][0])
         else:
             print 'Skiping', photoid, 'which is not Creative Commons'
             continue
@@ -117,7 +117,7 @@ def main():
         source = u'[%s %s]' % (flickrseturl, flickrsetname)
         date = photometadata['date-taken']
         author = u'{{flickr|%s}}' % (flickruser)
-        license = u'{{cc-%s-2.0}}' % (photometadata['license'])
+        license = u'{{cc-%s}}' % (photometadata['license'])
         output = u"""{{Infobox Archivo
 | descripción = %s
 | fuente = %s
