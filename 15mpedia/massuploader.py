@@ -134,7 +134,7 @@ def main():
 | autor = %s
 | licencia = %s
 }}%s""" % (desc, source, date, author, license, cats)
-        p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), photometadata['localfilename'])
+        p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'File:%s' % (photometadata['localfilename']))
         if not p.exists():
             p.put(output, u'BOT - Importing file')
             print output
