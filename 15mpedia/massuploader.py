@@ -53,7 +53,7 @@ def main():
     flickrsetid = flickrseturl.split('/sets/')[1].split('/')[0]
     
     #load flickr set metadata
-    html = urllib.urlopen(flickrseturl).read()
+    html = unicode(urllib.urlopen(flickrseturl).read(), 'utf-8')
     flickrsetname = unquote(re.findall(ur'(?im)<meta property="og:title" content="([^>]*?)" />', html)[0])
     flickruser = re.findall(ur'(?im)<meta property="flickr_photos:by" content="http://www.flickr.com/photos/([^/]+?)/" />', html)[0]
     photoids = re.findall(ur'(?im)data-photo-id="(\d+)"', html)
@@ -62,7 +62,7 @@ def main():
     #load flickr images metadata
     for photoid in photoids:
         photourl = 'http://www.flickr.com/photos/%s/%s/in/set-%s' % (flickruser, photoid, flickrsetid)
-        html2 = urllib.urlopen(photourl).read()
+        html2 = unicode(urllib.urlopen(photourl).read(), 'utf-8')
         #check license, if not free, do not donwload later
         photolicense = ''
         if re.search(ur'(?im)<a href="http://creativecommons.org/licenses/(by(-sa)?/2.0)[^=]*?" rel="license cc:license">', html2):
@@ -80,15 +80,16 @@ def main():
         }
         print photoid
         print photosmetadata[photoid]
+        break
     
     #download flickr images
     savepath = flickrsetid
     if not os.path.exists(savepath): #create subdirectory to save images there
         os.makedirs(savepath)
     
-    for photoid, photometadata in photosmetadata: #this dictionary includes only CC pics
+    for photoid, photometadata in photosmetadata.items(): #this dictionary includes only CC pics
         photourl = 'http://www.flickr.com/photos/%s/%s/sizes/o/in/set-%s/' % (flickruser, photoid, flickrsetid)
-        html3 = urllib.urlopen(photourl).read()
+        html3 = unicode(urllib.urlopen(photourl).read(), 'utf-8')
         photourl2 = re.findall(ur'(?im)<dt>[^<]+?</dt>\s*<dd>\s*<a href="(http://[^\">]+?)">', html3)[0]
         print 'Downloading', photometadata['localfilename'], 'from', photourl2
         try:
@@ -100,12 +101,13 @@ def main():
             except:
                 print 'Error while retrieving image, retry'
                 sys.exit()
+        break
     
     #import images
-    os.system('php %s ./%s' % (importimagesphp, flickrsetid))
+    #os.system('php %s ./%s' % (importimagesphp, flickrsetid))
     
     #create image pages
-    for photoid, photometadata in photosmetadata:
+    for photoid, photometadata in photosmetadata.items():
         desc = photometadata['title']
         if photometadata['description']:
             if desc:
@@ -114,7 +116,7 @@ def main():
                 desc = photometadata['description']
         source = u'[%s %s]' % (flickrseturl, flickrsetname)
         date = photometadata['date-taken']
-        author = u'{{flickr|%s}}' % ()
+        author = u'{{flickr|%s}}' % (flickruser)
         license = u'{{cc-%s-2.0}}' % (photometadata['license'])
         output = u"""{{Infobox Archivo
 | descripción = %s
@@ -124,8 +126,9 @@ def main():
 | licencia = {{cc-%s}}
 }}""" % (desc, source, date, author, license)
         p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), photometadata['localfilename'])
-        if not p.exits():
-            p.put(output, u'BOT - Importing file')
+        if not p.exists():
+            #p.put(output, u'BOT - Importing file')
+            print output
 
 if __name__ == '__main__':
     main()
