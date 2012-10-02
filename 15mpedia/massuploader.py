@@ -24,24 +24,34 @@ import urllib, urllib2
 import wikipedia
 
 def unquote(s):
+    s = re.sub('&quot;', '"', s)
     return s
 
 def main():
     photometadata = {}
     flickrseturl = ''
+    importimagesphp = ''
+    
+    #load parameters
     if len(sys.argv) > 1:
         for arg in sys.argv[1:]:
             if arg.startswith('--flickrset:'): # --flickrset:http://www.flickr.com/photos/15mmalagacc/sets/72157629844179358/
                 flickrseturl = arg[12:]
+            elif arg.startswith('--importimagesphp:'): # --importimagesphp:/path/to/importImages.php
+                importimagesphp = arg[18:]
     
     if not flickrseturl:
         print 'Provide --flickrset: parameter'
+        sys.exit()
+    if not importimagesphp:
+        print 'Provide --importimagesphp: parameter'
         sys.exit()
     
     flickrsetid = flickrseturl.split('/sets/')[1].split('/')[0]
     
     #load flickr set metadata
     html = urllib.urlopen(flickrseturl).read()
+    flickrsetname = unquote(re.findall(ur'(?im)<meta property="og:title" content="([^>]*?)" />', html)[0])
     flickruser = re.findall(ur'(?im)<meta property="flickr_photos:by" content="http://www.flickr.com/photos/([^/]+?)/" />', html)[0]
     photoids = re.findall(ur'(?im)data-photo-id="(\d+)"', html)
     print 'There are', len(photoids), 'images in the set', flickrsetid, 'by', flickruser
@@ -51,12 +61,18 @@ def main():
         photourl = 'http://www.flickr.com/photos/%s/%s/in/set-%s' % (flickruser, photoid, flickrsetid)
         html2 = urllib.urlopen(photourl).read()
         #check license, if not free, do not donwload later
+        photolicense = ''
+        if re.search(ur'(?im)<a href="http://creativecommons.org/licenses/(by(-sa)?/2.0)[^=]*?" rel="license cc:license">', html2):
+            photolicense = re.findall(ur'(?im)<a href="http://creativecommons.org/licenses/(by(-sa)?/2.0)[^=]*?" rel="license cc:license">', html2)[0][0]
+        else:
+            print 'Skiping', photoid, 'which is not Creative Commons'
+            continue
         
         photometadata[photoid] = {
-            'title': re.search(ur'<meta property="og:title" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="og:title" content="([^>]*?)" />', html2)[0]) or '',
-            'description': re.search(ur'<meta property="og:description" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="og:description" content="([^>]*?)" />', html2)[0]) or '', 
+            'title': re.search(ur'<meta property="og:title" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="og:title" content="([^>]*?)" />', html2)[0]).strip() or '',
+            'description': re.search(ur'<meta property="og:description" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="og:description" content="([^>]*?)" />', html2)[0]).strip() or '', 
             'date-taken': re.search(ur'(?im)/date-taken/(\d+/\d+/\d+)', html2) and re.sub('/', '-', re.findall(ur'(?im)/date-taken/(\d+/\d+/\d+)', html2)[0]) or '', 
-            'license': '', 
+            'license': photolicense, 
         }
         print photoid
         print photometadata[photoid]
@@ -66,7 +82,7 @@ def main():
     if not os.path.exists(savepath): #create subdirectory to save images there
         os.makedirs(savepath)
     
-    for photoid in photoids:
+    for photoid in photometadata.keys(): #this dictionary includes only CC pics
         photofilename = '%s - %s - %s.jpg' % (flickruser, flickrsetid, photoid)
         photourl = 'http://www.flickr.com/photos/%s/%s/sizes/o/in/set-%s/' % (flickruser, photoid, flickrsetid)
         html3 = urllib.urlopen(photourl).read()
@@ -75,12 +91,28 @@ def main():
         urllib.urlretrieve(photourl2, savepath+'/'+photofilename)
     
     #import images
-    os.system('php importImages.php')
+    os.system('php %s' % (importimagesphp))
     
     
     #create image pages
-    
-    
+    for photoid in photometadata.keys():
+        desc = photometadata['title']
+        if photometadata['description']:
+            if desc:
+                desc = u'%s. %s' % (desc, photometadata['description'])
+            else:
+                desc = photometadata['description']
+        source = u'[%s %s]' % (flickrseturl, flickrsetname)
+        date = photometadata['date-taken']
+        author = u'{{flickr|%s}}' % ()
+        license = u'{{cc-%s-2.0}}' % (photometadata['license'])
+        output = u"""{{Infobox Archivo
+| descripción = %s
+| fuente = %s
+| fecha = %s
+| autor = %s
+| licencia = {{cc-%s}}
+}}""" % (desc, source, date, author, license)
 
 if __name__ == '__main__':
     main()
