@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Install: save this script in the pywikipedia directory
-# Usage: python massuploader.py --flickrset:http://www.flickr.com/photos/15mmalagacc/sets/72157629844179358/ --importimagesphp:/path/to/importImages.php
+# Usage: python massuploader.py --flickrset:http://www.flickr.com/photos/15mmalagacc/sets/72157629844179358/ --importimagesphp:/path/to/importImages.php --categories:"15M_en_Madrid;Ocupa_el_Congreso"
 # More documentation: http://www.mediawiki.org/wiki/Manual:ImportImages.php
 
 import os
@@ -32,6 +32,7 @@ def unquote(s):
 
 def main():
     photosmetadata = {}
+    categories = []
     flickrseturl = ''
     importimagesphp = ''
     
@@ -42,12 +43,17 @@ def main():
                 flickrseturl = arg[12:]
             elif arg.startswith('--importimagesphp:'): # --importimagesphp:/path/to/importImages.php
                 importimagesphp = arg[18:]
+            elif arg.startswith('--categories:'): # --categories:"15M_en_Madrid;Ocupa_el_Congreso"
+                categories = [re.sub('_', ' ', category) for category in arg[13:].split(';')]
     
     if not flickrseturl:
-        print 'Provide --flickrset: parameter'
+        print 'Provide --flickrset: parameter. Example: --flickrset:http://www.flickr.com/photos/15mmalagacc/sets/72157629844179358/'
         sys.exit()
     if not importimagesphp:
-        print 'Provide --importimagesphp: parameter'
+        print 'Provide --importimagesphp: parameter. Example: --importimagesphp:/path/to/importImages.php'
+        sys.exit()
+    if not categories:
+        print 'Provide --categories: parameter. Example: --categories:"15M_en_Madrid;Ocupa_el_Congreso"'
         sys.exit()
     
     flickrsetid = flickrseturl.split('/sets/')[1].split('/')[0]
@@ -107,6 +113,9 @@ def main():
     #os.system('php %s ./%s' % (importimagesphp, flickrsetid))
     
     #create image pages
+    cats = u''
+    if categories:
+        cats = u'\n\n%s' % ('\n'.join([u'[[Categoría:%s]]' % (category) for category in categories]))
     for photoid, photometadata in photosmetadata.items():
         desc = photometadata['title']
         if photometadata['description']:
@@ -124,7 +133,7 @@ def main():
 | fecha = %s
 | autor = %s
 | licencia = %s
-}}""" % (desc, source, date, author, license)
+}}%s""" % (desc, source, date, author, license, cats)
         p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), photometadata['localfilename'])
         if not p.exists():
             #p.put(output, u'BOT - Importing file')
