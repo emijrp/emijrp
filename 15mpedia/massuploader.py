@@ -86,7 +86,7 @@ def main():
         }
         print photoid
         print photosmetadata[photoid]
-        break
+        #break
     
     #download flickr images
     savepath = flickrsetid
@@ -107,7 +107,7 @@ def main():
             except:
                 print 'Error while retrieving image, retry'
                 sys.exit()
-        break
+        #break
     
     #import images
     #os.system('php %s ./%s' % (importimagesphp, flickrsetid))
@@ -136,7 +136,7 @@ def main():
 }}%s""" % (desc, source, date, author, license, cats)
         p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), photometadata['localfilename'])
         if not p.exists():
-            #p.put(output, u'BOT - Importing file')
+            p.put(output, u'BOT - Importing file')
             print output
 
 if __name__ == '__main__':
