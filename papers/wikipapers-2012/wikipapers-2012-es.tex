@@ -4,27 +4,39 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[spanish]{babel}
-\usepackage{hyperref}
+%\usepackage{footmisc} % footers
+\usepackage{hyperref} % to avoid colored links
+% start hidelinks fixing
+% as \usepackage[hidelinks]{hyperref}
+% is broken
+% \hypersetup is used instead
+\hypersetup{
+   colorlinks=false,
+   pdfborder={0 0 0},
+}
+% end hidelinks fixing
 \usepackage{graphicx}
 \usepackage{natbib}
 
 \title{\vspace{-15mm}
 	\fontsize{24pt}{10pt}\selectfont
 	%\textbf{WikiPapers: a collaborative compilation of wiki research literature... in a wiki!}
-	\textbf{WikiPapers: publicaciones sobre wikis recopiladas colaborativamente... ¡en un wiki!}
+	\textbf{WikiPapers: literatura sobre wikis recopilada colaborativamente... ¡en un wiki!}
 	}	
 \author{
 	\large
 	\textsc{Emilio J. Rodríguez-Posada} \\
-	\normalsize	Private \\
+	\normalsize	Freelancer \\
 	\normalsize	\href{mailto:emijrp@gmail.com}{emijrp@gmail.com}
 	\vspace{-5mm}
 	}
 \date{}
 
 
-\begin{document}
+%\pagestyle {myheadings}
+%\markboth{Emilio J. Rodríguez-Posada}{WikiPapers: literatura sobre wikis recopilada colaborativamente... ¡en un wiki!}
 
+\begin{document}
 
 \twocolumn[
   \begin{@twocolumnfalse}
@@ -46,14 +58,16 @@
 \section{Introducción}
 El interés de los investigadores por los wikis, en especial Wikipedia, ha ido en aumento en los últimos años (Figura~\ref{fig:wptimeline}). La primera edición de WikiSym, un simposio sobre wikis, se celebró en 2005 y desde entonces han aparecido multitud de congresos (CLEF/PAN Lab), \emph{workshops} (WikiAI, SemWiki y MathWikis), conferencias (Wikimania, WikiCon, SMWCon, Wiki Conference India, Wikipedia Academy y Wikipedia CPOV Conference) y competiciones (WikiViz). El estudio de los wikis es un campo emergente y prolífico. Ha habido varios intentos, aunque con escaso éxito, de recopilar toda la literatura sobre wikis ~\citep{ayers2011}. Unas veces el enfoque o la herramienta utilizada eran limitados, otras debido a las dimensiones de la tarea el proyecto era abandonado y al poco tiempo los metadatos bibliográficos se perdían. En este artículo presentamos WikiPapers, un proyecto colaborativo para recopilar toda la literatura sobre wikis.
 
-El resto del artículo se divide de la siguiente manera. En la sección 2 hacemos un repaso a los distintos enfoques utilizados hasta ahora para recopilar toda la literatura sobre wikis, incidiendo en sus ventajas e inconvenientes. En la sección 3 presentamos WikiPapers, cómo funciona y qué pasos se están dando. Finalmente, en la sección 4, terminamos con unas conclusiones y trabajo futuro.
+El resto del artículo se divide de la siguiente manera. En la sección~2 hacemos un repaso a los distintos enfoques utilizados hasta ahora para recopilar toda la literatura sobre wikis, incidiendo en sus ventajas e inconvenientes. En la sección~3 presentamos WikiPapers, cómo funciona y qué pasos se están dando. Finalmente, en la sección~4, terminamos con unas conclusiones y trabajo futuro.
 
-\begin{figure}[htb]
-\centering
-\includegraphics[width=0.49\textwidth]{wptimeline.png}
-\caption{Línea temporal de eventos sobre wikis}
-\label{fig:wptimeline}
-\end{figure}
+
+\begin{figure*}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{wptimeline.png} %two-column float
+    \caption{Línea temporal de eventos sobre wikis.}
+    \label{fig:wptimeline}
+\end{figure*}
+
 
 \section{Trabajos relacionados}
 Ha habido distintos intentos de recopilar toda la literatura sobre wikis. Se han hecho recopilaciones en páginas personajes y blogs, a través de revisiones de literatura, haciendo uso de gestores de bibliografía, en páginas de Wikipedia y también en servicios como Zotero o CiteULike. A continuación los describimos y evaluamos sus ventajas e inconvenientes y cómo WikiPapers resuelve las carencias de estos enfoques.
@@ -70,7 +84,7 @@ Se han empleado gestores bibliográficos como WIKINDX\footnote{\href{http://sour
 %\href{http://wikiindex.org/Wiki_Research_Bibliography}{http://wikiindex.org/Wiki\_Research\_Bibliography}
 
 \subsubsection{Servicios web y redes sociales}
-Existen servicios web y redes sociales con recopilaciones de literatura sobre wikis, en Zotero,\footnote{\href{https://www.zotero.org/groups/wikipedia_research}{https://www.zotero.org/groups/wikipedia\_research}} BibSonomy\footnote{\href{http://www.bibsonomy.org/tag/wikipedia}{http://www.bibsonomy.org/tag/wikipedia} y \href{http://www.bibsonomy.org/tag/wiki}{http://www.bibsonomy.org/tag/wiki}} y CiteULike.\footnote{\href{http://www.citeulike.org/tag/wikipedia}{http://www.citeulike.org/tag/wikipedia}, \href{http://www.citeulike.org/tag/wiki}{http://www.citeulike.org/tag/wiki} y \href{http://www.citeulike.org/group/382}{http://www.citeulike.org/group/382}} Este enfoque sí hace uso de una comunidad de usuarios para procesar las publicaciones, pero de nuevo requieren registrarse, y la capacidad de estos servicios para aprovechar los metadatos generando tablas o gráficos es inexistente.
+Existen servicios web y redes sociales con recopilaciones de literatura sobre wikis, en Zotero,\footnote{\href{https://www.zotero.org/groups/wikipedia_research}{https://www.zotero.org/groups/wikipedia\_research}} BibSonomy\footnote{\href{http://www.bibsonomy.org/tag/wikipedia}{http://www.bibsonomy.org/tag/wikipedia}} \footnote{\href{http://www.bibsonomy.org/tag/wiki}{http://www.bibsonomy.org/tag/wiki}} y CiteULike.\footnote{\href{http://www.citeulike.org/tag/wikipedia}{http://www.citeulike.org/tag/wikipedia}}\footnote{\href{http://www.citeulike.org/tag/wiki}{http://www.citeulike.org/tag/wiki}}\footnote{\href{http://www.citeulike.org/group/382}{http://www.citeulike.org/group/382}} Este enfoque sí hace uso de una comunidad de usuarios para procesar las publicaciones, pero de nuevo requieren registrarse, y la capacidad de estos servicios para aprovechar los metadatos generando tablas o gráficos es inexistente.
 
 \subsection{Recopilaciones en Wikipedia}
 También existen listados de publicaciones y recursos en algunas Wikipedias, como en la versión alemana\footnote{\href{http://de.wikipedia.org/wiki/Wikipedia:Wikipedistik/Bibliographie}{http://de.wikipedia.org/wiki/Wikipedia:Wikipedistik\\ /Bibliographie}} y la inglesa\footnote{\href{http://en.wikipedia.org/wiki/Wikipedia:Academic_studies_of_Wikipedia}{http://en.wikipedia.org/wiki/Wikipedia:Academic\\ \_studies\_of\_Wikipedia}}. El principal inconveniente de este enfoque es que no es posible jugar con los datos dentro del mismo wiki, al estar todo escrito como texto plano, sin enriquecimiento semántico. En WikiPapers todos los metadatos son propiedades semánticas, tanto en las llamadas \emph{infoboxes} (tablas) como en el cuerpo del artículo.
@@ -78,13 +92,13 @@ También existen listados de publicaciones y recursos en algunas Wikipedias, com
 \subsection{Revisiones de literatura}
 Finalmente, se han realizado varias revisiones de literatura con diferente grado de exhaustividad. La primera de ellas ~\citep{voss2005} se hizo en un momento en el que las publicaciones eran escasas, pero ya se podía ver una tendencia de publicación creciente y la presencia de muchas preguntas por responder. Un año más tarde ~\citep{ayers2006} vuelve a hacer un repaso a la literatura existente y enumera aquellas áreas que han recibido interés: historiales, páginas de discusión, contenido de los artículos, políticas del sitio, citas a artículos, encuestas a usuarios y listas de correo.
 
-No sería hasta 3 años después cuando ~\citep{okoli2009b} presentan una propuesta de protocolo para hacer un mapeo sistemático de la literatura sobre Wikipedia, indicando la existencia de más de 1.000 publicaciones y ese mismo año ~\citep{okoli2009} analiza el estado del arte. Dos años más tarde, ~\citep{nielsen2011} hace la mayor revisión de literatura en un documento de más de 50 páginas, en progreso e inacabado, que incluye 300 referencias a publicaciones y reincide en la existencia de 1.000 publicaciones sobre el tema.
+No sería hasta 3 años después cuando \cite{okoli2009b} presentan una propuesta de protocolo para hacer un mapeo sistemático de la literatura sobre Wikipedia, indicando la existencia de más de 1.000 publicaciones y ese mismo año \cite{okoli2009} analiza el estado del arte. Dos años más tarde, \cite{nielsen2011} hace la mayor revisión de literatura en un documento de más de 50 páginas, en progreso e inacabado, que incluye 300 referencias a publicaciones y reincide en la existencia de 1.000 publicaciones sobre el tema.
 
-~\citep{martin2011} hace primero un repaso técnico a la estructura de la base de datos (páginas, usuarios, texto), luego se centra en las áreas de calidad y acaba con unas consideraciones filosóficas.
+\cite{martin2011} hace primero un repaso técnico a la estructura de la base de datos (páginas, usuarios, texto), luego se centra en las áreas de calidad y acaba con unas consideraciones filosóficas.
 
-~\citep{okoli2012} hacen una revisión de la literatura y han creado un wiki reutilizando las plantillas, formularios, semántica y estructura de WikiPapers. Están trabajando en el análisis de un subconjunto de la literatura, en este caso la relativa a Wikipedia exclusivamente. Es un proyecto temporal y pretenden incorporar sus resultados a WikiPapers.
+\cite{okoli2012} hacen una revisión de la literatura y han creado un wiki reutilizando las plantillas, formularios, semántica y estructura de WikiPapers. Están trabajando en el análisis de un subconjunto de la literatura, en este caso la relativa a Wikipedia exclusivamente. Es un proyecto temporal y pretenden incorporar sus resultados a WikiPapers.
 
-La revisión más reciente ~\citep{jullien2012} hace un repaso por las motivaciones para contribuir, roles, estructura, la vida de un artículo, calidad, experiencia de usuario y accesibilidad, entre otros.
+La revisión más reciente \cite{jullien2012} hace un repaso por las motivaciones para contribuir, roles, estructura, la vida de un artículo, calidad, experiencia de usuario y accesibilidad, entre otros.
 
 Uno de los inconvenientes de estas revisiones de literatura es que quedan rápidamente desactualizadas debido al ritmo con el que aparecen nuevas publicaciones. WikiPapers es actualizado continuamente por su comunidad de voluntarios.
 
@@ -100,7 +114,7 @@ Finalmente, el wiki y sus historiales están disponibles tanto para su descarga 
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.49\textwidth]{wpfull.png}
-\caption{Portada de WikiPapers}
+\caption{Portada de WikiPapers.}
 \label{fig:wpfull}
 \end{figure}
 
@@ -144,12 +158,13 @@ En octubre de 2012 cuenta ya con información de más de 1.400 publicaciones, ad
 
 WikiPapers es una comunidad abierta a la participación. Estamos recopilando colaborativamente toda la literatura sobre wikis... ¡en un wiki!
 
-\bibliographystyle{wink}
+%\bibliographystyle{wink}
+\bibliographystyle{hunsrtnat}
 \bibliography{wikipapers-2012}
 
 \section*{Agradecimientos}
 
-Me gustaría agradecer especialmente a Izaskun Mallona el trabajo que se ha tomado revisando este artículo y su ayuda en general.
+Me gustaría agradecer a Izaskun Mallona el trabajo que se ha tomado revisando este artículo y su ayuda en general. Y a los colaboradores de WikiPapers, que han dedicado su tiempo a mejorar los contenidos del sitio.
 
 \section*{Licencia}
 Esta obra tiene licencia \href{http://creativecommons.org/licenses/by-sa/3.0/}{Creative Commons Reconocimiento-CompartirIgual 3.0 Unported}.
