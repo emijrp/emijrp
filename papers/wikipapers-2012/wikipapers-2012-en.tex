@@ -57,7 +57,7 @@
   \end{@twocolumnfalse}
   ]
 
-\section{Introducción}
+\section{Introduction}
 El interés de los investigadores por los wikis, en especial Wikipedia, ha ido en aumento en los últimos años (Figura~\ref{fig:wptimeline}). La primera edición de WikiSym, un simposio sobre wikis, se celebró en 2005 y desde entonces han aparecido multitud de congresos (CLEF/PAN Lab), \emph{workshops} (WikiAI, SemWiki y MathWikis), conferencias (Wikimania, WikiCon, SMWCon, Wiki Conference India, Wikipedia Academy y Wikipedia CPOV Conference) y competiciones (WikiViz). El estudio de los wikis es un campo emergente y prolífico. Ha habido varios intentos, aunque con escaso éxito, de recopilar toda la literatura sobre wikis ~\citep{ayers2011}. Unas veces el enfoque o la herramienta utilizada eran limitados, otras debido a las dimensiones de la tarea el proyecto era abandonado y al poco tiempo los metadatos bibliográficos se perdían. En este artículo presentamos WikiPapers, un proyecto colaborativo para recopilar toda la literatura sobre wikis.
 
 El resto del artículo se divide de la siguiente manera. En la sección~2 hacemos un repaso a los distintos enfoques utilizados hasta ahora para recopilar toda la literatura sobre wikis, incidiendo en sus ventajas e inconvenientes. En la sección~3 presentamos WikiPapers, cómo funciona y qué pasos se están dando. Finalmente, en la sección~4, terminamos con unas conclusiones y trabajo futuro.
@@ -71,27 +71,27 @@ El resto del artículo se divide de la siguiente manera. En la sección~2 hacemo
 \end{figure*}
 
 
-\section{Trabajos relacionados}
+\section{Related work}
 Ha habido distintos intentos de recopilar toda la literatura sobre wikis. Se han hecho recopilaciones en páginas personajes y blogs, a través de revisiones de literatura, haciendo uso de gestores de bibliografía, en páginas de Wikipedia y también en servicios como Zotero o CiteULike. A continuación los describimos y evaluamos sus ventajas e inconvenientes y cómo WikiPapers resuelve las carencias de estos enfoques.
 
-\subsection{Páginas personales y blogs}
+\subsection{Personal websites and blogs}
 Algunos autores han hecho recopilaciones de literatura en webs personales\footnote{\href{http://www.public.iastate.edu/~CYBERSTACKS/WikiBib.htm}{http://www.public.iastate.edu/~CYBERSTACKS/WikiBib.htm}} y blogs. Un ejemplo bastante completo de este último tipo es SWEETpedia,\footnote{\href{http://www.mkbergman.com/sweetpedia/}{http://www.mkbergman.com/sweetpedia/}} que contiene publicaciones sobre wikis y semántica. Uno de los inconvenientes de este sistema es que el esfuerzo suele recaer sobre una única persona y los metadatos no son fácilmente exportables. En WikiPapers el trabajo se hace colaborativamente y todos los metadatos son fácilmente exportables en diversos formatos.
 
 \subsection{Gestores bibliográficos}
 
-\subsubsection{En servidores propios}
+\subsubsection{Own servers}
 Se han empleado gestores bibliográficos como WIKINDX\footnote{\href{http://sourceforge.net/projects/wikindx/}{http://sourceforge.net/projects/wikindx/}} creando portales propios como Wikibibliographie ENCYCLEN\footnote{\href{http://wikindx.inrp.fr/biblio_encyclen/}{http://wikindx.inrp.fr/biblio\_encyclen/}} y otros ya desaparecidos, pero como contrapartida decidieron restringir la edición a un círculo de usuarios aprobados. Sin embargo, en WikiPapers pueden participar tanto usuarios registrados como sin registrar.
 
 %\href{http://toolserver.org/~voj/bibliography/}{http://toolserver.org/~voj/bibliography/}
 %\href{http://wikiindex.org/Wiki_Research_Bibliography}{http://wikiindex.org/Wiki\_Research\_Bibliography}
 
-\subsubsection{Servicios web y redes sociales}
+\subsubsection{Web services and social networks}
 Existen servicios web y redes sociales con recopilaciones de literatura sobre wikis, en Zotero,\footnote{\href{https://www.zotero.org/groups/wikipedia_research}{https://www.zotero.org/groups/wikipedia\_research}} BibSonomy\footnote{\href{http://www.bibsonomy.org/tag/wikipedia}{http://www.bibsonomy.org/tag/wikipedia}} \footnote{\href{http://www.bibsonomy.org/tag/wiki}{http://www.bibsonomy.org/tag/wiki}} y CiteULike.\footnote{\href{http://www.citeulike.org/tag/wikipedia}{http://www.citeulike.org/tag/wikipedia}}\footnote{\href{http://www.citeulike.org/tag/wiki}{http://www.citeulike.org/tag/wiki}}\footnote{\href{http://www.citeulike.org/group/382}{http://www.citeulike.org/group/382}} Este enfoque sí hace uso de una comunidad de usuarios para procesar las publicaciones, pero de nuevo requieren registrarse, y la capacidad de estos servicios para aprovechar los metadatos generando tablas o gráficos es inexistente.
 
-\subsection{Recopilaciones en Wikipedia}
+\subsection{Compilations in Wikipedia}
 También existen listados de publicaciones y recursos en algunas Wikipedias, como en la versión alemana\footnote{\href{http://de.wikipedia.org/wiki/Wikipedia:Wikipedistik/Bibliographie}{http://de.wikipedia.org/wiki/Wikipedia:Wikipedistik\\ /Bibliographie}} y la inglesa\footnote{\href{http://en.wikipedia.org/wiki/Wikipedia:Academic_studies_of_Wikipedia}{http://en.wikipedia.org/wiki/Wikipedia:Academic\\ \_studies\_of\_Wikipedia}}. El principal inconveniente de este enfoque es que no es posible jugar con los datos dentro del mismo wiki, al estar todo escrito como texto plano, sin enriquecimiento semántico. En WikiPapers todos los metadatos son propiedades semánticas, tanto en las llamadas \emph{infoboxes} (tablas) como en el cuerpo del artículo.
 
-\subsection{Revisiones de literatura}
+\subsection{Literature reviews}
 Finalmente, se han realizado varias revisiones de literatura con diferente grado de exhaustividad. La primera de ellas ~\citep{voss2005} se hizo en un momento en el que las publicaciones eran escasas, pero ya se podía ver una tendencia de publicación creciente y la presencia de muchas preguntas por responder. Un año más tarde ~\citep{ayers2006} vuelve a hacer un repaso a la literatura existente y enumera aquellas áreas que han recibido interés: historiales, páginas de discusión, contenido de los artículos, políticas del sitio, citas a artículos, encuestas a usuarios y listas de correo.
 
 No sería hasta 3 años después cuando \cite{okoli2009b} presentan una propuesta de protocolo para hacer un mapeo sistemático de la literatura sobre Wikipedia, indicando la existencia de más de 1.000 publicaciones y ese mismo año \cite{okoli2009} analiza el estado del arte. Dos años más tarde, \cite{nielsen2011} hace la mayor revisión de literatura en un documento de más de 50 páginas, en progreso e inacabado, que incluye 300 referencias a publicaciones y reincide en la existencia de 1.000 publicaciones sobre el tema.
@@ -116,17 +116,17 @@ Finalmente, el wiki y sus historiales están disponibles tanto para su descarga 
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.49\textwidth]{wpfull.png}
-\caption{Portada de WikiPapers.}
+\caption{WikiPapers mainpage.}
 \label{fig:wpfull}
 \end{figure}
 
-\subsection{Publicaciones}
+\subsection{Publications}
 En WikiPapers cada publicación dispone de una página en la que se detallan todos sus metadatos (título, autores, palabras clave, año, revista o congreso, DOI, idioma, licencia, enlaces al fichero y motores de búsqueda), el abstract, las referencias que incluye, las citas que recibe y un espacio de discusión. Los metadatos sirven para hacer búsquedas y filtrar. A octubre de 2012 ya se dispone de más de 1.400 publicaciones,\footnote{\href{http://wikipapers.referata.com/wiki/List_of_publications}{http://wikipapers.referata.com/wiki/List\_of\_publications}} incluyendo artículos de revistas y congresos, tesis y libros. Todos los metadatos se pueden exportar en los formatos BibTeX, RDF, CSV y JSON.
 
-\subsection{Palabras clave}
+\subsection{Keywords}
 Existe un listado de todas las palabras clave\footnote{\href{http://wikipapers.referata.com/wiki/List_of_keywords}{http://wikipapers.referata.com/wiki/List\_of\_keywords}} presentes en los artículos y cada una de ellas cuenta con varios términos relacionados, lo que permite navegar entre ellas. Las más frecuentes son: Wikipedia, wiki, semantic wiki, web 2.0, collaboration, evaluation, collaborative learning, knowledge management, MediaWiki, motivation, data mining y conflict. 
 
-\subsection{Autores}
+\subsection{Authors}
 Para cada autor hay una ficha que incluye su nombre, afiliación, país, índice de coautores, página web, estadísticas sobre número de publicaciones y citas, y por supuesto un listado de publicaciones, \emph{datasets} y herramientas de su creación. Ya están listados unos 1.000 autores.\footnote{\href{http://wikipapers.referata.com/wiki/List_of_authors}{http://wikipapers.referata.com/wiki/List\_of\_authors}}
 
 \subsection{Datasets}
@@ -134,7 +134,7 @@ Un listado de \emph{datasets}\footnote{\href{http://wikipapers.referata.com/wiki
 
 A este respecto, el proyecto WikiTeam\footnote{\href{http://code.google.com/p/wikiteam/}{http://code.google.com/p/wikiteam/}} está compilando una gran cantidad de datos sobre comunidades wiki, que se cifra ya en 4.500 \emph{dumps}.
 
-\subsection{Herramientas}
+\subsection{Tools}
 Se está construyendo un listado de herramientas\footnote{\href{http://wikipapers.referata.com/wiki/List_of_tools}{http://wikipapers.referata.com/wiki/List\_of\_tools}} que se han desarrollado a la hora de investigar sobre wikis y para proponer soluciones a ciertos problemas. Entre ellas se incluyen:
 
 \begin{itemize}
@@ -148,10 +148,10 @@ Se está construyendo un listado de herramientas\footnote{\href{http://wikipaper
 
 La lista no es exhaustiva y está en continuo crecimiento.
 
-\subsection{Y más...}
+\subsection{And more...}
 También se está recopilando información sobre revistas, congresos, eventos, conceptos, ejemplos de análisis, preguntas abiertas, encuestas, motores wiki, wikifarms y más. WikiPapers, además de todo lo comentado anteriormente, sirve para que investigadores de wikis hagan comunidad y establezcan conexiones para futuras investigaciones.
 
-\section{Conclusiones y trabajo futuro}
+\section{Conclusions and future work}
 El estudio de los wikis es un campo emergente y prolífico. Hasta ahora la recopilación de toda la literatura sobre wikis se había abordado de distintas formas. Se han utilizado webs personales, blogs, gestores bibliográficos, servicios web, redes sociales, pero cada uno tiene sus ventajas e inconvenientes. Ninguno de ellos ha conseguido ser exhaustivo y permanecer actualizado con el paso del tiempo.
 
 En este artículo hemos presentado WikiPapers, un proyecto colaborativo para recopilar toda la literatura sobre wikis. Se hace uso de MediaWiki y su extensión semántica, ambos conocidos por los investigadores de este campo.
@@ -164,11 +164,11 @@ WikiPapers es una comunidad abierta a la participación. Estamos recopilando col
 \bibliographystyle{hunsrtnat}
 \bibliography{wikipapers-2012}
 
-\section*{Agradecimientos}
+\section*{Acknowledgements}
 
 Me gustaría agradecer a Izaskun Mallona el trabajo que se ha tomado revisando este artículo y su ayuda en general. Y a los colaboradores de WikiPapers, que han dedicado su tiempo a mejorar los contenidos del sitio.
 
-\section*{Licencia}
-Esta obra tiene licencia \href{http://creativecommons.org/licenses/by-sa/3.0/}{Creative Commons Reconocimiento-CompartirIgual 3.0 Unported}.
+\section*{License}
+This work is licensed under a \href{http://creativecommons.org/licenses/by-sa/3.0/}{Creative Commons Attribution-ShareAlike 3.0 Unported}.
 
 \end{document}
