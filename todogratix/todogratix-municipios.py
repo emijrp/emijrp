@@ -131,27 +131,27 @@ for provincia in provincias:
             
             print props.items()
             output = u"""{{Infobox Ciudad
-    |nombre=%s
-    |escudo=%s
-    |bandera=%s
-    |imagen=%s
-    |pie de imagen=%s
-    |coordenadas=%s
-    |localización=%s
-    |altitud=%s
-    |superficie=%s
-    |población=%s
-    |año de población=%s
-    |gentilicio=%s
-    |código postal=%s
-    |alcalde=%s
-    |partido gobernante=%s
-    |patrón=%s
-    |patrona=%s
-    |web=%s
-    |wikipedia=%s
-    }}
-    """ % (props['nombre'], props['escudo'], props['bandera'], props['imagen'], props['pie'], props['coord'], ', '.join(props['localizacion']), props['altitud'], props['superficie'], props['pob'], props['anyopob'], props['gentilicio'], props['cp'], props['alcalde'], props['partido'], props['patron'], props['patrona'], props['web'], props['title'])
+|nombre=%s
+|escudo=%s
+|bandera=%s
+|imagen=%s
+|pie de imagen=%s
+|coordenadas=%s
+|localización=%s
+|altitud=%s
+|superficie=%s
+|población=%s
+|año de población=%s
+|gentilicio=%s
+|código postal=%s
+|alcalde=%s
+|partido gobernante=%s
+|patrón=%s
+|patrona=%s
+|web=%s
+|wikipedia=%s
+}}
+""" % (props['nombre'], props['escudo'], props['bandera'], props['imagen'], props['pie'], props['coord'], ', '.join(props['localizacion']), props['altitud'], props['superficie'], props['pob'], props['anyopob'], props['gentilicio'], props['cp'], props['alcalde'], props['partido'], props['patron'], props['patrona'], props['web'], props['title'])
             print output
             
             tgpage = wikipedia.Page(sitetg, props['title'])
