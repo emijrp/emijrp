@@ -66,7 +66,7 @@ for page in dumpIterator.readPages():
             if m:
                 ee = ee.split(m[0])[0]
             enlaces = re.findall(ur"(?im)^\*+\s*\[\s*(https?://[^\s\[\]\|]+?)[\s]([^\n\r\[\]\|]*?)\]", ee)
-            if len(enlaces) < 10:
+            if len(enlaces) < 5:
                 continue
             
             #capturar enlaces a proyectos hermanos
@@ -95,7 +95,7 @@ for page in dumpIterator.readPages():
                 else:
                     commons = page.getTitle()
             if not commons:
-                m = re.findall(ur"(?im)\{\{\s*(?:commons ?cat|categoría commons|commonscat-inline|commons category)([^\}]*?)\}\}", revtext)
+                m = re.findall(ur"(?im)\{\{\s*(?:commons ?cat|categoría ?commons|commonscat-inline|commons ?category)([^\}]*?)\}\}", revtext)
                 if m:
                     param = m[0].strip()
                     if param and param[0] == '|':
@@ -105,6 +105,7 @@ for page in dumpIterator.readPages():
             
             #capturar VT
             m = re.findall(ur"(?im)^==\s*V[eé]ase\s*tambi[eé]n\s*==", revtext)
+            vt = ''
             if m:
                 vt = revtext.split(m[0])[1]
                 try:
@@ -126,10 +127,13 @@ for page in dumpIterator.readPages():
                             break
             
             #capturar la mejor imagen
-            images = re.findall(ur"(?im)(?:Archivo|File|Image)\s*\:\s*([^\|\[\]]+?\.jpe?g)(?:\s*\|\s*(?:\d+px|thumb|thumbnail|frame|left|center|right)\s*)*?\|\s*([^\n\r]*?)\s*\]\]", revtext)
+            images = re.findall(ur"(?im)(?:Archivo|File|Image)\s*\:\s*([^\|\[\]]+?\.(?:jpe?g|pne?g))(?:\s*\|\s*(?:\d+px|thumb|thumbnail|frame|left|center|right)\s*)*?\|\s*([^\n\r]*?)\s*\]\]", revtext)
             image = ''
             imagedesc = ''
-            for i, d in images:
+            if images:
+                image = images[0][0]
+                imagedesc = images[0][1]
+            """for i, d in images:
                 #print i, d
                 trozos = []
                 for trozo in page.getTitle().split(' '):
@@ -137,7 +141,7 @@ for page in dumpIterator.readPages():
                         trozos.append(trozo)
                 if trozos and re.search(ur"(?im)(%s)" % ('|'.join(trozos)), i):
                     image = i
-                    imagedesc = d
+                    imagedesc = d"""
             imagedesc = ''
             
             #salida
@@ -146,7 +150,7 @@ for page in dumpIterator.readPages():
             print '-'*50
             
             resultados = u'\n'.join([u'{{Resultado\n|url=%s\n|relevancia=\n|título=%s\n|descripción=%s\n|actualización=\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces])
-            resultados = u''
+            #resultados = u''
             output = u"""{{Infobox Resultado
 |introducción=%s
 |imagen=%s
@@ -156,10 +160,10 @@ for page in dumpIterator.readPages():
 |resultados=
 %s
 }}
-""" % (abstract, image, imagedesc, page.getTitle(), wikcionario and u'\n|wikcionario=%s' % (wikcionario) or '', wikiquote and u'\n|wikicitas=%s' % (wikiquote) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), resultados)
-            if wikiquote or commons or wikcionario:
-                print output
-            #p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), page.getTitle())
-            #p.put(output, output)
+""" % (len(abstract)>=100 and abstract or '', image, imagedesc, page.getTitle(), wikcionario and u'\n|wikcionario=%s' % (wikcionario) or '', wikiquote and u'\n|wikicitas=%s' % (wikiquote) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), resultados)
+            #if image and commons and wikiquote:
+            #    print output
+            p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), page.getTitle())
+            p.put(output, output)
             
             
