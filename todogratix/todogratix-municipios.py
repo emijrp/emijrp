@@ -9,8 +9,10 @@ import pagegenerators
 import wikipedia
 
 def formatnum(n):
-    n = re.sub(ur",", ur"", n)
-    n = re.sub(ur"\.", ur",", n)
+    n = n.strip()
+    n = re.sub(ur"(?im)\.([0-9]{1,2})$", ur",\1", n)
+    n = re.sub(ur"\.", ur"", n)
+    n = re.sub(ur",", ur".", n)
     return n
 
 start = u'!'
@@ -18,7 +20,7 @@ if len(sys.argv) > 1:
     start = sys.argv[1]
 
 #hechos: Almería, 
-provincias = [u'Almería', u'Cádiz', u'Granada', u'Huelva', u'Jaén', u'Málaga', u'Sevilla'] #córdoba tiene (España), moficiar la intro localizacion
+provincias = [u'Granada'] #, u'Huelva', u'Jaén', u'Málaga', u'Sevilla'] #córdoba tiene (España), moficiar la intro localizacion
 ccaa = u'Andalucía'
 sitetg = wikipedia.Site('todogratix', 'todogratix')
 sitees = wikipedia.Site('es', 'wikipedia')
@@ -42,7 +44,7 @@ for provincia in provincias:
         if page.exists() and not page.isRedirectPage() and page.namespace() == 0 and re.search(ur"\{\{\s*Ficha de localidad de España", page.get()):
             print page.title()
             props = {'title': page.title(), 'nombre': '', 'escudo': '', 'bandera': '', 'imagen': '', 'pie': '', 'cod_provincia': '', 'cod_municipio': '', 'coord': '', 'localizacion': '', 'altitud': '', 'superficie': '', 'pob': '', 'anyopob': '', 'gentilicio': '', 'cp': '', 'alcalde': '', 'partido': '', 'patron': '', 'patrona': '', 'web': '', 'latd': 0, 'latm': 0, 'lats': 0, 'latns': '', 'longd': 0, 'longm': 0, 'longs': 0, 'longew': ''}
-            m = re.findall(ur"(?im)(cod[ _]provincia|cod[ _]municipio|escudo|bandera|nombre|imagen|pie[ _]de[ _]imagen|superficie|altitud|gentilicio|cp|alcalde|patr[óo]n|patrona|sitio[ _]web|web|latd|latm|latNS|longd|longm|longEW)\s*=\s*([^\n\r\|]*?)\s*[\n\r\|]", page.get())
+            m = re.findall(ur"(?im)(cod[ _]provincia|cod[ _]municipio|escudo|bandera|nombre|imagen|pie[ _]de[ _]imagen|superficie|altitud|gentilicio|cp|alcalde|patr[óo]n|patrona|sitio[ _]web|web|latd|latm|latNS|longd|longm|longEW)\s*=\s*([^\<\n\r\|]*?)\s*[\<\n\r\|]", page.get())
             print m
             for i in m:
                 if i[0].lower() == 'nombre' and not props['nombre']:
@@ -98,7 +100,7 @@ for provincia in provincias:
                     elif props['partido'] == 'PSOE':
                         props['partido'] = u'Partido Socialista Obrero Español'
                 elif i[0].lower() in ['web', 'sitio_web', 'sitio web'] and not props['web']:
-                    props['web'] = re.findall(ur"(https?://[^/ ]+)", i[1])[0].strip()
+                    props['web'] = re.findall(ur"(https?://[^/ ]+)", i[1]) and re.findall(ur"(https?://[^/ ]+)", i[1])[0].strip() or ''
                 elif i[0].lower() == 'latd' and not props['latd']:
                     props['latd'] = i[1].strip()
                 elif i[0].lower() == 'latm' and not props['latm']:
