@@ -25,6 +25,15 @@ def clean(s):
     s = re.sub(ur"\'{2,5}", ur"", s)
     return s
 
+def hidetemplates(s):
+    s = re.sub(ur"(?im)(\{\{[^\{\}]*?\}\})", ur"<!-- \1 -->", s)
+    return s
+
+def removerefs(s):
+    s = re.sub(ur"(?im)<ref[^<>]*>[^<>]*?</ref>", ur"", s)
+    s = re.sub(ur"(?im)<ref[^<>]*>", ur"", s)
+    return s
+
 path = sys.argv[1]
 if path.endswith('.bz2'):
     import bz2
@@ -49,38 +58,79 @@ for page in dumpIterator.readPages():
     #rev.getId(), rev.getParentId(), rev.getTimestamp(), rev.getContributor(), rev.getMinor(), rev.getComment(), rev.getText(), rev.getSha1()
     for revision in page.readRevisions():
         revtext = revision.getText()
-        m = re.findall(ur"(?im)==\s*Enlaces\s*externos\s*==", revtext)
+        m = re.findall(ur"(?im)^==\s*Enlaces\s*externos\s*==", revtext)
         if m:
             #capturar enlaces externos
             ee = revtext.split(m[0])[1]
             m = re.findall(ur"(?im)\[\[\s*Categor", ee)
             if m:
                 ee = ee.split(m[0])[0]
-            enlaces = re.findall(ur"(?im)^\*\s*\[\s*(https?://[^\s\[\]\|]+?)[\s]([^\n\r\[\]\|]*?)\]", ee)
+            enlaces = re.findall(ur"(?im)^\*+\s*\[\s*(https?://[^\s\[\]\|]+?)[\s]([^\n\r\[\]\|]*?)\]", ee)
             if len(enlaces) < 10:
                 continue
             
             #capturar enlaces a proyectos hermanos
-            
+            wikiquote = ''
+            m = re.findall(ur"(?im)\{\{\s*(?:wikicitas?|wikiquote)([^\}]*?)\}\}", revtext)
+            if m:
+                param = m[0].strip()
+                if param and param[0] == '|':
+                    wikiquote = param.split('|')[1]
+                else:
+                    wikiquote = page.getTitle()
+            wikcionario = ''
+            m = re.findall(ur"(?im)\{\{\s*(?:wikcionario|wiktionary|wikt|wiktionarypar)([^\}]*?)\}\}", revtext)
+            if m:
+                param = m[0].strip()
+                if param and param[0] == '|':
+                    wikcionario = param.split('|')[1]
+                else:
+                    wikcionario = page.getTitle()
+            commons = ''
+            m = re.findall(ur"(?im)\{\{\s*(?:commons|commons-inline)([^\}]*?)\}\}", revtext)
+            if m:
+                param = m[0].strip()
+                if param and param[0] == '|':
+                    commons = param.split('|')[1]
+                else:
+                    commons = page.getTitle()
+            if not commons:
+                m = re.findall(ur"(?im)\{\{\s*(?:commons ?cat|categoría commons|commonscat-inline|commons category)([^\}]*?)\}\}", revtext)
+                if m:
+                    param = m[0].strip()
+                    if param and param[0] == '|':
+                        commons = u'Category:%s' % (param.split('|')[1])
+                    else:
+                        commons = u'Category:%s' % (page.getTitle())
             
             #capturar VT
-            m = re.findall(ur"(?im)==\s*V[eé]ase\s*tambi[eé]n\s*==", revtext)
+            m = re.findall(ur"(?im)^==\s*V[eé]ase\s*tambi[eé]n\s*==", revtext)
             if m:
                 vt = revtext.split(m[0])[1]
                 try:
                     vt = vt.split('==')[0]
                 except:
                     pass
-            sugerencias = re.findall(ur"(?im)^\*\s*\[\[([^\|\]\:]{3,30})\]\]", revtext)
+            sugerencias = re.findall(ur"(?im)^\*+\s*\[\[([^\|\]\:]{3,30})\]\]", vt)
             
             #capturar abstract
+            abstract = ''
+            for l in revtext.split('\n'):
+                l = l.strip()
+                if l:
+                    if l[0] in ['|', '{', '}', '<', '[', ']', '!']:
+                        continue
+                    else:
+                        if re.search(ur"(?im)%s" % (page.getTitle()), l):
+                            abstract = hidetemplates(removerefs(l))
+                            break
             
             #capturar la mejor imagen
             images = re.findall(ur"(?im)(?:Archivo|File|Image)\s*\:\s*([^\|\[\]]+?\.jpe?g)(?:\s*\|\s*(?:\d+px|thumb|thumbnail|frame|left|center|right)\s*)*?\|\s*([^\n\r]*?)\s*\]\]", revtext)
             image = ''
             imagedesc = ''
             for i, d in images:
-                print i, d
+                #print i, d
                 trozos = []
                 for trozo in page.getTitle().split(' '):
                     if len(trozo) >= 3:
@@ -88,6 +138,7 @@ for page in dumpIterator.readPages():
                 if trozos and re.search(ur"(?im)(%s)" % ('|'.join(trozos)), i):
                     image = i
                     imagedesc = d
+            imagedesc = ''
             
             #salida
             print '-'*50
@@ -95,17 +146,18 @@ for page in dumpIterator.readPages():
             print '-'*50
             
             resultados = u'\n'.join([u'{{Resultado\n|url=%s\n|relevancia=\n|título=%s\n|descripción=%s\n|actualización=\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces])
-            #resultados = u''
+            resultados = u''
             output = u"""{{Infobox Resultado
-|introducción=
+|introducción=%s
 |imagen=%s
 |pie de imagen=%s
-|wikipedia=%s
+|wikipedia=%s%s%s%s
 |sugerencias=%s
-|resultados=%s
+|resultados=
+%s
 }}
-""" % (image, imagedesc, page.getTitle(), ', '.join(sugerencias), resultados)
-            if image:
+""" % (abstract, image, imagedesc, page.getTitle(), wikcionario and u'\n|wikcionario=%s' % (wikcionario) or '', wikiquote and u'\n|wikicitas=%s' % (wikiquote) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), resultados)
+            if wikiquote or commons or wikcionario:
                 print output
             #p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), page.getTitle())
             #p.put(output, output)
