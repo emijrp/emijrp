@@ -192,14 +192,14 @@ for page in dumpIterator.readPages():
             
             #capturar abstract
             abstract = ''
-            for l in revtext.split('\n'):
+            for l in hidetemplates(removehtmlcomments(removerefs(removebr(revtext)))).split('\n'):
                 l = l.strip()
                 if l:
-                    if l[0] in ['|', '{', '}', '<', '[', ']', '!']:
+                    if l[0] in ['|', '{', '}', '<', '[', ']', '!', ' ']:
                         continue
                     else:
                         if pagetitle.lower() in l.lower():
-                            abstract = hidetemplates(removehtmlcomments(removerefs(removebr(l))))
+                            abstract = l
                             break
             
             #capturar la mejor imagen
