@@ -77,9 +77,7 @@ for page in dumpIterator.readPages():
             m = re.findall(ur"(?im)\[\[\s*Categor", ee)
             if m:
                 ee = ee.split(m[0])[0]
-            enlaces = re.findall(ur"(?im)^\*+\s*\[\s*(https?://[^\s\[\]\|]+?)[\s]([^\n\r\[\]\|]*?)\]", ee)
-            if len(enlaces) < 5:
-                continue
+            enlaces = re.findall(ur"(?im)^\*+\s*\[\s*(https?://[^\s\[\]\|]+?)\s+([^\n\r\[\]\|]*?)\]", ee)
             
             #capturar FB, TW
             facebook = ''
@@ -203,10 +201,13 @@ for page in dumpIterator.readPages():
                             break
             
             #capturar la mejor imagen
-            images = re.findall(ur"(?im)(?:(?:Archivo|File|Image)\s*\:|(?:imagen?)\s*=)\s*([^\|\[\]]+?\.(?:jpe?g|pne?g|svg))", revtext)
-            image = ''
+            images = re.findall(ur"(?im)(?:(?:Archivo|File|Image)\s*\:|(?:imagen?)\s*=)\s*([^\|\[\]]+?\.(?:jpe?g))", revtext)
+            selectedimage = ''
             if images:
-                image = images[0]
+                selectedimage = images[0]
+            gallery = ''
+            if len(images) > 1:
+                gallery = u'\n<gallery>\n%s\n</gallery>' % (u'\n'.join([u'Archivo:%s' % (image) for image in images[1:6]]))
             
             limit1 = 3
             limit2 = 7
@@ -226,11 +227,12 @@ for page in dumpIterator.readPages():
 |pie de imagen=
 |wikipedia=%s%s%s%s
 |sugerencias=%s%s%s
+|galería=%s
 |resultados1=%s
 |resultados2=%s
 |resultados3=%s
 }}
-""" % (abstract, image, pagetitle, wikcionario and u'\n|wikcionario=%s' % (wikcionario) or '', wikiquote and u'\n|wikicitas=%s' % (wikiquote) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), facebook and u'\n|facebook=%s' % (facebook) or '', twitter and u'\n|twitter=%s' % (twitter) or '', resultados1, resultados2, resultados3)
+""" % (abstract, selectedimage, pagetitle, wikcionario and u'\n|wikcionario=%s' % (wikcionario) or '', wikiquote and u'\n|wikicitas=%s' % (wikiquote) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), facebook and u'\n|facebook=%s' % (facebook) or '', twitter and u'\n|twitter=%s' % (twitter) or '', gallery, resultados1, resultados2, resultados3)
             if len(abstract)>100 and (twitter or facebook or weboficial) and len(enlaces) >= limit1:
                 #salida
                 print '-'*50
@@ -241,5 +243,4 @@ for page in dumpIterator.readPages():
                     pass
                     p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), pagetitle)
                     p.put(output, output)
-            
-            
+        break
