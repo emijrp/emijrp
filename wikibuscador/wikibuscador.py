@@ -90,10 +90,6 @@ for page in dumpIterator.readPages():
                     facebook = param.split('|')[1].strip()
                 else:
                     facebook = pagetitle.strip()
-            if 'facebook.com/' in facebook:
-                facebook = facebook.split('facebook.com/')[1]
-            else:
-                facebook = ''
             twitter = ''
             m = re.findall(ur"(?im)\{\{\s*(?:twitter)([^\}]*?)\}\}", revtext)
             if m:
@@ -113,37 +109,67 @@ for page in dumpIterator.readPages():
             
             #capturar enlaces a proyectos hermanos
             wikiquote = ''
-            m = re.findall(ur"(?im)\{\{\s*(?:wikicitas?|wikiquote)([^\}]*?)\}\}", revtext)
-            if m:
-                param = m[0].strip()
-                if param and param[0] == '|':
-                    wikiquote = param.split('|')[1]
-                else:
-                    wikiquote = pagetitle
             wikcionario = ''
-            m = re.findall(ur"(?im)\{\{\s*(?:wikcionario|wiktionary|wikt|wiktionarypar)([^\}]*?)\}\}", revtext)
-            if m:
-                param = m[0].strip()
-                if param and param[0] == '|':
-                    wikcionario = param.split('|')[1]
-                else:
-                    wikcionario = pagetitle
             wikinoticias = ''
-            m = re.findall(ur"(?im)\{\{\s*(?:wikinoticiascat)([^\}]*?)\}\}", revtext)
-            if m:
-                param = m[0].strip()
-                if param and param[0] == '|':
-                    wikinoticias = u'Category:%s' % (param.split('|')[1])
-                else:
-                    wikinoticias = u'Category:%s' % (pagetitle)
             commons = ''
-            m = re.findall(ur"(?im)\{\{\s*(?:commons|commons-inline)([^\}]*?)\}\}", revtext)
+            #{{info}}
+            m = re.findall(ur"(?im)\{\{\s*info\s*\|([^\{\}\[\]]*?)\}\}", revtext)
             if m:
-                param = m[0].strip()
-                if param and param[0] == '|':
-                    commons = param.split('|')[1]
-                else:
-                    commons = pagetitle
+                tt = [t.split('=') for t in [t.strip() for t in m[0].strip().split('|')]]
+                for t in tt:
+                    if len(t) == 1:
+                        t = t[0].strip()
+                        if t.lower() == 'q':
+                            wikiquote = pagetitle
+                        elif t.lower() == 'wikt':
+                            wikcionario = pagetitle
+                        elif t.lower() == 'n':
+                            wikinoticias = pagetitle
+                        elif t.lower() == 'commons':
+                            commons = pagetitle
+                    elif len(t) == 2:
+                        t = [t[0].strip(), t[1].strip()]
+                        if t[0].lower() == 'wikiquote':
+                            wikiquote = t[1]
+                        elif t[0].lower() == 'wikcionario':
+                            wikcionario = t[1]
+                        elif t[0].lower() == 'wikinoticias':
+                            wikinoticias = t[1]
+                        elif t[0].lower() == 'commons':
+                            commons = t[1]
+            
+            if not wikiquote:
+                m = re.findall(ur"(?im)\{\{\s*(?:wikicitas?|wikiquote)([^\}]*?)\}\}", revtext)
+                if m:
+                    param = m[0].strip()
+                    if param and param[0] == '|':
+                        wikiquote = param.split('|')[1]
+                    else:
+                        wikiquote = pagetitle
+            if not wikcionario:
+                m = re.findall(ur"(?im)\{\{\s*(?:wikcionario|wiktionary|wikt|wiktionarypar)([^\}]*?)\}\}", revtext)
+                if m:
+                    param = m[0].strip()
+                    if param and param[0] == '|':
+                        wikcionario = param.split('|')[1]
+                    else:
+                        wikcionario = pagetitle
+            if not wikinoticias:
+                m = re.findall(ur"(?im)\{\{\s*(?:wikinoticiascat)([^\}]*?)\}\}", revtext)
+                if m:
+                    param = m[0].strip()
+                    if param and param[0] == '|':
+                        wikinoticias = u'Category:%s' % (param.split('|')[1])
+                    else:
+                        wikinoticias = u'Category:%s' % (pagetitle)
+            if not commons:
+                m = re.findall(ur"(?im)\{\{\s*(?:commons|commons-inline)([^\}]*?)\}\}", revtext)
+                if m:
+                    param = m[0].strip()
+                    if param and param[0] == '|':
+                        commons = param.split('|')[1]
+                    else:
+                        commons = pagetitle
             if not commons:
                 m = re.findall(ur"(?im)\{\{\s*(?:commons ?cat|categoría ?commons|commonscat-inline|commons ?category)([^\}]*?)\}\}", revtext)
                 if m:
@@ -205,7 +231,7 @@ for page in dumpIterator.readPages():
 |resultados3=%s
 }}
 """ % (abstract, image, pagetitle, wikcionario and u'\n|wikcionario=%s' % (wikcionario) or '', wikiquote and u'\n|wikicitas=%s' % (wikiquote) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), facebook and u'\n|facebook=%s' % (facebook) or '', twitter and u'\n|twitter=%s' % (twitter) or '', resultados1, resultados2, resultados3)
-            if len(abstract)>100 and (twitter or facebook or weboficial):
+            if len(abstract)>100 and (twitter or facebook or weboficial) and len(enlaces) >= limit1:
                 #salida
                 print '-'*50
                 print page.getId(), pagetitle, len(enlaces)
@@ -213,7 +239,7 @@ for page in dumpIterator.readPages():
                 print output
                 if not pagetitle in ['España', 'Antonio Vivaldi']:
                     pass
-                    #p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), pagetitle)
-                    #p.put(output, output)
+                    p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), pagetitle)
+                    p.put(output, output)
             
             
