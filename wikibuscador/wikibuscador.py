@@ -205,7 +205,7 @@ for page in dumpIterator.readPages():
                             break
             
             #capturar la mejor imagen
-            images = re.findall(ur"(?im)(?:(?:Archivo|File|Image)\s*\:|(?:imagen?)\s*=)\s*([^\|\[\]]+?\.(?:jpe?g))", revtext)
+            images = re.findall(ur"(?im)(?:(?:Archivo|File|Image)\s*\:|(?:imagen?|foto|fotograf[íi]a)\s*=)\s*([^\|\[\]]+?\.(?:jpe?g))", revtext)
             selectedimage = ''
             if images:
                 selectedimage = images[0]
@@ -237,7 +237,7 @@ for page in dumpIterator.readPages():
 |resultados3=%s
 }}
 """ % (abstract, selectedimage, pagetitle, wikcionario and u'\n|wikcionario=%s' % (wikcionario) or '', wikiquote and u'\n|wikicitas=%s' % (wikiquote) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), facebook and u'\n|facebook=%s' % (facebook) or '', twitter and u'\n|twitter=%s' % (twitter) or '', gallery, resultados1, resultados2, resultados3)
-            if len(abstract)>100 and (twitter or facebook or weboficial) and len(enlaces) >= limit1:
+            if len(abstract)>100 and len(enlaces) >= limit1:
                 #salida
                 print '-'*50
                 print page.getId(), pagetitle, len(enlaces)
