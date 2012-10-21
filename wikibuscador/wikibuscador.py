@@ -197,7 +197,7 @@ for page in dumpIterator.readPages():
             for l in hidetemplates(removehtmlcomments(removerefs(removebr(removeanexo(revtext))))).split('\n'):
                 l = l.strip()
                 if l:
-                    if l[0] in ['|', '{', '}', '<', '[', ']', '!', ' ']:
+                    if l[0] in [';', ':', '|', '{', '}', '<', '[', ']', '!', ' ']:
                         continue
                     else:
                         if pagetitle.lower() in l.lower():
