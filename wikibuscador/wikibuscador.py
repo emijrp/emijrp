@@ -43,6 +43,10 @@ def removerefs(s):
     s = re.sub(ur"(?im)<ref[^<>]*>", ur"", s)
     return s
 
+def removeanexo(s):
+    s = re.sub(ur"(?im)\[\[Anexo:", ur"[[", s)
+    return s
+
 path = sys.argv[1]
 if path.endswith('.bz2'):
     import bz2
@@ -190,7 +194,7 @@ for page in dumpIterator.readPages():
             
             #capturar abstract
             abstract = ''
-            for l in hidetemplates(removehtmlcomments(removerefs(removebr(revtext)))).split('\n'):
+            for l in hidetemplates(removehtmlcomments(removerefs(removebr(removeanexo(revtext))))).split('\n'):
                 l = l.strip()
                 if l:
                     if l[0] in ['|', '{', '}', '<', '[', ']', '!', ' ']:
