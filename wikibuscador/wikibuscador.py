@@ -48,6 +48,10 @@ def removeanexo(s):
     return s
 
 path = sys.argv[1]
+skip = ''
+if len(sys.argv) > 2:
+    skip = sys.argv[2]
+    print 'Skiping until', skip
 if path.endswith('.bz2'):
     import bz2
     source = bz2.BZ2File(path)
@@ -70,6 +74,12 @@ for page in dumpIterator.readPages():
     #page.getId(), page.getTitle(), page.readRevisions()
     #rev.getId(), rev.getParentId(), rev.getTimestamp(), rev.getContributor(), rev.getMinor(), rev.getComment(), rev.getText(), rev.getSha1()
     pagetitle = page.getTitle()
+    if skip:
+        if pagetitle == skip:
+            skip = ''
+        else:
+            continue
+    
     if ':' in pagetitle:
         continue
     for revision in page.readRevisions():
@@ -243,7 +253,7 @@ for page in dumpIterator.readPages():
                 print page.getId(), pagetitle, len(enlaces)
                 print '-'*50
                 print output
-                if not pagetitle in ['España', 'Antonio Vivaldi']:
+                if not pagetitle in [u'España', u'Antonio Vivaldi']:
                     pass
                     p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), pagetitle)
                     p.put(output, output)
