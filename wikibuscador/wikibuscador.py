@@ -221,18 +221,18 @@ for page in dumpIterator.readPages():
                 selectedimage = images[0]
             gallery = ''
             if len(images) > 1:
-                gallery = u'\n<gallery>\n%s\n</gallery>' % (u'\n'.join([u'Archivo:%s' % (image) for image in images[1:6]]))
+                gallery = u'<gallery>\n%s\n</gallery>' % (u'\n'.join([u'Archivo:%s' % (image) for image in images[1:6]]))
             
             limit1 = 3
             limit2 = 7
             limit3 = 50
-            resultados1 = u'\n'.join([u'{{Resultado\n|url=%s\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[:limit1]])
+            resultados1 = u''.join([u'{{Resultado1\n|url=%s\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[:limit1]])
             resultados2 = u''
             resultados3 = u''
             if len(enlaces) > limit1:
-                resultados2 = u'\n'.join([u'{{Resultado\n|url=%s\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1:limit1+limit2+1]])
+                resultados2 = u''.join([u'{{Resultado2\n|url=%s\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1:limit1+limit2+1]])
             if len(enlaces) > limit1+limit2:
-                resultados3 = u'\n'.join([u'{{Resultado\n|url=%s\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1+limit2+1:limit1+limit2+limit3+1]])
+                resultados3 = u''.join([u'{{Resultado3\n|url=%s\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1+limit2+1:limit1+limit2+limit3+1]])
             
             resultados = u''
             output = u"""{{Infobox Resultado
@@ -245,16 +245,13 @@ for page in dumpIterator.readPages():
 |resultados1=%s
 |resultados2=%s
 |resultados3=%s
-}}
-""" % (abstract, selectedimage, pagetitle, wikcionario and u'\n|wikcionario=%s' % (wikcionario) or '', wikiquote and u'\n|wikicitas=%s' % (wikiquote) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), facebook and u'\n|facebook=%s' % (facebook) or '', twitter and u'\n|twitter=%s' % (twitter) or '', gallery, resultados1, resultados2, resultados3)
+}}""" % (abstract, selectedimage, pagetitle, wikcionario and u'\n|wikcionario=%s' % (wikcionario) or '', wikiquote and u'\n|wikicitas=%s' % (wikiquote) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), facebook and u'\n|facebook=%s' % (facebook) or '', twitter and u'\n|twitter=%s' % (twitter) or '', gallery, resultados1, resultados2, resultados3)
             if len(abstract)>100 and len(enlaces) >= limit1:
                 #salida
                 print '-'*50
                 print page.getId(), pagetitle, len(enlaces)
                 print '-'*50
                 print output
-                if not pagetitle in [u'España', u'Antonio Vivaldi']:
-                    pass
-                    p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), pagetitle)
-                    p.put(output, output)
+                p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), pagetitle)
+                p.put(output, output)
         break
