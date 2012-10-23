@@ -50,7 +50,7 @@ def removeanexo(s):
 path = sys.argv[1]
 skip = ''
 if len(sys.argv) > 2:
-    skip = sys.argv[2]
+    skip = re.sub('_', ' ', sys.argv[2])
     print 'Skiping until', skip
 if path.endswith('.bz2'):
     import bz2
@@ -207,7 +207,7 @@ for page in dumpIterator.readPages():
             for l in hidetemplates(removehtmlcomments(removerefs(removebr(removeanexo(revtext))))).split('\n'):
                 l = l.strip()
                 if l:
-                    if l[0] in [';', ':', '|', '{', '}', '<', '[', ']', '!', ' ']:
+                    if l[0] in [';', ':', '|', '{', '}', '<', '[', ']', '!', '#', '*', ' ']:
                         continue
                     else:
                         if pagetitle.lower() in l.lower():
