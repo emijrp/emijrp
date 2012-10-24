@@ -231,13 +231,13 @@ for page in dumpIterator.readPages():
             limit1 = 3
             limit2 = 7
             limit3 = 50
-            resultados1 = u''.join([u'{{Resultado1\n|url=%s\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[:limit1]])
+            resultados1 = u''.join([u'{{Resultado1\n|url=%s\n|formato=Autodetectar\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[:limit1]])
             resultados2 = u''
             resultados3 = u''
             if len(enlaces) > limit1:
-                resultados2 = u''.join([u'{{Resultado2\n|url=%s\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1:limit1+limit2+1]])
+                resultados2 = u''.join([u'{{Resultado2\n|url=%s\n|formato=Autodetectar\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1:limit1+limit2+1]])
             if len(enlaces) > limit1+limit2:
-                resultados3 = u''.join([u'{{Resultado3\n|url=%s\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1+limit2+1:limit1+limit2+limit3+1]])
+                resultados3 = u''.join([u'{{Resultado3\n|url=%s\n|formato=Autodetectar\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1+limit2+1:limit1+limit2+limit3+1]])
             
             resultados = u''
             output = u"""{{Infobox Resultado
