@@ -25,6 +25,11 @@ def clean(s):
     s = re.sub(ur"\'{2,5}", ur"", s)
     return s
 
+def compensatehtmlcomments(s):
+    if len(re.findall(ur"<!--", s)) > len(re.findall(ur"-->", s)):
+        s += u'-->'
+    return s
+
 def removebr(s):
     s = re.sub(ur"(?im)<\s*/\s*br\s*/?\s*>", ur"", s)
     s = re.sub(ur"(?im)<\s*/\s*br\s*clear\s*=\s*[\"\']\s*all\s*[\"\']\s*/?\s*>", ur"", s)
@@ -211,7 +216,7 @@ for page in dumpIterator.readPages():
                         continue
                     else:
                         if pagetitle.lower() in l.lower():
-                            abstract = l
+                            abstract = compensatehtmlcomments(l)
                             break
             
             #capturar la mejor imagen
