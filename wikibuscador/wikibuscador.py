@@ -283,8 +283,6 @@ for page in dumpIterator.readPages():
                 if commonspage.exists():
                     caption = revtext.split(selectedimage)[1].strip()
                     if caption.startswith('|thumb') or caption.startswith('|left') or caption.startswith('|right'):
-                        #m = re.findall(ur'\|(?:thumb|left|right)(.*?\]\][^\[\]]*?)\]\]', revtext)
-                        print pagetitle, caption[:150]
                         m = re.findall(ur'(?im)^\s*\|\s*(?:thumb|thumbnail|frame|(?:(?:up)?(?:left|right|center)(?:\s*=?\s*\d*\.?\d*)?))([^\[\]]*?)\]\]', caption)
                         if m:
                             caption = m[0].strip().lstrip('|')
@@ -342,6 +340,6 @@ for page in dumpIterator.readPages():
                 print '-'*50
                 
                 print output
-                #p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), pagetitle)
-                #p.put(output, output)
+                p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), pagetitle)
+                p.put(output, output)
         break
