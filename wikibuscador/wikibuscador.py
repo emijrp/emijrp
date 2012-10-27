@@ -157,20 +157,21 @@ for page in dumpIterator.readPages():
                             commons = pagetitle
                     elif len(t) == 2:
                         t = [t[0].strip(), t[1].strip()]
-                        if t[0].lower() in ['wikiquote', 'q']:
-                            wikiquote = t[1] and t[1] or pagetitle
-                        elif t[0].lower() in ['wikcionario', 'wiktionary', 'wikt']:
-                            wikcionario = t[1] and t[1] or pagetitle
-                        elif t[0].lower() in ['wikinoticias', 'n', 'wikinews']:
-                            wikinoticias = t[1] and t[1] or pagetitle
-                        elif t[0].lower() in ['wikibooks', 'b']:
-                            wikibooks = t[1] and t[1] or pagetitle
-                        elif t[0].lower() in ['wikisource', 's']:
-                            wikisource = t[1] and t[1] or pagetitle
-                        elif t[0].lower() in ['wikiversity', 'v']:
-                            wikiversity = t[1] and t[1] or pagetitle
-                        elif t[0].lower() in ['commons']:
-                            commons = t[1] and t[1] or pagetitle
+                        if t[1].lower() != 'no':
+                            if t[0].lower() in ['wikiquote', 'q']:
+                                wikiquote = t[1] and t[1] or pagetitle
+                            elif t[0].lower() in ['wikcionario', 'wiktionary', 'wikt']:
+                                wikcionario = t[1] and t[1].lower() != 'no' and t[1] or pagetitle
+                            elif t[0].lower() in ['wikinoticias', 'n', 'wikinews']:
+                                wikinoticias = t[1] and t[1].lower() != 'no' and t[1] or pagetitle
+                            elif t[0].lower() in ['wikibooks', 'b']:
+                                wikibooks = t[1] and t[1].lower() != 'no' and t[1] or pagetitle
+                            elif t[0].lower() in ['wikisource', 's']:
+                                wikisource = t[1] and t[1].lower() != 'no' and t[1] or pagetitle
+                            elif t[0].lower() in ['wikiversity', 'v']:
+                                wikiversity = t[1] and t[1].lower() != 'no' and t[1] or pagetitle
+                            elif t[0].lower() in ['commons']:
+                                commons = t[1] and t[1] or pagetitle
             
             if not wikiquote:
                 m = re.findall(ur"(?im)\{\{\s*(?:wikicitas?|wikiquote|wikiquote-inline)\s*([^\}]*?)\s*\}\}", revtext)
