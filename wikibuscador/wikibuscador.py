@@ -284,16 +284,28 @@ for page in dumpIterator.readPages():
                     caption = revtext.split(selectedimage)[1].strip()
                     if caption.startswith('|thumb') or caption.startswith('|left') or caption.startswith('|right'):
                         #m = re.findall(ur'\|(?:thumb|left|right)(.*?\]\][^\[\]]*?)\]\]', revtext)
-                        m = re.findall(ur'(?im)^\s*\|\s*(?:thumb|thumbnail|frame|(?:(?:up)?(?:left|right|center)(?:\s*=?\s*\d+\.?\d*)?))([^\[\]]*?)\]\]', caption)
+                        print pagetitle, caption[:150]
+                        m = re.findall(ur'(?im)^\s*\|\s*(?:thumb|thumbnail|frame|(?:(?:up)?(?:left|right|center)(?:\s*=?\s*\d*\.?\d*)?))([^\[\]]*?)\]\]', caption)
                         if m:
                             caption = m[0].strip().lstrip('|')
                         else:
-                            caption = u''
+                            brackets = 2
+                            c = 0
+                            while c <= 500 and brackets != 0:
+                                if caption[c] == '[':
+                                    brackets += 1
+                                elif caption[c] == ']':
+                                    brackets -= 1
+                                c += 1
+                            if brackets == 0:
+                                caption = caption[:c-2]
+                            else:
+                                caption = u''
                     else:
                         caption = u''
             caption = re.sub(ur"(((up)?(right|center|left)(\s*=?\s*\d+\.?\d*)?)|thumb|thumbnail|frame|\d+ *px)\s*\|", ur"", caption)
             caption = hidetemplates(removerefs(caption.strip().lstrip('|'))).strip().lstrip('|')
-            if re.search(ur'alt *=', caption) or len(caption)>250:
+            if re.search(ur'alt *=', caption) or len(caption)>500:
                 caption = u''
             
             gallery = ''
