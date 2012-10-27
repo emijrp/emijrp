@@ -290,7 +290,7 @@ for page in dumpIterator.readPages():
                         else:
                             brackets = 2
                             c = 0
-                            while c <= 500 and brackets != 0:
+                            while len(caption) > c and c <= 500 and brackets != 0:
                                 if caption[c] == '[':
                                     brackets += 1
                                 elif caption[c] == ']':
