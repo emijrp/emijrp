@@ -52,6 +52,7 @@ def removeanexo(s):
     s = re.sub(ur"(?im)\[\[Anexo:", ur"[[", s)
     return s
 
+commonssite = wikipedia.Site('commons', 'commons')
 path = sys.argv[1]
 skip = ''
 if len(sys.argv) > 2:
@@ -89,14 +90,14 @@ for page in dumpIterator.readPages():
         continue
     for revision in page.readRevisions():
         revtext = revision.getText()
-        m = re.findall(ur"(?im)^==\s*Enlaces\s*externos\s*==", revtext)
+        m = re.findall(ur"(?im)^==\s*(?:External\s*links|(?:Enlaces|Links)\s*externos)\s*==", revtext)
         if m:
             #capturar enlaces externos
             ee = revtext.split(m[0])[1]
             m = re.findall(ur"(?im)\[\[\s*Categor", ee)
             if m:
                 ee = ee.split(m[0])[0]
-            enlaces = re.findall(ur"(?im)^\*+\s*\[\s*(https?://[^\s\[\]\|]+?)\s+([^\n\r\[\]\|]*?)\]", ee)
+            enlaces = re.findall(ur"(?im)^\*+\s*\'*\s*\[\s*(https?://[^\s\[\]\|]+?)\s+([^\n\r\[\]\|]*?)\]", ee)
             
             #capturar FB, TW
             facebook = ''
@@ -129,6 +130,9 @@ for page in dumpIterator.readPages():
             wikcionario = ''
             wikinoticias = ''
             commons = ''
+            wikiversity = ''
+            wikisource = ''
+            wikispecies = ''
             #{{info}}
             m = re.findall(ur"(?im)\{\{\s*info\s*\|([^\{\}\[\]]*?)\}\}", revtext)
             if m:
@@ -156,7 +160,7 @@ for page in dumpIterator.readPages():
                             commons = t[1]
             
             if not wikiquote:
-                m = re.findall(ur"(?im)\{\{\s*(?:wikicitas?|wikiquote)([^\}]*?)\}\}", revtext)
+                m = re.findall(ur"(?im)\{\{\s*(?:wikicitas?|wikiquote|wikiquote-inline)\s*([^\}]*?)\s*\}\}", revtext)
                 if m:
                     param = m[0].strip()
                     if param and param[0] == '|':
@@ -164,7 +168,7 @@ for page in dumpIterator.readPages():
                     else:
                         wikiquote = pagetitle
             if not wikcionario:
-                m = re.findall(ur"(?im)\{\{\s*(?:wikcionario|wiktionary|wikt|wiktionarypar)([^\}]*?)\}\}", revtext)
+                m = re.findall(ur"(?im)\{\{\s*(?:wikcionario|wiktionary|wikt|wiktionarypar|wiktionary-inline)\s*([^\}]*?)\s*\}\}", revtext)
                 if m:
                     param = m[0].strip()
                     if param and param[0] == '|':
@@ -172,7 +176,7 @@ for page in dumpIterator.readPages():
                     else:
                         wikcionario = pagetitle
             if not wikinoticias:
-                m = re.findall(ur"(?im)\{\{\s*(?:wikinoticiascat)([^\}]*?)\}\}", revtext)
+                m = re.findall(ur"(?im)\{\{\s*(?:wikinoticiascat|wikinews[ _]?category)\s*([^\}]*?)\s*\}\}", revtext)
                 if m:
                     param = m[0].strip()
                     if param and param[0] == '|':
@@ -180,7 +184,7 @@ for page in dumpIterator.readPages():
                     else:
                         wikinoticias = u'Category:%s' % (pagetitle)
             if not commons:
-                m = re.findall(ur"(?im)\{\{\s*(?:commons|commons-inline)([^\}]*?)\}\}", revtext)
+                m = re.findall(ur"(?im)\{\{\s*(?:commons|commons-inline)\s*([^\}]*?)\s*\}\}", revtext)
                 if m:
                     param = m[0].strip()
                     if param and param[0] == '|':
@@ -188,16 +192,40 @@ for page in dumpIterator.readPages():
                     else:
                         commons = pagetitle
             if not commons:
-                m = re.findall(ur"(?im)\{\{\s*(?:commons ?cat|categoría ?commons|commonscat-inline|commons ?category)([^\}]*?)\}\}", revtext)
+                m = re.findall(ur"(?im)\{\{\s*(?:commons[ _]?cat|categoría[ _]?commons|commonscat-inline|commons[ _]?category)\s*([^\}]*?)\s*\}\}", revtext)
                 if m:
                     param = m[0].strip()
                     if param and param[0] == '|':
                         commons = u'Category:%s' % (param.split('|')[1])
                     else:
                         commons = u'Category:%s' % (pagetitle)
+            if not wikiversity:
+                m = re.findall(ur"(?im)\{\{\s*(?:wikiversity|wikiversity-inline)\s*([^\}]*?)\s*\}\}", revtext)
+                if m:
+                    param = m[0].strip()
+                    if param and param[0] == '|':
+                        wikiversity = param.split('|')[1]
+                    else:
+                        wikiversity = pagetitle
+            if not wikisource:
+                m = re.findall(ur"(?im)\{\{\s*(?:wikisource|wikisource-inline)\s*([^\}]*?)\s*\}\}", revtext)
+                if m:
+                    param = m[0].strip()
+                    if param and param[0] == '|':
+                        wikisource = param.split('|')[1]
+                    else:
+                        wikisource = pagetitle
+            if not wikispecies:
+                m = re.findall(ur"(?im)\{\{\s*(?:wikispecies|wikispecies-inline)\s*([^\}]*?)\s*\}\}", revtext)
+                if m:
+                    param = m[0].strip()
+                    if param and param[0] == '|':
+                        wikispecies = param.split('|')[1]
+                    else:
+                        wikispecies = pagetitle
             
             #capturar VT
-            m = re.findall(ur"(?im)^==\s*V[eé]ase\s*tambi[eé]n\s*==", revtext)
+            m = re.findall(ur"(?im)^==\s*(?:See\s*also|V[eé]ase\s*tambi[eé]n)\s*==", revtext)
             vt = ''
             if m:
                 vt = revtext.split(m[0])[1]
@@ -206,6 +234,11 @@ for page in dumpIterator.readPages():
                 except:
                     pass
             sugerencias = re.findall(ur"(?im)^\*+\s*\[\[([^\|\]\:]{3,30})\]\]", vt)
+            s = []
+            for sugerencia in sugerencias:
+                if not sugerencia.lower().startswith(u'list') and not sugerencia.lower().startswith(u'outline'):
+                    s.append(sugerencia.strip())
+            sugerencias = s
             
             #capturar abstract
             abstract = ''
@@ -219,43 +252,62 @@ for page in dumpIterator.readPages():
                             abstract = compensatehtmlcomments(l)
                             break
             
-            #capturar la mejor imagen
-            images = re.findall(ur"(?im)(?:(?:Archivo|File|Image)\s*\:|(?:imagen?|foto|fotograf[íi]a)\s*=)\s*([^\|\[\]]+?\.(?:jpe?g))", revtext)
+            #capturar imagenes
+            images = re.findall(ur"(?im)(?:(?:Archivo|File|Image)\s*\:|(?:image[ _]?skyline|picture|photo|photography|imagen?|foto|fotograf[íi]a)\s*=)\s*([^\|\[\]]+?\.(?:jpe?g))", revtext)
             selectedimage = ''
-            if images:
+            caption = ''
+            if images and images[0]:
                 selectedimage = images[0]
+                commonspage = wikipedia.Page(commonssite, u'File:%s' % (selectedimage))
+                if commonspage.exists():
+                    caption = revtext.split(selectedimage)[1].strip()
+                    if caption.startswith('|thumb') or caption.startswith('|left') or caption.startswith('|right'):
+                        #m = re.findall(ur'\|(?:thumb|left|right)(.*?\]\][^\[\]]*?)\]\]', revtext)
+                        m = re.findall(ur'\|(?:thumb|thumbnail|frame|(?:(?:up)?(?:left|right|center)(?:\s*=?\s*\d+\.?\d*)?))([^\[\]]*?)\]\]', revtext)
+                        if m:
+                            caption = m[0].strip().lstrip('|')
+                        else:
+                            caption = u''
+                    else:
+                        caption = u''
+            caption = re.sub(ur"(((up)?(right|center|left)(\s*=?\s*\d+\.?\d*)?)|thumb|thumbnail|frame|\d+ *px)\s*\|", ur"", caption)
+            caption = hidetemplates(removerefs(caption.strip().lstrip('|'))).strip().lstrip('|')
+            if re.search(ur'alt *=', caption) or len(caption)>250:
+                caption = u''
+            
             gallery = ''
             if len(images) > 1:
-                gallery = u'<gallery>\n%s\n</gallery>' % (u'\n'.join([u'Archivo:%s' % (image) for image in images[1:6]]))
+                gallery = u'<gallery>\n%s\n</gallery>' % (u'\n'.join([u'File:%s' % (image) for image in images[1:6]]))
             
             limit1 = 3
             limit2 = 7
             limit3 = 50
-            resultados1 = u''.join([u'{{Resultado1\n|url=%s\n|formato=Autodetectar\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[:limit1]])
+            resultados1 = u''.join([u'{{Result1\n|url=%s\n|format=auto\n|title=%s\n|description=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[:limit1]])
             resultados2 = u''
             resultados3 = u''
             if len(enlaces) > limit1:
-                resultados2 = u''.join([u'{{Resultado2\n|url=%s\n|formato=Autodetectar\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1:limit1+limit2+1]])
+                resultados2 = u''.join([u'{{Result2\n|url=%s\n|format=auto\n|title=%s\n|description=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1:limit1+limit2+1]])
             if len(enlaces) > limit1+limit2:
-                resultados3 = u''.join([u'{{Resultado3\n|url=%s\n|formato=Autodetectar\n|título=%s\n|descripción=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1+limit2+1:limit1+limit2+limit3+1]])
+                resultados3 = u''.join([u'{{Result3\n|url=%s\n|format=auto\n|title=%s\n|description=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1+limit2+1:limit1+limit2+limit3+1]])
             
             resultados = u''
-            output = u"""{{Infobox Resultado
-|introducción=%s
-|imagen=%s
-|pie de imagen=
-|wikipedia=%s%s%s%s
-|sugerencias=%s%s%s
-|galería=%s
-|resultados1=%s
-|resultados2=%s
-|resultados3=%s
-}}""" % (abstract, selectedimage, pagetitle, wikcionario and u'\n|wikcionario=%s' % (wikcionario) or '', wikiquote and u'\n|wikicitas=%s' % (wikiquote) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), facebook and u'\n|facebook=%s' % (facebook) or '', twitter and u'\n|twitter=%s' % (twitter) or '', gallery, resultados1, resultados2, resultados3)
-            if len(abstract)>100 and len(enlaces) >= limit1:
+            output = u"""{{Infobox Result
+|introduction=%s
+|image=%s
+|caption=%s
+|wikipedia=%s%s%s%s%s%s%s
+|related=%s%s%s
+|gallery=%s
+|results1=%s
+|results2=%s
+|results3=%s
+}}""" % (abstract, selectedimage, caption, pagetitle, wikcionario and u'\n|wiktionary=%s' % (wikcionario) or '', wikiquote and u'\n|wikiquote=%s' % (wikiquote) or '', wikiversity and u'\n|wikiversity=%s' % (wikiversity) or '', wikisource and u'\n|wikisource=%s' % (wikisource) or '', wikispecies and u'\n|wikispecies=%s' % (wikispecies) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), facebook and u'\n|facebook=%s' % (facebook) or '', twitter and u'\n|twitter=%s' % (twitter) or '', gallery, resultados1, resultados2, resultados3)
+            if len(abstract)>100 and len(enlaces) >= limit1 and caption:
                 #salida
                 print '-'*50
                 print page.getId(), pagetitle, len(enlaces)
                 print '-'*50
+                
                 print output
                 p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), pagetitle)
                 p.put(output, output)
