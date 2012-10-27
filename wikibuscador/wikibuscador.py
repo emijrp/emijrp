@@ -132,9 +132,10 @@ for page in dumpIterator.readPages():
             commons = ''
             wikiversity = ''
             wikisource = ''
+            wikibooks = ''
             wikispecies = ''
             #{{info}}
-            m = re.findall(ur"(?im)\{\{\s*info\s*\|([^\{\}\[\]]*?)\}\}", revtext)
+            m = re.findall(ur"(?im)\{\{\s*(?:info|sister[ _]project[ _]links)\s*\|([^\{\}\[\]]*?)\}\}", revtext)
             if m:
                 tt = [t.split('=') for t in [t.strip() for t in m[0].strip().split('|')]]
                 for t in tt:
@@ -146,18 +147,30 @@ for page in dumpIterator.readPages():
                             wikcionario = pagetitle
                         elif t.lower() == 'n':
                             wikinoticias = pagetitle
+                        elif t.lower() == 'b':
+                            wikibooks = pagetitle
+                        elif t.lower() == 's':
+                            wikisource = pagetitle
+                        elif t.lower() == 'v':
+                            wikiversity = pagetitle
                         elif t.lower() == 'commons':
                             commons = pagetitle
                     elif len(t) == 2:
                         t = [t[0].strip(), t[1].strip()]
-                        if t[0].lower() == 'wikiquote':
-                            wikiquote = t[1]
-                        elif t[0].lower() == 'wikcionario':
-                            wikcionario = t[1]
-                        elif t[0].lower() == 'wikinoticias':
-                            wikinoticias = t[1]
-                        elif t[0].lower() == 'commons':
-                            commons = t[1]
+                        if t[0].lower() in ['wikiquote', 'q']:
+                            wikiquote = t[1] and t[1] or pagetitle
+                        elif t[0].lower() in ['wikcionario', 'wiktionary', 'wikt']:
+                            wikcionario = t[1] and t[1] or pagetitle
+                        elif t[0].lower() in ['wikinoticias', 'n', 'wikinews']:
+                            wikinoticias = t[1] and t[1] or pagetitle
+                        elif t[0].lower() in ['wikibooks', 'b']:
+                            wikibooks = t[1] and t[1] or pagetitle
+                        elif t[0].lower() in ['wikisource', 's']:
+                            wikisource = t[1] and t[1] or pagetitle
+                        elif t[0].lower() in ['wikiversity', 'v']:
+                            wikiversity = t[1] and t[1] or pagetitle
+                        elif t[0].lower() in ['commons']:
+                            commons = t[1] and t[1] or pagetitle
             
             if not wikiquote:
                 m = re.findall(ur"(?im)\{\{\s*(?:wikicitas?|wikiquote|wikiquote-inline)\s*([^\}]*?)\s*\}\}", revtext)
@@ -223,6 +236,14 @@ for page in dumpIterator.readPages():
                         wikispecies = param.split('|')[1]
                     else:
                         wikispecies = pagetitle
+            if not wikibooks:
+                m = re.findall(ur"(?im)\{\{\s*(?:wikibooks|wikibooks-inline)\s*([^\}]*?)\s*\}\}", revtext)
+                if m:
+                    param = m[0].strip()
+                    if param and param[0] == '|':
+                        wikibooks = param.split('|')[1]
+                    else:
+                        wikibooks = pagetitle
             
             #capturar VT
             m = re.findall(ur"(?im)^==\s*(?:See\s*also|V[eé]ase\s*tambi[eé]n)\s*==", revtext)
@@ -263,7 +284,7 @@ for page in dumpIterator.readPages():
                     caption = revtext.split(selectedimage)[1].strip()
                     if caption.startswith('|thumb') or caption.startswith('|left') or caption.startswith('|right'):
                         #m = re.findall(ur'\|(?:thumb|left|right)(.*?\]\][^\[\]]*?)\]\]', revtext)
-                        m = re.findall(ur'\|(?:thumb|thumbnail|frame|(?:(?:up)?(?:left|right|center)(?:\s*=?\s*\d+\.?\d*)?))([^\[\]]*?)\]\]', revtext)
+                        m = re.findall(ur'(?im)^\s*\|\s*(?:thumb|thumbnail|frame|(?:(?:up)?(?:left|right|center)(?:\s*=?\s*\d+\.?\d*)?))([^\[\]]*?)\]\]', revtext)
                         if m:
                             caption = m[0].strip().lstrip('|')
                         else:
@@ -282,26 +303,26 @@ for page in dumpIterator.readPages():
             limit1 = 3
             limit2 = 7
             limit3 = 50
-            resultados1 = u''.join([u'{{Result1\n|url=%s\n|format=auto\n|title=%s\n|description=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[:limit1]])
+            resultados1 = u''.join([u'{{Result1\n|url=%s\n|format=auto\n|description=%s\n}}' % (enlace, clean(desc)) for enlace, desc in enlaces[:limit1]])
             resultados2 = u''
             resultados3 = u''
             if len(enlaces) > limit1:
-                resultados2 = u''.join([u'{{Result2\n|url=%s\n|format=auto\n|title=%s\n|description=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1:limit1+limit2+1]])
+                resultados2 = u''.join([u'{{Result2\n|url=%s\n|format=auto\n|description=%s\n}}' % (enlace, clean(desc)) for enlace, desc in enlaces[limit1:limit1+limit2+1]])
             if len(enlaces) > limit1+limit2:
-                resultados3 = u''.join([u'{{Result3\n|url=%s\n|format=auto\n|title=%s\n|description=%s\n}}' % (enlace, '', clean(desc)) for enlace, desc in enlaces[limit1+limit2+1:limit1+limit2+limit3+1]])
+                resultados3 = u''.join([u'{{Result3\n|url=%s\n|format=auto\n|description=%s\n}}' % (enlace, clean(desc)) for enlace, desc in enlaces[limit1+limit2+1:limit1+limit2+limit3+1]])
             
             resultados = u''
             output = u"""{{Infobox Result
 |introduction=%s
 |image=%s
 |caption=%s
-|wikipedia=%s%s%s%s%s%s%s
+|wikipedia=%s%s%s%s%s%s%s%s
 |related=%s%s%s
 |gallery=%s
 |results1=%s
 |results2=%s
 |results3=%s
-}}""" % (abstract, selectedimage, caption, pagetitle, wikcionario and u'\n|wiktionary=%s' % (wikcionario) or '', wikiquote and u'\n|wikiquote=%s' % (wikiquote) or '', wikiversity and u'\n|wikiversity=%s' % (wikiversity) or '', wikisource and u'\n|wikisource=%s' % (wikisource) or '', wikispecies and u'\n|wikispecies=%s' % (wikispecies) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), facebook and u'\n|facebook=%s' % (facebook) or '', twitter and u'\n|twitter=%s' % (twitter) or '', gallery, resultados1, resultados2, resultados3)
+}}""" % (abstract, selectedimage, caption, pagetitle, wikcionario and u'\n|wiktionary=%s' % (wikcionario) or '', wikiquote and u'\n|wikiquote=%s' % (wikiquote) or '', wikibooks and u'\n|wikibooks=%s' % (wikibooks) or '', wikiversity and u'\n|wikiversity=%s' % (wikiversity) or '', wikisource and u'\n|wikisource=%s' % (wikisource) or '', wikispecies and u'\n|wikispecies=%s' % (wikispecies) or '', commons and u'\n|commons=%s' % (commons) or '', ', '.join(sugerencias), facebook and u'\n|facebook=%s' % (facebook) or '', twitter and u'\n|twitter=%s' % (twitter) or '', gallery, resultados1, resultados2, resultados3)
             if len(abstract)>100 and len(enlaces) >= limit1 and caption:
                 #salida
                 print '-'*50
