@@ -101,7 +101,7 @@ for page in dumpIterator.readPages():
             
             #capturar FB, TW
             facebook = ''
-            m = re.findall(ur"(?im)\{\{\s*(?:facebook|facebook user)([^\}]*?)\}\}", revtext)
+            m = re.findall(ur"(?im)\{\{\s*(?:facebook|facebook\.com|facebook[ _]?user)([^\}]*?)\}\}", revtext)
             if m:
                 param = m[0].strip()
                 if param and param[0] == '|':
@@ -109,7 +109,7 @@ for page in dumpIterator.readPages():
                 else:
                     facebook = pagetitle.strip()
             twitter = ''
-            m = re.findall(ur"(?im)\{\{\s*(?:twitter)([^\}]*?)\}\}", revtext)
+            m = re.findall(ur"(?im)\{\{\s*(?:twitter|twitter\.com)([^\}]*?)\}\}", revtext)
             if m:
                 param = m[0].strip()
                 if param and param[0] == '|':
