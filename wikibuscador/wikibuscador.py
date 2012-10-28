@@ -308,6 +308,7 @@ for page in dumpIterator.readPages():
                 caption = u''
             
             gallery = ''
+            images = list(set(images))
             if len(images) > 1:
                 gallery = u'<gallery>\n%s\n</gallery>' % (u'\n'.join([u'File:%s' % (image) for image in images[1:6]]))
             
