@@ -33,14 +33,23 @@
 
 \section{Introducción}
 
-En principio lo que voy a hacer es analizar el estado del arte de la investigación de wikis, contar WikiPapers, y un poco de mi trayectoria en estos temas, cuestiones abiertas, conclusiones y trabajo futuro.
+%En principio lo que voy a hacer es analizar el estado del arte de la investigación de wikis, contar WikiPapers, y un poco de mi trayectoria en estos temas, cuestiones abiertas, conclusiones y trabajo futuro.
 
-Quizás para que fuera abordable el estado del arte, podría limitarme a clasificar los papers del último o dos últimos WikiSym. Y al último PAN/CLEF, WikiAI, MathWikis, Wikimania, WikiViz, etc. Comentar la existencia de todos estos eventos.
+%Quizás para que fuera abordable el estado del arte, podría limitarme a clasificar los papers del último o dos últimos WikiSym. Y al último PAN/CLEF, WikiAI, MathWikis, Wikimania, WikiViz, etc. Comentar la existencia de todos estos eventos.
 
-Reutilizar cosas que haya escrito ya en mis papers.
+%Reutilizar cosas que haya escrito ya en mis papers.
 
-La intro la puedo adaptar del SLR que estoy haciendo de WikiPapers
+%La intro la puedo adaptar del SLR que estoy haciendo de WikiPapers
 
+El interés de los investigadores por los wikis, en especial Wikipedia, ha ido en aumento en los últimos años. La primera edición de WikiSym, un simposio sobre wikis, se celebró en 2005 y desde entonces han aparecido multitud de congresos, \emph{workshops}, conferencias y competiciones en este área. El estudio de los wikis es un campo emergente y prolífico.
+
+Ha habido varios intentos, aunque con escaso éxito, de recopilar toda la literatura sobre wikis. Unas veces el enfoque o la herramienta utilizada eran limitados, otras debido a las dimensiones de la tarea el proyecto era abandonado y al poco tiempo los metadatos bibliográficos se perdían. En este trabajo presentamos WikiPapers, un proyecto colaborativo para recopilar toda la literatura sobre wikis. Se hace uso de MediaWiki y su extensión semántica, ambos conocidos por los investigadores de este campo. Hasta noviembre de 2012 se han recopilado más de 1.700 publicaciones y sus metadatos, además de documentación sobre herramientas y \emph{datasets} relacionados. Los metadatos son exportables en los formatos BibTeX, RDF, CSV y JSON. Los historiales completos del wiki están disponibles para descargar y facilitar su preservación. El proyecto está abierto a la participación de todo el mundo.
+
+El resto del trabajo se divide de la siguiente manera. En la sección~2 hacemos un repaso a los distintos enfoques utilizados hasta ahora para recopilar toda la literatura sobre wikis, incidiendo en sus ventajas e inconvenientes. En la sección~3 ... En la sección~4 ... En la sección~5 presentamos WikiPapers, cómo funciona y qué pasos se están dando. En la sección~6 hacemos un estado del arte empleando WikiPapers. Finalmente, en la sección~7, terminamos con unas conclusiones y trabajo futuro.
+
+\section{Motivación}
+
+El interés de los investigadores por los wikis, en especial Wikipedia, ha ido en aumento en los últimos años (Figura~\ref{fig:wptimeline}). La primera edición de WikiSym, un simposio sobre wikis, se celebró en 2005 y desde entonces han aparecido multitud de congresos (CLEF/PAN Lab), \emph{workshops} (WikiAI, SemWiki y MathWikis), conferencias (Wikimania, WikiCon, SMWCon, Wiki Conference India, Wikipedia Academy y Wikipedia CPOV Conference) y competiciones (WikiViz). El estudio de los wikis es un campo emergente y prolífico. Ha habido varios intentos, aunque con escaso éxito, de recopilar toda la literatura sobre wikis ~\citep{ayers2011}. Unas veces el enfoque o la herramienta utilizada eran limitados, otras debido a las dimensiones de la tarea el proyecto era abandonado y al poco tiempo los metadatos bibliográficos se perdían. Se han hecho recopilaciones en páginas personajes y blogs, a través de revisiones de literatura, haciendo uso de gestores de bibliografía, en páginas de Wikipedia y también en servicios como Zotero o CiteULike. A continuación los describimos y evaluamos sus ventajas e inconvenientes y cómo WikiPapers resuelve las carencias de estos enfoques.
 
 \begin{figure*}[htb]
     \centering
@@ -49,16 +58,53 @@ La intro la puedo adaptar del SLR que estoy haciendo de WikiPapers
     \label{fig:wptimeline}
 \end{figure*}
 
-\section{Motivación}
+\subsection{Páginas personales y blogs}
+Algunos autores han hecho recopilaciones de literatura en webs personales\footnote{\href{http://www.public.iastate.edu/~CYBERSTACKS/WikiBib.htm}{http://www.public.iastate.edu/~CYBERSTACKS/WikiBib.htm}} y blogs. Un ejemplo bastante completo de este último tipo es SWEETpedia,\footnote{\href{http://www.mkbergman.com/sweetpedia/}{http://www.mkbergman.com/sweetpedia/}} que contiene publicaciones sobre wikis y semántica. Uno de los inconvenientes de este sistema es que el esfuerzo suele recaer sobre una única persona y los metadatos no son fácilmente exportables. En WikiPapers el trabajo se hace colaborativamente y todos los metadatos son fácilmente exportables en diversos formatos.
+
+\subsection{Gestores bibliográficos}
+
+\subsubsection{En servidores propios}
+Se han empleado gestores bibliográficos como WIKINDX\footnote{\href{http://sourceforge.net/projects/wikindx/}{http://sourceforge.net/projects/wikindx/}} creando portales propios como Wikibibliographie ENCYCLEN\footnote{\href{http://wikindx.inrp.fr/biblio_encyclen/}{http://wikindx.inrp.fr/biblio\_encyclen/}} y otros ya desaparecidos, pero como contrapartida decidieron restringir la edición a un círculo de usuarios aprobados. Sin embargo, en WikiPapers pueden participar tanto usuarios registrados como sin registrar.
+
+%\href{http://toolserver.org/~voj/bibliography/}{http://toolserver.org/~voj/bibliography/}
+%\href{http://wikiindex.org/Wiki_Research_Bibliography}{http://wikiindex.org/Wiki\_Research\_Bibliography}
+
+\subsubsection{Servicios web y redes sociales}
+Existen servicios web y redes sociales con recopilaciones de literatura sobre wikis, en Zotero,\footnote{\href{https://www.zotero.org/groups/wikipedia_research}{https://www.zotero.org/groups/wikipedia\_research}} BibSonomy\footnote{\href{http://www.bibsonomy.org/tag/wikipedia}{http://www.bibsonomy.org/tag/wikipedia}} \footnote{\href{http://www.bibsonomy.org/tag/wiki}{http://www.bibsonomy.org/tag/wiki}} y CiteULike.\footnote{\href{http://www.citeulike.org/tag/wikipedia}{http://www.citeulike.org/tag/wikipedia}}\footnote{\href{http://www.citeulike.org/tag/wiki}{http://www.citeulike.org/tag/wiki}}\footnote{\href{http://www.citeulike.org/group/382}{http://www.citeulike.org/group/382}} Este enfoque sí hace uso de una comunidad de usuarios para procesar las publicaciones, pero de nuevo requieren registrarse, y la capacidad de estos servicios para aprovechar los metadatos generando tablas o gráficos es inexistente.
+
+\subsection{Recopilaciones en Wikipedia}
+También existen listados de publicaciones y recursos en algunas Wikipedias, como en la versión alemana\footnote{\href{http://de.wikipedia.org/wiki/Wikipedia:Wikipedistik/Bibliographie}{http://de.wikipedia.org/wiki/Wikipedia:Wikipedistik\\ /Bibliographie}} y la inglesa\footnote{\href{http://en.wikipedia.org/wiki/Wikipedia:Academic_studies_of_Wikipedia}{http://en.wikipedia.org/wiki/Wikipedia:Academic\\ \_studies\_of\_Wikipedia}}. El principal inconveniente de este enfoque es que no es posible jugar con los datos dentro del mismo wiki, al estar todo escrito como texto plano, sin enriquecimiento semántico. En WikiPapers todos los metadatos son propiedades semánticas, tanto en las llamadas \emph{infoboxes} (tablas) como en el cuerpo del artículo.
+
+\subsection{Revisiones de literatura}
+Finalmente, se han realizado varias revisiones de literatura con diferente grado de exhaustividad. La primera de ellas ~\citep{voss2005} se hizo en un momento en el que las publicaciones eran escasas, pero ya se podía ver una tendencia de publicación creciente y la presencia de muchas preguntas por responder. Un año más tarde ~\citep{ayers2006} vuelve a hacer un repaso a la literatura existente y enumera aquellas áreas que han recibido interés: historiales, páginas de discusión, contenido de los artículos, políticas del sitio, citas a artículos, encuestas a usuarios y listas de correo.
+
+No sería hasta 3 años después cuando \cite{okoli2009b} presentan una propuesta de protocolo para hacer un mapeo sistemático de la literatura sobre Wikipedia, indicando la existencia de más de 1.000 publicaciones y ese mismo año \cite{okoli2009} analiza el estado del arte. Dos años más tarde, \cite{nielsen2011} hace la mayor revisión de literatura en un documento de más de 50 páginas, en progreso e inacabado, que incluye 300 referencias a publicaciones y reincide en la existencia de 1.000 publicaciones sobre el tema.
+
+\cite{martin2011} hace primero un repaso técnico a la estructura de la base de datos (páginas, usuarios, texto), luego se centra en las áreas de calidad y acaba con unas consideraciones filosóficas.
+
+\cite{okoli2012} hacen una revisión de la literatura y han creado un wiki reutilizando las plantillas, formularios, semántica y estructura de WikiPapers. Están trabajando en el análisis de un subconjunto de la literatura, en este caso la relativa a Wikipedia exclusivamente. Es un proyecto temporal y pretenden incorporar sus resultados a WikiPapers.
+
+La revisión más reciente \cite{jullien2012} hace un repaso por las motivaciones para contribuir, roles, estructura, la vida de un artículo, calidad, experiencia de usuario y accesibilidad, entre otros.
+
+Uno de los inconvenientes de estas revisiones de literatura es que quedan rápidamente desactualizadas debido al ritmo con el que aparecen nuevas publicaciones. WikiPapers es actualizado continuamente por su comunidad de voluntarios.
 
 \section{Objetivos}
 
-Hacer un estado del arte
+Entre los objetivos de este proyecto de investigación se encuentran:
 
+\begin{enumerate}
+\item Idear un sistema o adaptar alguno existente que permita recopilar literatura sobre wikis, superando las carencias de los enfoques usados anteriormente
+\item Deberá permitir añadir, eliminar y modificar metadatos bibliográficos fácilmente
+\item Usará características de la web semántica para poder sacar el máximo provecho posible a los metadatos
+\item Que tenga licencia libre (por tanto los contenidos serán reutilizables por terceros) y facilitar la adquisición y exportado de los metadatos
+\item Realizar un estado del arte haciendo uso de este sistema
+\end{enumerate}
 
 \section{Definiciones, acrónimos y abreviaturas}
 
-Mirar las que definí en mi PFC y meter otras más nuevas
+%Mirar las que definí en mi PFC y meter otras más nuevas
+
+A continuación se incluyen algunas \textbf{definiciones, acrónimos y abreviaturas} que facilitan la comprensión de este trabajo.
 
 \textbf{Administrador}: Persona que se dedica al mantenimiento de un sistema o red. En Wikipedia hace referencia a aquellos usuarios que pueden borrar/restaurar páginas, bloquear/desbloquear usuarios y proteger/desproteger páginas.
 
@@ -90,7 +136,7 @@ Mirar las que definí en mi PFC y meter otras más nuevas
 
 \textbf{Etiqueta}: También conocida como netiquette, son una serie de normas de convivencia en comunidades en línea.
 
-\textbf{Expresión regular}: Patrones que describen cadenas.
+\textbf{Expresión regular}: Patrón que describe una o varias cadenas.
 
 \textbf{Fork}: Bifurcación de un proyecto en dos distintos.
 
@@ -135,23 +181,16 @@ Mirar las que definí en mi PFC y meter otras más nuevas
 \textbf{Wikifarm}: sitio que ofrece hosting para wikis.
 
 
+\section{WikiPapers}
+
+%descripción del proyecto
+
+
 \section{Estado del arte}
 
-Áreas de investigación \href{http://wikipapers.referata.com/wiki/List_of_research_areas}{http://wikipapers.referata.com/wiki/List\_of\_research\_areas}
+%Áreas de investigación \href{http://wikipapers.referata.com/wiki/List_of_research_areas}{http://wikipapers.referata.com/wiki/List\_of\_research\_areas}
 
-Explicar un poco WikiPapers.
-
-Se han realizado varias revisiones de literatura con diferente grado de exhaustividad. La primera de ellas ~\citep{voss2005} se hizo en un momento en el que las publicaciones eran escasas, pero ya se podía ver una tendencia de publicación creciente y la presencia de muchas preguntas por responder. Un año más tarde ~\citep{ayers2006} vuelve a hacer un repaso a la literatura existente y enumera aquellas áreas que han recibido interés: historiales, páginas de discusión, contenido de los artículos, políticas del sitio, citas a artículos, encuestas a usuarios y listas de correo.
-
-No sería hasta 3 años después cuando \cite{okoli2009b} presentan una propuesta de protocolo para hacer un mapeo sistemático de la literatura sobre Wikipedia, indicando la existencia de más de 1.000 publicaciones y ese mismo año \cite{okoli2009} analiza el estado del arte. Dos años más tarde, \cite{nielsen2011} hace la mayor revisión de literatura en un documento de más de 50 páginas, en progreso e inacabado, que incluye 300 referencias a publicaciones y reincide en la existencia de 1.000 publicaciones sobre el tema.
-
-\cite{martin2011} hace primero un repaso técnico a la estructura de la base de datos (páginas, usuarios, texto), luego se centra en las áreas de calidad y acaba con unas consideraciones filosóficas.
-
-\cite{okoli2012} (the WikiLit review) es una revisión de literatura sobre Wikipedia exclusivamente, unas 450 publicaciones. Reutilizan las plantillas, formularios, semántica y estructura de WikiPapers. Pretenden incorporar sus resultados a WikiPapers en algún momento.
-
-La revisión más reciente \cite{jullien2012} hace un repaso por las motivaciones para contribuir, roles, estructura, la vida de un artículo, calidad, experiencia de usuario y accesibilidad, entre otros.
-
-Uno de los inconvenientes de estas revisiones de literatura es que quedan rápidamente desactualizadas debido al ritmo con el que aparecen nuevas publicaciones. WikiPapers es actualizado continuamente por su comunidad de voluntarios.
+A continuación se realiza un repaso de la literatura, dividiendo el estudio de los wikis en una serie de parcelas bien definidas.
 
 \subsection{Autoría y calidad}
 
@@ -395,9 +434,9 @@ SWEETpedia
 
 Bots y algoritmos, flaggedrevs, abusefilter, extensiones anti-spam
 
-~\citep{avbot2011}
-~\citep{avbot2010}
-~\citep{avbot2009}
+ \citep{avbot2011}
+ \citep{avbot2010}
+ \citep{avbot2009}
 
 \subsection{Visualización}
 
@@ -406,7 +445,7 @@ WikiViz y todas las herramientas de visualización...
 
 \subsection{Wikifarms}
 
-~\citep{kittur2010}
+ \citep{kittur2010}
 
 \subsection{Wikis como redes sociales}
 
