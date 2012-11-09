@@ -1,3 +1,5 @@
+% revisar que haya referencias en todas las secciones
+
 \documentclass[11pt,onecolumn]{article}
 \setlength{\columnsep}{0.5cm}
 
@@ -485,27 +487,26 @@ Aunque MediaWiki sea el motor wiki más conocido y utilizado, hay muchos otros. 
 
 Existe un portal que enumera a la mayoría de ellos, llamado WikiMatrix\footnote{\href{http://www.wikimatrix.org}{http://www.wikimatrix.org}}. Contiene información acerca de más de 125 motores wiki y permite hacer comparaciones sobre la presencia o carencia de funcionalidades. Las características se organizan en las siguientes categorías: generales, requisitos del sistema, almacenamiento, seguridad y anti-spam, desarrollo y soporte, funcionalidades comunes y especiales, tipos de enlaces permitidos, sintaxis, usabilidad, estadísticas, formatos de salida, ficheros permitidos y funciones extra.
 
-\subsection{Predicción}
+\subsection{Predicción y tendencias}
 
-%http://arxiv.org/abs/1211.0970
+Wikipedia se ha constituido como una fuente de consulta de primer orden. Cuando ocurre algún suceso de gran envergadura (desastres, eventos deportivos, fallecimientos de famosos) inmediatamente se ve reflejado en el número de visitas y ediciones a los artículos relacionados.
 
-Wikipedia se ha constituido como una fuente de consulta... cuando sucede algún suceso de gran envergadura (desastres, eventos deportivos, fallecimientos de famosos), se ve reflejado en el número de visitas y ediciones a los artículos relacionados.
+Se han desarrollado sistemas que detectan esta tendencias y evaluan las subidas repentinas de actividad, mostrando los artículos que más interés han atraido en las últimas horas o días \citep{osborne2012}. También herramientas que evaluando las preferencias de los usuarios, les muestran aquellos temas candentes \citep{ciglan2010}.
+
 %http://wikipapers.referata.com/wiki/Seeking_health_information_online:_does_Wikipedia_matter%3F
-%http://wikipapers.referata.com/wiki/Bieber_no_more:_First_Story_Detection_using_Twitter_and_Wikipedia
-%http://wikipapers.referata.com/wiki/WikiPop_-_Personalized_Event_Detection_System_Based_on_Wikipedia_Page_View_Statistics
 
-
-%http://rb.imm.dtu.dk/base/c/Lundbeck http://rb.imm.dtu.dk/base/c/
+La magnitud de Wikipedia, la rapidez de actualización de sus contenidos y la gran cobertura que tiene para la práctica totalidad de temas de relevancia, la hacen una fuente de conocimiento estructurado de gran valor. Se están desarrollando algunos experimentos para utilizarla para predicciones, por ejemplo para preveer recaudaciones en taquilla \citep{mestyan2012}. Otros ejemplos incluyen el intento de intuir movimientos en los mercados financieros a través de Wikipedia.\footnote{\href{http://rb.imm.dtu.dk/base/c/}{http://rb.imm.dtu.dk/base/c/} y \href{http://rb.imm.dtu.dk/base/c/Lundbeck}{http://rb.imm.dtu.dk/base/c/Lundbeck}}
 
 \subsection{Preservación}
 
-%importancia
+Existe claramente un antes y un después en la generación y publicación de contenidos en Internet desde la invención del primer software wiki y de la creación de Wikipedia en 2001. Todo este contenido producido por millones de usuarios distribuidos por todo el planeta necesita ser preservado, no solo por su valor en conocimiento sino también por ser parte ya de la historia de Internet.
 
-%quienes lo hacen? WP y pocos mas...
+Proyectos wiki grandes y muy comprometidos con el conocimiento libre como Wikipedia publican copias de seguridad de todos sus artículos e historiales completos. Esto facilida la difusión y preservación para al posteridad. En cambio otros proyectos wiki más reducidos, pero muy numerosos, no tienen por costumbre publicar copias para descarga de sus contenidos.
 
-%dificultades de preservar historiales (diferencia con preservar webs normales)
+Existen algunas dificultades a la hora de preservar los historiales completos y otros metadatos generados en los wikis. Por ello ciertas herramientas o servicios como Internet Archive o WebCitation no funcionan bien en estos casos. Llamativamente no han habido muchos esfuerzos por cambiar la situación en este tema.
 
 %urobe
+\citep{popitsch2010}
 
 %revisar el paper de wikiteam
 
@@ -559,11 +560,12 @@ Se han empleado diferentes enfoques para contrarestar estos efectos negativos. S
 Obviamente, las soluciones que requiere intervención humana son herramientas con nula o escasa «inteligencia» o algoritmia. Donde se ha desarrollado una mayor labor investigadora, aunque aun limitada, es en el desarrollo de herramientas automáticas, que recorren los cambios recientes del wiki y revierten de manera autónoma cuando detectan un cambio dañino.
 
 %PAN/CLEF
+CLEF/PAN Lab es un congreso que ha centrado algunas de sus ediciones en la detección de vandalismos en wikis. Publicando un dataset con modificaciones marcadas como vandalismo y otras como benignas, invitaba a desarrollar algoritmos que aprendiendo de estos casos de entreamiento, fueran capaces de detectar futuros casos de vandalismo.
 
-%Bots y algoritmos
+%comentar un poco que características se han demostrado más útiles para detectar vandalismo
 
 %datasets de vandalismo
-
+El entrenamiento de algoritmos se basa como hemos comentado en datasets que contienen casos positivos y negativos. Lo que sucede es que es necesario que un humano haga esta categorización de antemano. Existe interés en desarrollar datasets utilizando los historiales de Wikipedia como fuente de casos positivos y negativos, a partir de las reversiones que hacen humanos \citep{west2010}.
 
  \citep{avbot2011}
  \citep{avbot2010}
