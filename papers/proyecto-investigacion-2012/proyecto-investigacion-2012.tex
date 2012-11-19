@@ -74,6 +74,10 @@ Se han empleado gestores bibliográficos como WIKINDX\footnote{\href{http://sour
 \subsubsection{Servicios web y redes sociales}
 Existen servicios web y redes sociales con recopilaciones de literatura sobre wikis, en Zotero,\footnote{\href{https://www.zotero.org/groups/wikipedia_research}{https://www.zotero.org/groups/wikipedia\_research}} BibSonomy\footnote{\href{http://www.bibsonomy.org/tag/wikipedia}{http://www.bibsonomy.org/tag/wikipedia}} \footnote{\href{http://www.bibsonomy.org/tag/wiki}{http://www.bibsonomy.org/tag/wiki}} y CiteULike.\footnote{\href{http://www.citeulike.org/tag/wikipedia}{http://www.citeulike.org/tag/wikipedia}}\footnote{\href{http://www.citeulike.org/tag/wiki}{http://www.citeulike.org/tag/wiki}}\footnote{\href{http://www.citeulike.org/group/382}{http://www.citeulike.org/group/382}} Este enfoque sí hace uso de una comunidad de usuarios para procesar las publicaciones, pero de nuevo requieren registrarse, y la capacidad de estos servicios para aprovechar los metadatos generando tablas o gráficos es inexistente.
 
+\subsection{Buscadores}
+Google Scholar,\footnote{\href{http://scholar.google.es}{http://scholar.google.es}} con buena cobertura, carece de representaciones visuales y no permite comentarios. Microsoft Academic Search\footnote{\href{http://academic.research.microsoft.com}{http://academic.research.microsoft.com}} es gráficamente muy bueno, pero excluye material relacionado como datasets o herramientas. La capacidad de dar contexto a las publicaciones en WikiPapers de forma manual no puede ser superada por un buscador
+automático típico.
+
 \subsection{Recopilaciones en Wikipedia}
 También existen listados de publicaciones y recursos en algunas Wikipedias, como en la versión alemana\footnote{\href{http://de.wikipedia.org/wiki/Wikipedia:Wikipedistik/Bibliographie}{http://de.wikipedia.org/wiki/Wikipedia:Wikipedistik\\ /Bibliographie}} y la inglesa\footnote{\href{http://en.wikipedia.org/wiki/Wikipedia:Academic_studies_of_Wikipedia}{http://en.wikipedia.org/wiki/Wikipedia:Academic\\ \_studies\_of\_Wikipedia}}. El principal inconveniente de este enfoque es que no es posible jugar con los datos dentro del mismo wiki, al estar todo escrito como texto plano, sin enriquecimiento semántico. En WikiPapers todos los metadatos son propiedades semánticas, tanto en las llamadas \emph{infoboxes} (tablas) como en el cuerpo del artículo.
 
@@ -195,7 +199,7 @@ A continuación se incluyen algunas \textbf{definiciones, acrónimos y abreviatu
 
 WikiPapers\footnote{\href{http://wikipapers.referata.com}{http://wikipapers.referata.com}} fue lanzado en abril de 2011 (Figura~\ref{fig:wpfull}). Haciendo uso de MediaWiki y su extensión semántica, recopila de manera colaborativa información acerca de toda la literatura sobre wikis, así como de herramientas y \emph{datasets} relacionados. No hace falta estar registrado para participar, aunque es recomendable.
 
-WikiPapers agrupa todas las ventajas de los sistemas mencionados anteriormente y soluciona sus inconvenientes. Permite hacer listados específicos de publicaciones, similares a SWEETpedia: por poner un ejemplo, existe uno de revisiones de literatura.\footnote{\href{http://wikipapers.referata.com/wiki/List_of_literature_reviews}{http://wikipapers.referata.com/wiki/List\_of\\ \_literature\_reviews}} Funciona como un gestor bibliográfico, al almacenar los metadatos de las publicaciones y permitir hacer búsquedas, filtrarlos o exportarlos, individualmente o en conjunto. También facilita que grupos de usuarios se comuniquen a través de las páginas de discusión y compartan información sobre publicaciones de su interés, funcionando como una red social. Por otro lado, el espacio de discusión debajo de cada página posibilita a los lectores hacer valoraciones de los artículos. Y al ser un wiki, puede ser constantemente mejorado, evitando quedar desactualizado debido al rápido ritmo de publicación.
+WikiPapers agrupa todas las ventajas de los sistemas mencionados anteriormente y soluciona sus inconvenientes. Permite hacer listados específicos de publicaciones, similares a SWEETpedia: por poner un ejemplo, existe uno de revisiones de literatura.\footnote{\href{http://wikipapers.referata.com/wiki/List_of_literature_reviews}{http://wikipapers.referata.com/wiki/List\_of\_literature\_reviews}} Funciona como un gestor bibliográfico, al almacenar los metadatos de las publicaciones y permitir hacer búsquedas, filtrarlos o exportarlos, individualmente o en conjunto. También facilita que grupos de usuarios se comuniquen a través de las páginas de discusión y compartan información sobre publicaciones de su interés, funcionando como una red social. Por otro lado, el espacio de discusión debajo de cada página posibilita a los lectores hacer valoraciones de los artículos. Y al ser un wiki, puede ser constantemente mejorado, evitando quedar desactualizado debido al rápido ritmo de publicación.
 
 Desde un punto de vista más estadístico, es posible generar gráficas y tablas a partir de los metadatos disponibles en WikiPapers, aprovechando así la capacidad que ofrece la semántica. Gráficos de barras, circulares o líneas temporales están presentes y facilitan la visualización y comprensión de la información. También existe la posibilidad de incrustar diapositivas (SlideShare) y vídeos (YouTube, Vimeo).
 
@@ -208,6 +212,40 @@ Finalmente, el wiki y sus historiales están disponibles tanto para su descarga 
 \label{fig:wpfull}
 \end{figure}
 
+En WikiSym 2011 tuvo lugar un workshop\citep{ayers2011} donde se discutió acerca de qué requisitos debía cumplir un hipotético sistema que recopilara literatura sobre wikis (Tabla~\ref{tab:reqwikisym11}). WikiPapers los cubre en su totalidad.
+
+\begin{table}[htb]
+\centering
+\begin{tabular}{| c | c |}
+\hline
+\textbf{Característica} & \textbf{¿Lo ofrece WikiPapers?} \\
+\hline
+Editable & Sí, es un MediaWiki \\ \hline 
+Listas/Grupos & Sí \\ \hline 
+Seguimiento/RSS & Sí \\ \hline 
+Ver páginas nuevas & Sí, ordenando por fecha \\ \hline 
+Categorías/Tags & Sí \\ \hline 
+Papers relacionados & Sí \\ \hline 
+Referencias/Citas & Sí \\ \hline 
+Conferencia/Journal & Sí, tesis y otros \\ \hline 
+Peer-reviewed o no & Sí, con un campo \\ \hline 
+Importar/Exportar & BibTeX/CSV/RDF/JSON \\ \hline 
+Usabilidad & Buena, Semantic Forms \\ \hline 
+API & Sí \\ \hline 
+Datasets & Sí \\ \hline 
+Enlaces & Sí \\ \hline 
+Trabajo futuro & Sí, preguntas abiertas \\ \hline 
+Free/Libre & Sí, excepto abstracts \\ \hline 
+Compatibilidad & RDF/Texto plano \\ \hline 
+Licencia de papers & Sí \\ \hline 
+Material relacionado & Sí \\ \hline 
+Stars/Comentarios & Sí \\ \hline 
+No wikitexto & Oculto, Semantic Forms \\ \hline 
+\end{tabular}
+\caption{Requisitios sugeridos en WikiSym}
+\label{tab:reqwikisym11}
+\end{table}
+
 \subsection{Publicaciones}
 En WikiPapers cada publicación dispone de una página en la que se detallan todos sus metadatos (título, autores, palabras clave, año, revista o congreso, DOI, idioma, licencia, enlaces al fichero y motores de búsqueda), el abstract, las referencias que incluye, las citas que recibe y un espacio de discusión. Los metadatos sirven para hacer búsquedas y filtrar. A noviembre de 2012 ya se dispone de más de 1.700 publicaciones,\footnote{\href{http://wikipapers.referata.com/wiki/List_of_publications}{http://wikipapers.referata.com/wiki/List\_of\_publications}} incluyendo artículos de revistas y congresos, tesis y libros. Todos los metadatos se pueden exportar en los formatos BibTeX, RDF, CSV y JSON.
 
@@ -215,7 +253,14 @@ En WikiPapers cada publicación dispone de una página en la que se detallan tod
 Existe un listado de todas las palabras clave\footnote{\href{http://wikipapers.referata.com/wiki/List_of_keywords}{http://wikipapers.referata.com/wiki/List\_of\_keywords}} presentes en los artículos y cada una de ellas cuenta con varios términos relacionados, lo que permite navegar entre ellas. Las más frecuentes son: Wikipedia, wiki, semantic wiki, web 2.0, collaboration, evaluation, collaborative learning, knowledge management, MediaWiki, motivation, data mining y conflict. 
 
 \subsection{Autores}
-Para cada autor hay una ficha que incluye su nombre, afiliación, país, índice de coautores, página web, estadísticas sobre número de publicaciones y citas, y por supuesto un listado de publicaciones, \emph{datasets} y herramientas de su creación. Ya están listados unos 1.000 autores.\footnote{\href{http://wikipapers.referata.com/wiki/List_of_authors}{http://wikipapers.referata.com/wiki/List\_of\_authors}}
+Para cada autor hay una ficha que incluye su nombre, afiliación, país, índice de coautores, página web, estadísticas sobre número de publicaciones y citas, y por supuesto un listado de publicaciones, \emph{datasets} y herramientas de su creación. Ya están listados unos 1.000 autores (Figura~\ref{fig:autores-tarta}).\footnote{\href{http://wikipapers.referata.com/wiki/List_of_authors}{http://wikipapers.referata.com/wiki/List\_of\_authors}}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.6\textwidth]{autores-tarta.png}
+\caption{Autores para los que se conoce su nacionalidad.}
+\label{fig:autores-tarta}
+\end{figure}
 
 \subsection{Datasets}
 Un listado de \emph{datasets}\footnote{\href{http://wikipapers.referata.com/wiki/List_of_datasets}{http://wikipapers.referata.com/wiki/List\_of\_datasets}} permite observar la gran cantidad de datos sobre comunidades wiki disponibles para analizar. Existen \emph{datasets} sobre vandalismo, texto wiki enriquecido con semántica, datos extraidos de \emph{infoboxes}, \emph{logs} anonimizados de visitas, mensajes de listas de correo y por supuesto los historiales de Wikipedia.
