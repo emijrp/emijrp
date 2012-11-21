@@ -279,17 +279,17 @@ También se está recopilando información sobre revistas, congresos, eventos, c
 
 %Áreas de investigación \href{http://wikipapers.referata.com/wiki/List_of_research_areas}{http://wikipapers.referata.com/wiki/List\_of\_research\_areas}
 
-A continuación presentamos el \textbf{estado del arte} de la investigación sobre wikis. No incluye todas las publicaciones posibles (para eso está WikiPapers disponible para consultas exhaustivas) pero sí lo más importante. WikiPapers dispone actualmente de más de 1700 publicaciones sobre wikis y se han encontrado haciendo búsquedas de la siguiente forma:
+A continuación presentamos el \textbf{estado del arte} de la investigación sobre wikis haciendo uso de WikiPapers. No incluye todas las publicaciones posibles (está disponible en línea para consultas exhaustivas) pero sí los resultados más importantes hasta ahora, descartando experiencias duplicadas y otras que han quedado desfasadas. WikiPapers dispone actualmente de más de 1700 publicaciones sobre wikis que se han hallado de la siguiente manera:
 \begin{itemize}
 \item \textbf{Términos de búsqueda:}  wiki, Wikipedia, Wiktionary, Wikibooks, Wikiversity, Wikiquote, Wikisource, Wikinews, Wikispecies, MediaWiki, Wikimedia, wikifarm.
-\item \textbf{Zonas del texto buscadas:} título, abstract y palabras clave.
+\item \textbf{Zonas de búsqueda:} título, abstract y palabras clave.
 \item \textbf{Servicios utilizados:} bases de datos (Scopus), buscadores (Google Scholar), redes sociales (Bibsonomy, CiteULike, CiteSeerX, Zotero) y repositorios de pre-prints (arXiv).
-\item \textbf{Fecha:} las búsquedas abarcaban desde 2001 hasta 2012.
+\item \textbf{Fecha:} las búsquedas abarcan desde 2001 hasta 2012.
 \end{itemize}
 
-Ha requerido un esfuerzo de eliminación de duplicados y errores. Se escogieron esos servicios por ser los más completos, aunque seguimos en búsqueda de otros y añadiendo los papers que salen nuevos. También se han creado páginas para los autores, datasets y herramientas relacionadas.
+Ha requerido un esfuerzo de eliminación de algunos resultados no relacionados directamente con los wikis. Se escogieron los servicios enumerados por ser los más completos, aunque seguimos en búsqueda de otros y añadiendo las nuevas publicaciones que salen cada mes. En WikiPapers también se han creado páginas para los autores, \emph{datasets} y herramientas relacionadas, a los que también les dedicamos una sección.
 
-Agrupando las publicaciones en una serie de categorías temáticas hemos conseguido dividir el estado del arte en las siguientes secciones bien definidas.
+Agrupando las publicaciones por categorías temáticas hemos conseguido dividir el estado del arte en las siguientes áreas bien definidas.
 
 \subsection{Autoría y calidad}
 
@@ -591,6 +591,10 @@ WikiTeam\footnote{\href{http://code.google.com/p/wikiteam/}{http://code.google.c
 
 \subsection{Semántica}
 
+%semantic mediawiki
+
+%referata
+
 %SWEETpedia
 
 \subsection{Usabilidad}
@@ -599,7 +603,7 @@ WikiTeam\footnote{\href{http://code.google.com/p/wikiteam/}{http://code.google.c
 
 %intentos por mejorar la usabilidad para atraer más usuarios
 
-% 
+%
 
 \subsection{Vandalismo y spam}
 
@@ -635,18 +639,31 @@ El entrenamiento de algoritmos se basa como hemos comentado en datasets que cont
 
 \subsection{Visualización}
 
-La gran cantidad de datos disponible sobre wikis y su libre reutilización hacen posible la aparición de numerosas herramientas de visualización.
+La gran cantidad de datos disponible sobre wikis públicamente y sus licencias que permiten la libre reutilización hacen necesaria y posible la aparición de numerosas herramientas de visualización.
 
 %WikiViz
+En 2011 tuvo lugar WikiViz, una competición que premiaba a los mejores trabajos que lograran visualizar el impacto de Wikipedia en la sociedad.
 
-%todas las herramientas de visualización...
+%comentar las herramientas de visualización que hay (aunque ya están en la tabla)...
 
 
 \subsection{Wikifarms}
 
 %http://wikipapers.referata.com/wiki/List_of_research_areas#Wiki_engines
 
- \citep{kittur2010}
+El concepto wiki, como sitio web que permite a los usuarios consultar y modificar sus contenidos, lo creó Ward Cunningham en 1996. En 2001 se fundó Wikipedia y desde entonces esta forma de generar contenido colaborativamente se ha popularizado. El motor wiki más utilizado es MediaWiki, pero existen muchos más, entorno a los 100, la mayoría de ellos muy desconocidos.
+
+Los usuarios de Wikipedia pronto se dieron cuenta de que, debido a las políticas de notabilidad y verificabilildad, había muchos contenidos que pudiéndose aprovechar del sistema wiki, no tenían cabida en la enciclopedia libre. Dado que MediaWiki es software libre, pronto aparecieron otros sitios web que haciendo uso de este motor, animaba a sus usuarios a generar contenido colaborativamente sobre los temas más variopintos.
+
+Un paso más se dio cuando aparecieron las conocidas como \textbf{wikifarms} que no son más que \emph{hostings} que facilitan al usuario la creación de sitios similares a Wikipedia, aislándote de todo el proceso de instalación en el servidor de las herramientas. En una wikifarm, con solo registrarte, dispones de un wiki listo para volcar material y mejorarlo con una comunidad.
+
+Entre las wikifarms más conocidas se encuentra Wikia, pero existen otras como EditThis, ShoutWiki, TropicalWikis y Wikkii. También existe una especializada en wikis semánticos, Referata.
+
+Uno de los inconvenientes de usar una wikifarm es que normalmente no se tiene acceso directo a la base de datos donde se almacenan todos los contenidos o al directorio donde se guardan las imágenes subidas. Esto supone, para el usuario externo, graves dificultades a la hora de hacer una copia de seguridad del wiki en cuanto tiene unos cientos de páginas e imágenes, ya que hace impracticable el guardar local y manualmente una copia de cada página.
+
+Existen casos de wikifarms que han tenido problemas en el servidor, y dada la ausencia de copias de seguridad en el mismo y a la imposibilidad práctica de que los usuarios la hicieran para ellos mismos, han perdido todos los datos. En 2011 se fundó un proyecto llamado WikiTeam que ha desarrollado herramientas que recorren un wiki dado y descarga todos los contenidos, historiales e imágenes. Esta solución supone un gran avance en cuanto a la preservación de contenido wiki en Internet y reduce las inseguridades a la hora de utilizar una wikifarm para un proyecto propio.
+
+En cuanto a la investigación de wikifarms, existe muy poco trabajo hecho hasta el momento. \citep{kittur2010} hizo un análisis de 6000 wikis de Wikia, pero es poco frecuente ver estudios sobre otros wikis distintos a Wikipedia, cosa que debería ir cambiando con el tiempo si realmente se quiere tener una visión completa y no sesgada a la hora de analizar comunidades wiki de Internet.
 
 \subsection{Wikis como redes sociales}
 
