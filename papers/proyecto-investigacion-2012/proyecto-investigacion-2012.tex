@@ -624,7 +624,7 @@ Se han empleado diferentes enfoques para contrarestar estos efectos negativos. S
 \item \textbf{Soluciones específicas:} cuando hay muchas ediciones de un mismo usuario que revertir o muchas páginas que borrar debido a un ataque. Ejemplo: Rollbacker, la extensión Nuke.
 \end{enumerate}
 
-Obviamente, las soluciones que requiere intervención humana son herramientas con nula o escasa «inteligencia» o algoritmia. Donde se ha desarrollado una mayor labor investigadora, aunque aun limitada, es en el desarrollo de herramientas automáticas, que recorren los cambios recientes del wiki y revierten de manera autónoma cuando detectan un cambio dañino.
+Obviamente, las soluciones que requiere intervención humana son herramientas con nula o escasa «inteligencia» o algoritmia. Donde se ha desarrollado una mayor labor investigadora, aunque aun limitada, es en el desarrollo de herramientas automáticas que recorren los cambios recientes del wiki y revierten de manera autónoma cuando detectan un cambio dañino. Ejemplos de estos sistemas que llevan funcionando algunos años incluyen AVBOT \citep{avbot2009, avbot2010} en Wikipedia en español y ClueBot \citep{carter2008} en Wikipedia en inglés.
 
 %PAN/CLEF
 CLEF/PAN Lab es un congreso que ha centrado algunas de sus ediciones en la detección de vandalismos en wikis. Publicando un dataset con modificaciones marcadas como vandalismo y otras como benignas, invitaba a desarrollar algoritmos que aprendiendo de estos casos de entreamiento, fueran capaces de detectar futuros casos de vandalismo.
@@ -633,9 +633,6 @@ CLEF/PAN Lab es un congreso que ha centrado algunas de sus ediciones en la detec
 
 %datasets de vandalismo
 El entrenamiento de algoritmos se basa como hemos comentado en datasets que contienen casos positivos y negativos. Lo que sucede es que es necesario que un humano haga esta categorización de antemano. Existe interés en desarrollar datasets utilizando los historiales de Wikipedia como fuente de casos positivos y negativos, a partir de las reversiones que hacen humanos \citep{west2010}.
-
- \citep{avbot2010}
- \citep{avbot2009}
 
 \subsection{Visualización}
 
@@ -653,15 +650,15 @@ Entre las herramientas de visualización con mayor éxito en su momento fue Hist
 %StatMediaWiki
 Para wikis con pocos usuarios y páginas StatMediaWiki\footnote{\href{http://statmediawiki.forja.rediris.es}{http://statmediawiki.forja.rediris.es}} ofrece una gran cantidad de análisis. Mediante tablas y gráficas muestra la actividad por usuario, página y grupos de páginas. Se ha utilizado para evaluar el trabajo de alumnos en wikis de asignaturas universitarias \citep{rodriguez2011, palomoile2012, palomorevision2012, palomorusc2012}.
 
-%Wiki Trip
-
 %Wikistream
 Para poder observar cuál es el ritmo de actividad de Wikipedia existen diversas herramientas, pero Wikistream\footnote{\href{http://wikistream.inkdroid.org}{http://wikistream.inkdroid.org}} es una que comple muy bien su cometido. Permite filtrar las modificaciones de usuarios registrados, anónimos y bots, también por idioma y espacio de nombres.
 
 %Wmcharts
-
+%Wiki Trip
+%WikiVis
 %WikiViz
-Cada año que pasa están disponibles nuevos conjuntos de datos y los que había con anterioridad crecen en tamaño. En 2011 tuvo lugar WikiViz, una competición que premiaba a los mejores trabajos que lograran visualizar el impacto de Wikipedia en la sociedad, lo que muestra el gran interés que hay en este sentido.
+
+Existen muchas otras como wmcharts, WikiTrip, WikiVis, Wikitweets, etc. Cada año que pasa están disponibles nuevos conjuntos de datos y los que había con anterioridad crecen en tamaño. En 2011 tuvo lugar WikiViz, una competición que premiaba a los mejores trabajos que lograran visualizar el impacto de Wikipedia en la sociedad, lo que muestra el gran interés que hay en este sentido.
 
 \subsection{Wikifarms}
 
