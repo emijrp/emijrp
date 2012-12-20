@@ -26,40 +26,46 @@ raw = urllib.urlopen(rss).read()
 lastvideoid = re.findall(ur"(?im)<link>http://bambuser\.com/v/(\d+)</link>", raw)[0]
 
 videoids = []
+lengths = []
 c = 0
 pageurl = "http://bambuser.com/v/%s?page_profile_more_user=" % (lastvideoid)
 raw2 = urllib.urlopen(pageurl).read()
 limit = int(re.findall(ur"(?im)page_profile_more_user=\d+\">(\d+)</a></li></ul>", raw2)[0])
 print 'Scraping videos from %d pages' % (limit)
-while c < 1:
+while c < limit:
     pageurl2 = pageurl + str(c)
     raw3 = urllib.urlopen(pageurl2).read()
     videoids += re.findall(ur"(?im)<a class=\"preview-wrapper\" href=\"http://bambuser.com/v/(\d+)\">", raw3)
+    lengths += re.findall(ur"(?im)<div class=\"preview-length\"><span>([^<]*?)</span></div>", raw3)
     c += 1
 
 print 'Loaded ids for %d videos' % (len(videoids))
 
 videos = {}
+c = 0
 for videoid in videoids:
-    print 'Loading metadata for video %s' % (videoid)
+    #print 'Loading metadata for video %s' % (videoid)
     videourl = "http://bambuser.com/v/%s" % (videoid)
     raw4 = urllib.urlopen(videourl).read()
     title = re.findall(ur"<span class=\"title\" title=\"([^>]*?)\"></span>", raw4)
-    length = ''
+    length = lengths[c]
     [likes, views, lives] = re.findall(ur"(?im)<span class=\"count-wrapper\">(\d+)? ?likes?</span></form><span class=\"broadcast-views\">(\d+) views? \((\d+) lives?\)</span>", raw4)[0]
-    tags = ''
     comments = ''
     coord = re.findall(ur"(?im)\"lat\":\"([^\"]+?)\",\"lon\":\"([^\"]+?)\"", raw4)[0]
+    if coord:
+        coord = '%s, %s' % (coord[0], coord[1])
     date = re.findall(ur"(?im)<div id=\"broadcast-date\">\s*<p>(\d+ [a-z]+ \d\d:\d\d CET)</p>", raw4)[0]
     if not likes:
         likes = 0
     views = int(views)
     lives = int(lives)
-    print '%s likes, %s views, %s lives' % (likes, views, lives)
-    print '%s, %s' % (coord[0], coord[1])
-    print date
+    tags = re.findall(ur"(?im)<span class=\"tag\" style=\"display:none;\" title=\"([^>]*?)\"></span>", raw4)
     videos[videoid] = {
         'likes': likes, 'views': views, 'lives': lives,
-        'coord': [coord[0][0], coord[0][1]],
+        'coord': coord,
         'date': date,
+        'length': length,
+        'tags': tags,
     }
+    print '%s;%s;%s;%s;%s;%s;%s;%s' % (videoid, coord, date, length, likes, views, lives, ', '.join(tags))
+    c += 1
