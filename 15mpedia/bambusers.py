@@ -67,5 +67,5 @@ for videoid in videoids:
         'length': length,
         'tags': tags,
     }
-    print '%s;%s;%s;%s;%s;%s;%s;%s' % (videoid, coord, date, length, likes, views, lives, ', '.join(tags))
+    print ';;;'.join([videoid, coord, date, length, likes, views, lives, title, ', '.join(tags)])
     c += 1
