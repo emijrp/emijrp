@@ -27,6 +27,7 @@ lastvideoid = re.findall(ur"(?im)<link>http://bambuser\.com/v/(\d+)</link>", raw
 
 videoids = []
 lengths = []
+thumbs = []
 c = 0
 pageurl = "http://bambuser.com/v/%s?page_profile_more_user=" % (lastvideoid)
 raw2 = urllib.urlopen(pageurl).read()
@@ -37,6 +38,7 @@ while c < limit:
     raw3 = urllib.urlopen(pageurl2).read()
     videoids += re.findall(ur"(?im)<a class=\"preview-wrapper\" href=\"http://bambuser.com/v/(\d+)\">", raw3)
     lengths += re.findall(ur"(?im)<div class=\"preview-length\"><span>([^<]*?)</span></div>", raw3)
+    thumbs += re.findall(ur"(?im)<img class=\"preview\" src=\"(http://.*?\.img\.bambuser\.com/thumbnails/\d+/[\da-z]+?\.jpg)\"", raw3)
     c += 1
 
 print 'Loaded ids for %d videos' % (len(videoids))
@@ -47,18 +49,23 @@ for videoid in videoids:
     #print 'Loading metadata for video %s' % (videoid)
     videourl = "http://bambuser.com/v/%s" % (videoid)
     raw4 = urllib.urlopen(videourl).read()
-    title = re.findall(ur"<span class=\"title\" title=\"([^>]*?)\"></span>", raw4)
+    title = re.findall(ur"<span class=\"title\" title=\"([^>]*?)\"></span>", raw4)[0]
+    if title and title[0] == '#':
+        title = u'&#35;%s' % (title[1:])
     length = lengths[c]
+    thumb = thumbs[c]
+    urllib.urlretrieve(thumb, 'Bambuser %s.jpg' % (videoid))
     [likes, views, lives] = re.findall(ur"(?im)<span class=\"count-wrapper\">(\d+)? ?likes?</span></form><span class=\"broadcast-views\">(\d+) views? \((\d+) lives?\)</span>", raw4)[0]
     comments = ''
     coord = re.findall(ur"(?im)\"lat\":\"([^\"]+?)\",\"lon\":\"([^\"]+?)\"", raw4)[0]
     if coord:
         coord = '%s, %s' % (coord[0], coord[1])
-    date = re.findall(ur"(?im)<div id=\"broadcast-date\">\s*<p>(\d+ [a-z]+ \d\d:\d\d CET)</p>", raw4)[0]
+    try:
+        date = re.findall(ur"(?im)<div id=\"broadcast-date\">\s*<p>(\d+ [a-z]+ \d\d:\d\d CET)</p>", raw4)[0]
+    except:
+        date = re.findall(ur"(?im)<div id=\"broadcast-date\">\s*<p id=\"upload-recorded-date\"><span class=\"date-label\">Recorded </span>(\d+ [a-z]+ \d\d:\d\d CET)<br>", raw4)[0]
     if not likes:
-        likes = 0
-    views = int(views)
-    lives = int(lives)
+        likes = '0'
     tags = re.findall(ur"(?im)<span class=\"tag\" style=\"display:none;\" title=\"([^>]*?)\"></span>", raw4)
     videos[videoid] = {
         'likes': likes, 'views': views, 'lives': lives,
@@ -66,6 +73,7 @@ for videoid in videoids:
         'date': date,
         'length': length,
         'tags': tags,
+        'user': user,
     }
-    print ';;;'.join([videoid, coord, date, length, likes, views, lives, title, ', '.join(tags)])
+    print ';;;'.join([videoid, coord, date, length, likes, views, lives, title, ', '.join(tags), user])
     c += 1
