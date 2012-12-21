@@ -17,6 +17,7 @@
 
 import datetime
 import re
+import sys
 import urllib
 
 def month2number(month):
@@ -47,7 +48,7 @@ def month2number(month):
         return '12'
     return ''
 
-user = 'suysulucha'
+user = sys.argv[1]
 channel = 'http://bambuser.com/channel/%s' % (user)
 rss = 'http://feed.bambuser.com/channel/%s.rss' % (user)
 
@@ -60,7 +61,11 @@ thumbs = []
 c = 0
 pageurl = "http://bambuser.com/v/%s?page_profile_more_user=" % (lastvideoid)
 raw2 = urllib.urlopen(pageurl).read()
-limit = int(re.findall(ur"(?im)page_profile_more_user=\d+\">(\d+)</a></li></ul>", raw2)[0])
+limit = 1
+try:
+    limit = int(re.findall(ur"(?im)page_profile_more_user=\d+\">(\d+)</a></li></ul>", raw2)[0])
+except:
+    pass
 print 'Scraping videos from %d pages' % (limit)
 while c < limit:
     pageurl2 = pageurl + str(c)
@@ -81,7 +86,7 @@ for videoid in videoids:
     title = re.findall(ur"<span class=\"title\" title=\"([^>]*?)\"></span>", raw4)[0]
     length = lengths[c]
     thumb = thumbs[c]
-    urllib.urlretrieve(thumb, 'Bambuser %s.%s' % (videoid, thumb.split('.')[1]))
+    urllib.urlretrieve(thumb, 'Bambuser %s %s.%s' % (videoid, user, thumb.split('.')[-1]))
     [likes, views, lives] = re.findall(ur"(?im)<span class=\"count-wrapper\">(\d+)? ?likes?</span></form><span class=\"broadcast-views\">(\d+) views? \((\d+) lives?\)</span>", raw4)[0]
     comments = ''
     coord = re.findall(ur"(?im)\"lat\":\"([^\"]+?)\",\"lon\":\"([^\"]+?)\"", raw4)[0]
