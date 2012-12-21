@@ -87,7 +87,10 @@ for videoid in videoids:
     length = lengths[c]
     thumb = thumbs[c]
     urllib.urlretrieve(thumb, 'Bambuser %s %s.%s' % (videoid, user, thumb.split('.')[-1]))
-    [likes, views, lives] = re.findall(ur"(?im)<span class=\"count-wrapper\">(\d+)? ?likes?</span></form><span class=\"broadcast-views\">(\d+) views? \((\d+) lives?\)</span>", raw4)[0]
+    try:
+        [likes, views, lives] = re.findall(ur"(?im)<span class=\"count-wrapper\">(\d+)? ?likes?</span></form><span class=\"broadcast-views\">(\d+) views? \((\d+) lives?\)</span>", raw4)[0]
+    except:
+        [likes, views, lives] = ['0', '0', '0']
     comments = ''
     coord = re.findall(ur"(?im)\"lat\":\"([^\"]+?)\",\"lon\":\"([^\"]+?)\"", raw4)[0]
     if coord:
@@ -101,10 +104,10 @@ for videoid in videoids:
         date2 = re.findall(ur"(?im)<div id=\"broadcast-date\">\s*<p id=\"upload-recorded-date\"><span class=\"date-label\">Recorded </span>([^<]*?)<br>", raw4)[0]
     #9 Nov 2009 18:39 CET
     if not ':' in date2.split(' ')[2] and int(date2.split(' ')[2]) > 2000 and int(date2.split(' ')[2]) < 2020:
-        date = '%s/%s/%2d' % (date2.split(' ')[2], month2number(date2.split(' ')[1]), int(date2.split(' ')[0]))
+        date = '%s/%s/%02d' % (date2.split(' ')[2], month2number(date2.split(' ')[1]), int(date2.split(' ')[0]))
         hour = date2.split(' ')[3]
     else:
-        date = '%s/%s/%2d' % (datetime.datetime.now().year, month2number(date2.split(' ')[1]), int(date2.split(' ')[0]))
+        date = '%s/%s/%02d' % (datetime.datetime.now().year, month2number(date2.split(' ')[1]), int(date2.split(' ')[0]))
         hour = date2.split(' ')[2]
     
     if not likes:
