@@ -1,0 +1,1 @@
+killall -9 pdflatex;pdflatex wikipapers-2012-es;bibtex wikipapers-2012;pdflatex wikipapers-2012-es.tex;evince *pdf &

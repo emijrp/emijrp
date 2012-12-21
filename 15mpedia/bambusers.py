@@ -15,8 +15,37 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
 import re
 import urllib
+
+def month2number(month):
+    m = month.lower()
+    if m == 'jan':
+        return '01'
+    elif m == 'feb':
+        return '02'
+    elif m == 'mar':
+        return '03'
+    elif m == 'apr':
+        return '04'
+    elif m == 'may':
+        return '05'
+    elif m == 'jun':
+        return '06'
+    elif m == 'jul':
+        return '07'
+    elif m == 'aug':
+        return '08'
+    elif m == 'sep':
+        return '09'
+    elif m == 'oct':
+        return '10'
+    elif m == 'nov':
+        return '11'
+    elif m == 'dec':
+        return '12'
+    return ''
 
 user = 'suysulucha'
 channel = 'http://bambuser.com/channel/%s' % (user)
@@ -38,7 +67,7 @@ while c < limit:
     raw3 = urllib.urlopen(pageurl2).read()
     videoids += re.findall(ur"(?im)<a class=\"preview-wrapper\" href=\"http://bambuser.com/v/(\d+)\">", raw3)
     lengths += re.findall(ur"(?im)<div class=\"preview-length\"><span>([^<]*?)</span></div>", raw3)
-    thumbs += re.findall(ur"(?im)<img class=\"preview\" src=\"(http://.*?\.img\.bambuser\.com/thumbnails/\d+/[\da-z]+?\.jpg)\"", raw3)
+    thumbs += re.findall(ur"(?im)<img class=\"preview\" src=\"(https?://[^\"]+?\.(?:jpe?g|pne?g))\"", raw3)
     c += 1
 
 print 'Loaded ids for %d videos' % (len(videoids))
@@ -50,20 +79,29 @@ for videoid in videoids:
     videourl = "http://bambuser.com/v/%s" % (videoid)
     raw4 = urllib.urlopen(videourl).read()
     title = re.findall(ur"<span class=\"title\" title=\"([^>]*?)\"></span>", raw4)[0]
-    if title and title[0] == '#':
-        title = u'&#35;%s' % (title[1:])
     length = lengths[c]
     thumb = thumbs[c]
-    urllib.urlretrieve(thumb, 'Bambuser %s.jpg' % (videoid))
+    urllib.urlretrieve(thumb, 'Bambuser %s.%s' % (videoid, thumb.split('.')[1]))
     [likes, views, lives] = re.findall(ur"(?im)<span class=\"count-wrapper\">(\d+)? ?likes?</span></form><span class=\"broadcast-views\">(\d+) views? \((\d+) lives?\)</span>", raw4)[0]
     comments = ''
     coord = re.findall(ur"(?im)\"lat\":\"([^\"]+?)\",\"lon\":\"([^\"]+?)\"", raw4)[0]
     if coord:
         coord = '%s, %s' % (coord[0], coord[1])
+    date = ''
+    date2 = ''
+    hour = ''
     try:
-        date = re.findall(ur"(?im)<div id=\"broadcast-date\">\s*<p>(\d+ [a-z]+ \d\d:\d\d CET)</p>", raw4)[0]
+        date2 = re.findall(ur"(?im)<div id=\"broadcast-date\">\s*<p>([^<]*?)</p>", raw4)[0]
     except:
-        date = re.findall(ur"(?im)<div id=\"broadcast-date\">\s*<p id=\"upload-recorded-date\"><span class=\"date-label\">Recorded </span>(\d+ [a-z]+ \d\d:\d\d CET)<br>", raw4)[0]
+        date2 = re.findall(ur"(?im)<div id=\"broadcast-date\">\s*<p id=\"upload-recorded-date\"><span class=\"date-label\">Recorded </span>([^<]*?)<br>", raw4)[0]
+    #9 Nov 2009 18:39 CET
+    if not ':' in date2.split(' ')[2] and int(date2.split(' ')[2]) > 2000 and int(date2.split(' ')[2]) < 2020:
+        date = '%s/%s/%2d' % (date2.split(' ')[2], month2number(date2.split(' ')[1]), int(date2.split(' ')[0]))
+        hour = date2.split(' ')[3]
+    else:
+        date = '%s/%s/%2d' % (datetime.datetime.now().year, month2number(date2.split(' ')[1]), int(date2.split(' ')[0]))
+        hour = date2.split(' ')[2]
+    
     if not likes:
         likes = '0'
     tags = re.findall(ur"(?im)<span class=\"tag\" style=\"display:none;\" title=\"([^>]*?)\"></span>", raw4)
@@ -71,9 +109,11 @@ for videoid in videoids:
         'likes': likes, 'views': views, 'lives': lives,
         'coord': coord,
         'date': date,
+        'hour': hour,
         'length': length,
         'tags': tags,
         'user': user,
     }
-    print ';;;'.join([videoid, coord, date, length, likes, views, lives, title, ', '.join(tags), user])
+    print ';;;'.join([videoid, coord, date, hour, length, likes, views, lives, title, ', '.join(tags), user])
     c += 1
+
