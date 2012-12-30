@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2012 emijrp <emijrp@gmail.com>
+# Copyright (C) 2012-2013 emijrp <emijrp@gmail.com>
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -342,6 +342,6 @@ for page in dumpIterator.readPages():
                 print '-'*50
                 
                 print output
-                p = wikipedia.Page(wikipedia.Site('todogratix', 'todogratix'), pagetitle)
+                p = wikipedia.Page(wikipedia.Site('librefind', 'librefind'), pagetitle)
                 p.put(output, output)
         break

@@ -6,10 +6,10 @@ import family
 class Family(family.Family):
     def __init__(self):
         family.Family.__init__(self)
-        self.name = 'todogratix'
+        self.name = 'librefind'
 
         self.langs = {
-            'todogratix': 'www.todogratix.es',
+            'librefind': 'www.librefind.org',
         }
         # Wikimedia wikis all use "bodyContent" as the id of the <div>
         # element that contains the actual page content; change this for
@@ -33,7 +33,7 @@ class Family(family.Family):
     # Which version of MediaWiki is used? REQUIRED
     def version(self, code):
         # Replace with the actual version being run on your wiki
-        return '1.18.1'
+        return '1.21alpha'
 
     def code2encoding(self, code):
         """Return the encoding for a specific language wiki"""
