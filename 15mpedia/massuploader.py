@@ -44,7 +44,7 @@ def main():
             elif arg.startswith('--importimagesphp:'): # --importimagesphp:/path/to/importImages.php
                 importimagesphp = arg[18:]
             elif arg.startswith('--categories:'): # --categories:"15M_en_Madrid;Ocupa_el_Congreso"
-                categories = [re.sub('_', ' ', category) for category in arg[13:].split(';')]
+                categories = [re.sub('_', ' ', unicode(category, 'utf-8')) for category in arg[13:].split(';')]
     
     if not flickrseturl:
         print 'Provide --flickrset: parameter. Example: --flickrset:http://www.flickr.com/photos/15mmalagacc/sets/72157629844179358/'
