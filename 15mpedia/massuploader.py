@@ -89,6 +89,9 @@ def main():
             'localfilename': u'%s - %s - %s.jpg' % (flickruser, flickrsetid, photoid),
             'photourl': photourl,
         }
+        if 'has uploaded' in photosmetadata[photoid]['description']:
+            photosmetadata[photoid]['description'] = photosmetadata[photoid]['title']
+            
         print photoid
         print photosmetadata[photoid]
         #break
