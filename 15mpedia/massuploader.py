@@ -155,6 +155,8 @@ def main():
         if (p.exists() and p.get().strip() == u"Importing image file") or not p.exists():
             p.put(output, u'BOT - Importing file')
             print output
+        else:
+            print 'Page exists'
 
 if __name__ == '__main__':
     main()
