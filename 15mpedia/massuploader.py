@@ -153,10 +153,7 @@ def main():
 }}%s""" % (desc, source, date, author, license, cats)
         wikipedia.output(output)
         p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'File:%s' % (photometadata['localfilename']))
-        if (p.exists() and p.get().strip() == u"Importing image file") or not p.exists():
-            p.put(output, u'BOT - Importing file')
-        else:
-            wikipedia.output(u"Page exists: [[%s]]" % (p.title()))
+        p.put(output, u'BOT - Importing file')
 
 if __name__ == '__main__':
     main()
