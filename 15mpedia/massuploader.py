@@ -33,19 +33,28 @@ def unquote(s):
 def main():
     photosmetadata = {}
     categories = []
+    botname = ''
     flickrseturl = ''
     importimagesphp = ''
+    extra = ''
     
     #load parameters
     if len(sys.argv) > 1:
         for arg in sys.argv[1:]:
-            if arg.startswith('--flickrset:'): # --flickrset:http://www.flickr.com/photos/15mmalagacc/sets/72157629844179358/
+            if arg.startswith('--botname:'): # --botname:MiBot
+                botname = arg[10:]
+            elif arg.startswith('--flickrset:'): # --flickrset:http://www.flickr.com/photos/15mmalagacc/sets/72157629844179358/
                 flickrseturl = arg[12:]
             elif arg.startswith('--importimagesphp:'): # --importimagesphp:/path/to/importImages.php
                 importimagesphp = arg[18:]
             elif arg.startswith('--categories:'): # --categories:"15M_en_Madrid;Ocupa_el_Congreso"
                 categories = [re.sub('_', ' ', unicode(category, 'utf-8')) for category in arg[13:].split(';')]
+            elif arg.startswith('--extra:'): # --extra:extraoption
+                extra = arg[8:]
     
+    if not botname:
+        print 'Provide --botname: parameter. Example: --botname:MiBot'
+        sys.exit()
     if not flickrseturl:
         print 'Provide --flickrset: parameter. Example: --flickrset:http://www.flickr.com/photos/15mmalagacc/sets/72157629844179358/'
         sys.exit()
@@ -118,7 +127,7 @@ def main():
         #break
     
     #import images
-    os.system('php %s ./%s --user=BotQuincemayista --comment=""' % (importimagesphp, flickrsetid))
+    os.system('php %s ./%s --user=%s --comment="" %s' % (importimagesphp, flickrsetid, botname, extra))
     
     #create image pages
     cats = u''
