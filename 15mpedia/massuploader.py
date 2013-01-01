@@ -99,7 +99,7 @@ def main():
             'photourl': photourl,
         }
         if 'has uploaded' in photosmetadata[photoid]['description']:
-            photosmetadata[photoid]['description'] = photosmetadata[photoid]['title']
+            photosmetadata[photoid]['description'] = ''
             
         print photoid
         print photosmetadata[photoid]
