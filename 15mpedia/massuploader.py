@@ -95,7 +95,7 @@ def main():
             'description': re.search(ur'<meta property="og:description" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="og:description" content="([^>]*?)" />', html2)[0]).strip() or '', 
             'date-taken': re.search(ur'(?im)/date-taken/(\d+/\d+/\d+)', html2) and re.sub('/', '-', re.findall(ur'(?im)/date-taken/(\d+/\d+/\d+)', html2)[0]) or '', 
             'license': photolicense, 
-            'coordinates': [re.search(ur'<meta property="flickr_photos:location:latitude" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="flickr_photos:location:latitude" content="([^>]*?)" />', html2)[0]).strip() or '', re.search(ur'<meta property="flickr_photos:location:longitude" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="flickr_photos:location:longitude" content="([^>]*?)" />', html2)[0]).strip() or '']
+            'coordinates': [re.search(ur'<meta property="flickr_photos:location:latitude" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="flickr_photos:location:latitude" content="([^>]*?)" />', html2)[0]).strip() or '', re.search(ur'<meta property="flickr_photos:location:longitude" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="flickr_photos:location:longitude" content="([^>]*?)" />', html2)[0]).strip() or ''],
             'localfilename': u'%s - %s - %s.jpg' % (flickruser, flickrsetid, photoid),
             'photourl': photourl,
         }
