@@ -95,6 +95,7 @@ def main():
             'description': re.search(ur'<meta property="og:description" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="og:description" content="([^>]*?)" />', html2)[0]).strip() or '', 
             'date-taken': re.search(ur'(?im)/date-taken/(\d+/\d+/\d+)', html2) and re.sub('/', '-', re.findall(ur'(?im)/date-taken/(\d+/\d+/\d+)', html2)[0]) or '', 
             'license': photolicense, 
+            'coordinates': [re.search(ur'<meta property="flickr_photos:location:latitude" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="flickr_photos:location:latitude" content="([^>]*?)" />', html2)[0]).strip() or '', re.search(ur'<meta property="flickr_photos:location:longitude" content="([^>]*?)" />', html2) and unquote(re.findall(ur'<meta property="flickr_photos:location:longitude" content="([^>]*?)" />', html2)[0]).strip() or '']
             'localfilename': u'%s - %s - %s.jpg' % (flickruser, flickrsetid, photoid),
             'photourl': photourl,
         }
@@ -144,13 +145,16 @@ def main():
         date = photometadata['date-taken']
         author = u'{{flickr|%s}}' % (flickruser)
         license = u'{{cc-%s}}' % (photometadata['license'])
+        coordinates = u''
+        if photometadata['coordinates'][0] and photometadata['coordinates'][1]:
+            coordinates = u'\n| coordenadas = %s' % (', '.join(photometadata['coordinates']))
         output = u"""{{Infobox Archivo
 | descripción = %s
 | fuente = %s
 | fecha = %s
 | autor = %s
-| licencia = %s
-}}%s""" % (desc, source, date, author, license, cats)
+| licencia = %s%s
+}}%s""" % (desc, source, date, author, license, coordinates and coordinates or '', cats)
         wikipedia.output(output)
         p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'File:%s' % (photometadata['localfilename']))
         p.put(output, u'BOT - Importing file')
