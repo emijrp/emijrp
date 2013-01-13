@@ -40,12 +40,21 @@ import time
 import unicodedata
 import urllib
 
+num2month = { 
+    'spanish': {'01':'enero', '02': 'febrero', '03':'marzo', '04':'abril', '05':'mayo', '06':'junio', '07':'julio', '08':'agosto','09':'septiembre','10':'octubre', '11':'noviembre', '12':'diciembre'},
+    'english': {'01':'january', '02': 'february', '03':'march', '04':'april', '05':'may', '06':'june', '07':'july', '08':'august','09':'september','10':'october', '11':'november', '12':'december'},
+    }
+
 # Start preferences
 sizelimit = 10000*1024*1024 # file size, if you want to skip those videos greater than this size, 10000*1024*1024 for 10GB
 if len(sys.argv) < 4:
     print 'python youtube2internetarchive.py [english|spanish] [cc|all] [collectionname]'
     sys.exit()
 language = sys.argv[1]
+if language not in num2month.keys():
+    print 'Bad language parameter'
+    sys.exit()
+
 cc = sys.argv[2].lower()
 if cc == 'cc':
     cc = True
@@ -54,10 +63,6 @@ else:
 collection = sys.argv[3]
 # End preferences
 
-num2month = { 
-    'es': {'01':'enero', '02': 'febrero', '03':'marzo', '04':'abril', '05':'mayo', '06':'junio', '07':'julio', '08':'agosto','09':'septiembre','10':'octubre', '11':'noviembre', '12':'diciembre'},
-    'en': {'01':'january', '02': 'february', '03':'march', '04':'april', '05':'may', '06':'june', '07':'july', '08':'august','09':'september','10':'october', '11':'november', '12':'december'},
-    }
 accesskey = open('keys.txt', 'r').readlines()[0].strip()
 secretkey = open('keys.txt', 'r').readlines()[1].strip()
 videotodourls = [l.strip() for l in open('download/videostodo.txt', 'r').readlines()]
