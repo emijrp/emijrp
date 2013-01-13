@@ -21,8 +21,10 @@ Instructions:
  2) In the current directory, create a keys.txt file with your IA S3 keys. Accesskey and secretkey in two separated lines.
  3) Download youtube-dl to the current directory http://rg3.github.com/youtube-dl/download.html
  4) Modify preferences if desired (see below).
- 5) Run this script: python youtube2internetarchive.py [english|spanish] [cc|all]
-    (where param 1 is language for the video dates, and param 2 is a filter to upload only Creative Commons or all)
+ 5) Run this script: python youtube2internetarchive.py [english|spanish] [cc|all] [collectionname]
+    (where param 1 is language for the video dates,
+     param 2 is a filter to upload only Creative Commons or all
+     param 3 is the collection name in Internet Archive)
 """
 
 # Keys: http://archive.org/account/s3.php
@@ -40,8 +42,8 @@ import urllib
 
 # Start preferences
 sizelimit = 10000*1024*1024 # file size, if you want to skip those videos greater than this size, 10000*1024*1024 for 10GB
-if len(sys.argv) < 3:
-    print 'python youtube2internetarchive.py [english|spanish] [cc|all]'
+if len(sys.argv) < 4:
+    print 'python youtube2internetarchive.py [english|spanish] [cc|all] [collectionname]'
     sys.exit()
 language = sys.argv[1]
 cc = sys.argv[2].lower()
@@ -49,6 +51,7 @@ if cc == 'cc':
     cc = True
 else:
     cc = False
+collection = sys.argv[3]
 # End preferences
 
 num2month = { 
@@ -137,7 +140,7 @@ while len(videotodourls) > 0:
     uploader = json_['uploader']
     title = re.sub(u"%", u"/", json_['title']) # 6%7
     
-    itemname = removeoddchars('spanishrevolution-%s' % (videofilename.split(videoid)[0][:-1])) # [:-1] to remove the -
+    itemname = removeoddchars('%s-%s' % (collection, videofilename.split(videoid)[0][:-1])) # [:-1] to remove the -
     itemname = itemname[:88] + '-' + videoid
     videofilename_ = removeoddchars(videofilename)
     if not re.search(ur"Item cannot be found", unicode(urllib.urlopen('http://archive.org/details/%s' % (itemname)).read(), 'utf-8')):
@@ -149,7 +152,7 @@ while len(videotodourls) > 0:
     
     curl = ['curl', '--location', 
         '--header', u"'x-amz-auto-make-bucket:1'",
-        '--header', u"'x-archive-meta01-collection:spanishrevolution'",
+        '--header', u"'x-archive-meta01-collection:%s'" % (collection),
         '--header', u"'x-archive-meta-mediatype:movies'",
         '--header', u"'x-archive-size-hint:%d'" % (os.path.getsize(videofilename)), 
         '--header', u'"authorization: LOW %s:%s"' % (accesskey, secretkey),
@@ -159,7 +162,7 @@ while len(videotodourls) > 0:
         '--header', u"'x-archive-meta-year:%s'" % (upload_year),
         '--header', u"'x-archive-meta-language:%s'" % (language),
         '--header', u"'x-archive-meta-creator:%s'" % (quote(uploader)),
-        '--header', u"'x-archive-meta-subject:%s'" % (u'; '.join(['spanishrevolution', 'videos', upload_month, upload_year] + tags)),
+        '--header', u"'x-archive-meta-subject:%s'" % (u'; '.join([collection, 'videos', upload_month, upload_year] + tags)),
         '--header', u"'x-archive-meta-licenseurl:%s'" % (cc and 'http://creativecommons.org/licenses/by/3.0/' or ''), # from https://www.youtube.com/t/creative_commons
         #'--header', "'x-archive-meta-rights:%s'" % (rights),
         '--header', u"'x-archive-meta-originalurl:%s'" % (videotodourl),
