@@ -21,7 +21,8 @@ Instructions:
  2) In the current directory, create a keys.txt file with your IA S3 keys. Accesskey and secretkey in two separated lines.
  3) Download youtube-dl to the current directory http://rg3.github.com/youtube-dl/download.html
  4) Modify preferences if desired (see below).
- 5) Run this script: python youtube2internetarchive.py
+ 5) Run this script: python youtube2internetarchive.py [english|spanish] [cc|all]
+    (where param 1 is language for the video dates, and param 2 is a filter to upload only Creative Commons or all)
 """
 
 # Keys: http://archive.org/account/s3.php
@@ -32,15 +33,28 @@ import json
 import os
 import re
 import subprocess
+import sys
 import time
 import unicodedata
 import urllib
 
 # Start preferences
 sizelimit = 10000*1024*1024 # file size, if you want to skip those videos greater than this size, 10000*1024*1024 for 10GB
+if len(sys.argv) < 3:
+    print 'python youtube2internetarchive.py [english|spanish] [cc|all]'
+    sys.exit()
+language = sys.argv[1]
+cc = sys.argv[2].lower()
+if cc == 'cc':
+    cc = True
+else:
+    cc = False
 # End preferences
 
-num2month = {'01':'enero', '02': 'febrero', '03':'marzo', '04':'abril', '05':'mayo', '06':'junio', '07':'julio', '08':'agosto','09':'septiembre','10':'octubre', '11':'noviembre', '12':'diciembre'}
+num2month = { 
+    'en': {'01':'enero', '02': 'febrero', '03':'marzo', '04':'abril', '05':'mayo', '06':'junio', '07':'julio', '08':'agosto','09':'septiembre','10':'octubre', '11':'noviembre', '12':'diciembre'}
+    'es': {'01':'january', '02': 'february', '03':'march', '04':'april', '05':'may', '06':'june', '07':'july', '08':'august','09':'september','10':'october', '11':'november', '12':'december'}
+    }
 accesskey = open('keys.txt', 'r').readlines()[0].strip()
 secretkey = open('keys.txt', 'r').readlines()[1].strip()
 videotodourls = [l.strip() for l in open('download/videostodo.txt', 'r').readlines()]
@@ -79,7 +93,7 @@ while len(videotodourls) > 0:
         os.chdir('..')
         continue
     #verify license in youtube
-    if not re.search(ur"(?i)/t/creative_commons", videohtml):
+    if cc and not re.search(ur"(?i)/t/creative_commons", videohtml):
         print "It is not Creative Commons", videotodourl
         videotodourls.remove(videotodourl)
         updatetodo(videotodourls)
@@ -118,11 +132,10 @@ while len(videotodourls) > 0:
     json_ = json.loads(unicode(open(jsonfilename, 'r').read(), 'utf-8'))
     upload_date = json_['upload_date'][:4] + '-' + json_['upload_date'][4:6] + '-' + json_['upload_date'][6:8]
     upload_year = json_['upload_date'][:4]
-    upload_month = num2month[json_['upload_date'][4:6]]
+    upload_month = num2month[language][json_['upload_date'][4:6]]
     description = json_['description']
     uploader = json_['uploader']
     title = re.sub(u"%", u"/", json_['title']) # 6%7
-    language = 'Spanish'
     
     itemname = removeoddchars('spanishrevolution-%s' % (videofilename.split(videoid)[0][:-1])) # [:-1] to remove the -
     itemname = itemname[:88] + '-' + videoid
@@ -147,7 +160,7 @@ while len(videotodourls) > 0:
         '--header', u"'x-archive-meta-language:%s'" % (language),
         '--header', u"'x-archive-meta-creator:%s'" % (quote(uploader)),
         '--header', u"'x-archive-meta-subject:%s'" % (u'; '.join(['spanishrevolution', 'videos', upload_month, upload_year] + tags)),
-        '--header', u"'x-archive-meta-licenseurl:%s'" % ('http://creativecommons.org/licenses/by/3.0/'), # from https://www.youtube.com/t/creative_commons
+        '--header', u"'x-archive-meta-licenseurl:%s'" % (cc and 'http://creativecommons.org/licenses/by/3.0/' or ''), # from https://www.youtube.com/t/creative_commons
         #'--header', "'x-archive-meta-rights:%s'" % (rights),
         '--header', u"'x-archive-meta-originalurl:%s'" % (videotodourl),
         '--upload-file', videofilename,
