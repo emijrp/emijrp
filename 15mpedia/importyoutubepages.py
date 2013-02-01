@@ -20,6 +20,10 @@ import re
 import urllib
 import wikipedia
 
+def unquote(s):
+    s = re.sub(ur"&quot;", ur"\"", s)
+    return s
+
 ids = open('videoids.txt', 'r').read().splitlines()
 for id in ids:
     url = 'http://www.youtube.com/watch?v=%s' % (id)
@@ -29,6 +33,7 @@ for id in ids:
     
     try:
         title = re.findall(ur'<meta property="og:title" content="([^>]+?)">', raw)[0]
+        title = unquote(title)
         os.system('python youtube-dl http://www.youtube.com/watch?v=%s --get-description > videodesc.txt' % (id))
         desc = unicode(open('videodesc.txt', 'r').read(), 'utf-8').strip()
         if desc == u'No description available.':
