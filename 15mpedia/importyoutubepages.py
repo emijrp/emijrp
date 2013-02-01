@@ -20,8 +20,7 @@ import re
 import urllib
 import wikipedia
 
-ids = ['x6irndUqpcc', ]
-
+ids = open('videoids.txt', 'r').read().splitlines()
 for id in ids:
     url = 'http://www.youtube.com/watch?v=%s' % (id)
     f = urllib.urlopen(url)
