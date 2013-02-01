@@ -151,7 +151,7 @@ def main():
         output = u"""{{Infobox Archivo
 | descripción = %s
 | fuente = %s
-| fecha = %s
+| fecha de creación = %s
 | autor = %s
 | licencia = %s%s
 }}%s""" % (desc, source, date, author, license, coordinates and coordinates or '', cats)
