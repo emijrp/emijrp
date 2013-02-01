@@ -18,6 +18,7 @@
 import os
 import re
 import urllib
+import wikipedia
 
 ids = ['x6irndUqpcc', ]
 
@@ -47,4 +48,11 @@ for id in ids:
 |licencia=%s
 }}
 """ % (id, title, desc, date, uploader, license)
-    print output
+    
+    p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), 'File:%s - %s.embedded' % (uploader, id))
+    if not p.exists():
+        print output
+        p.put(output, u'BOT - Importando metadatos del vídeo de YouTube http://www.youtube.com/watch?v=%s' % (id))
+    else:
+        print u'%s ya está subido' % (id)
+    
