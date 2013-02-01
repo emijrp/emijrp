@@ -29,7 +29,9 @@ for id in ids:
     
     title = re.findall(ur'<meta property="og:title" content="([^>]+?)">', raw)[0]
     os.system('python youtube-dl http://www.youtube.com/watch?v=%s --get-description > videodesc.txt' % (id))
-    desc = unicode(open('videodesc.txt', 'r').read(), 'utf-8')
+    desc = unicode(open('videodesc.txt', 'r').read(), 'utf-8').strip()
+    if desc == u'No description available.':
+        desc = u''
     date = re.findall(ur'<span id="eow-date" class="watch-video-date" *?>([^>]+?)</span>', raw)[0]
     date = u'%s-%s-%s' % (date.split('/')[2], date.split('/')[1], date.split('/')[0])
     uploader = re.findall(ur'<link itemprop="url" href="http://www.youtube.com/user/([^>]+?)">', raw)[0]
@@ -41,12 +43,12 @@ for id in ids:
 |embebido=YouTube
 |embebido id=%s
 |embebido título=%s
-|descripción={{descripción de youtube|1=%s}}
+|descripción=%s
 |fecha de publicación=%s
 |autor={{youtube channel|%s}}
 |licencia=%s
 }}
-""" % (id, title, desc, date, uploader, license)
+""" % (id, title, desc and u'{{descripción de youtube|1=%s}}' % (desc) or u'', date, uploader, license)
     
     p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), 'File:%s - %s.embedded' % (uploader, id))
     if not p.exists():
