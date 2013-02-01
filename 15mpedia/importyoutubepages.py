@@ -27,18 +27,22 @@ for id in ids:
     raw = unicode(f.read(), 'utf-8')
     f.close()
     
-    title = re.findall(ur'<meta property="og:title" content="([^>]+?)">', raw)[0]
-    os.system('python youtube-dl http://www.youtube.com/watch?v=%s --get-description > videodesc.txt' % (id))
-    desc = unicode(open('videodesc.txt', 'r').read(), 'utf-8').strip()
-    if desc == u'No description available.':
-        desc = u''
-    date = re.findall(ur'<span id="eow-date" class="watch-video-date" *?>([^>]+?)</span>', raw)[0]
-    date = u'%s-%s-%s' % (date.split('/')[2], date.split('/')[1], date.split('/')[0])
-    uploader = re.findall(ur'<link itemprop="url" href="http://www.youtube.com/user/([^>]+?)">', raw)[0]
-    license = u'{{cc-by-3.0}}'
-    if not re.search(ur"(?i)/t/creative_commons", raw):
-        license = u'{{lye}}'
-    
+    try:
+        title = re.findall(ur'<meta property="og:title" content="([^>]+?)">', raw)[0]
+        os.system('python youtube-dl http://www.youtube.com/watch?v=%s --get-description > videodesc.txt' % (id))
+        desc = unicode(open('videodesc.txt', 'r').read(), 'utf-8').strip()
+        if desc == u'No description available.':
+            desc = u''
+        date = re.findall(ur'<span id="eow-date" class="watch-video-date" *?>([^>]+?)</span>', raw)[0]
+        date = u'%s-%s-%s' % (date.split('/')[2], date.split('/')[1], date.split('/')[0])
+        uploader = re.findall(ur'<link itemprop="url" href="http://www.youtube.com/user/([^>]+?)">', raw)[0]
+        license = u'{{cc-by-3.0}}'
+        if not re.search(ur"(?i)/t/creative_commons", raw):
+            license = u'{{lye}}'
+    except:
+        print u'Error accediendo a los parámetros del vídeo', id
+        continue
+        
     output = u"""{{Infobox Archivo
 |embebido=YouTube
 |embebido id=%s
