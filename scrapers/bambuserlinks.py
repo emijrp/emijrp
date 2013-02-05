@@ -26,7 +26,7 @@ tags = [l.strip() for l in open(filenametags, 'r').readlines()]
 for tag in tags:
     videos = []
     filenamevideos = "bambuser-videos-%s.txt" % (tag)
-    for pagenum in range(1, 100):
+    for pagenum in range(0, 100):
         print 'tag', tag, 'pagenum', pagenum
         if os.path.exists(filenamevideos):
             for l in open(filenamevideos, "r").readlines():
@@ -56,4 +56,4 @@ for tag in tags:
             print 'No more videos for this tag'
             break
         
-        time.sleep(0.2)
+        time.sleep(0.5)
