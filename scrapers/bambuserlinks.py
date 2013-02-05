@@ -18,6 +18,7 @@
 import datetime
 import os
 import re
+import sys
 import time
 import urllib
 
@@ -26,7 +27,7 @@ tags = [l.strip() for l in open(filenametags, 'r').readlines()]
 for tag in tags:
     videos = []
     filenamevideos = "bambuser-videos-%s.txt" % (tag)
-    for pagenum in range(0, 100):
+    for pagenum in range(0, 500):
         print 'tag', tag, 'pagenum', pagenum
         if os.path.exists(filenamevideos):
             for l in open(filenamevideos, "r").readlines():
@@ -37,8 +38,16 @@ for tag in tags:
         
         #no hay ninguno?
         if re.search(ur"Your search yielded no results", rawhtml):
-            print 'No videos for this tag'
-            break
+            if pagenum == 0:
+                print 'No videos for this tag'
+                time.sleep(2)
+                break
+            else: #bambuser fails a lot, retry until moves from page 1 to forward
+                while re.search(ur"Your search yielded no results", rawhtml):
+                    print 'Retrying to download the same page'
+                    time.sleep(5)
+                    rawhtml = unicode(urllib.urlopen("http://bambuser.com/search/bambuser_search/%s?page=%s" % (tag, pagenum)).read(), 'utf-8')
+        
         ids = re.findall(ur"http://bambuser.com/v/([0-9]+)\"", rawhtml)
         for id in ids:
             videourl = "http://bambuser.com/v/%s" % (id)
@@ -52,8 +61,10 @@ for tag in tags:
         print 'Total videos', len(videos)
         
         #es esta la última página?
-        if re.search(ur"(?im)<strong class=\"pager-current\">%d</strong></span></div>" % (pagenum), rawhtml):
+        if not re.search(ur"<div class=\"pager\">", rawhtml) or \
+           re.search(ur"(?im)<strong class=\"pager-current\">%d</strong></span></div>" % (pagenum), rawhtml):
             print 'No more videos for this tag'
+            time.sleep(0.5)
             break
         
         time.sleep(0.5)
