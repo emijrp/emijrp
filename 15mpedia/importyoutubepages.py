@@ -17,11 +17,16 @@
 
 import os
 import re
+import time
 import urllib
 import wikipedia
 
 def unquote(s):
-    s = re.sub(ur"&quot;", ur"\"", s)
+    s = re.sub(ur"&quot;", u'"', s)
+    s = re.sub(ur"&#39;", u"'", s)
+    s = re.sub(ur"\|", u"-", s)
+    s = re.sub(ur'\\"', u'"', s)
+    s = re.sub(ur'[\[\]]', u'', s)
     return s
 
 ids = open('videoids.txt', 'r').read().splitlines()
@@ -35,7 +40,7 @@ for id in ids:
         title = re.findall(ur'<meta property="og:title" content="([^>]+?)">', raw)[0]
         title = unquote(title)
         os.system('python youtube-dl http://www.youtube.com/watch?v=%s --get-description > videodesc.txt' % (id))
-        desc = unicode(open('videodesc.txt', 'r').read(), 'utf-8').strip()
+        desc = unquote(unicode(open('videodesc.txt', 'r').read(), 'utf-8').strip())
         if desc == u'No description available.':
             desc = u''
         date = re.findall(ur'<span id="eow-date" class="watch-video-date" *?>([^>]+?)</span>', raw)[0]
@@ -46,6 +51,9 @@ for id in ids:
             license = u'{{lye}}'
     except:
         print u'Error accediendo a los parámetros del vídeo', id
+        g = open('errors.ids', 'a')
+        g.write(u'%s\n' % (id))
+        g.close()
         continue
         
     output = u"""{{Infobox Archivo
@@ -59,10 +67,8 @@ for id in ids:
 }}
 """ % (id, title, desc and u'{{descripción de youtube|1=%s}}' % (desc) or u'', date, uploader, license)
     
-    p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), 'File:%s - %s.embedded' % (uploader, id))
-    if not p.exists():
+    p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), 'File:YouTube - %s - %s.jpg' % (uploader, id))
+    if p.exists() and len(p.get()) < 10:
         print output
         p.put(output, u'BOT - Importando metadatos del vídeo de YouTube http://www.youtube.com/watch?v=%s' % (id))
-    else:
-        print u'%s ya está subido' % (id)
-    
+        time.sleep(5)
