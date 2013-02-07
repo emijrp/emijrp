@@ -38,13 +38,11 @@ despedidas = [
     u'Échale un vistazo',
 ]
 
-emoticonos = [
+emoticonos = [ #no poner ;) ni :D ya que algunos tuits pueden ser sobre temas poco amables
+    u'',
     u'',
     u'',
     u':)',
-    u';)',
-    u':D',
-    u';D',
 ]
 
 cuerpos = [
@@ -73,7 +71,7 @@ cuerpos = [
     [u'', u''],
     
     #comedores
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_comedores_sociales'],
+    [u'cada vez más personas necesitan #comedorsocial ¿faltan?', u'http://wiki.15m.cc/wiki/Lista_de_comedores_sociales'],
     [u'', u'http://wiki.15m.cc/wiki/Lista_de_comedores_sociales'],
     
     #cooperativas
@@ -122,8 +120,8 @@ cuerpos = [
     [u'', u''],
     
     #recortes
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_recortes'],
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_recortes'],
+    [u'aquí la lista de recortes, complétala con más ejemplos', u'http://wiki.15m.cc/wiki/Lista_de_recortes'],
+    [u'¿se nos ha pasado algún recorte? agrégalo', u'http://wiki.15m.cc/wiki/Lista_de_recortes'],
     
     #streamings
     [u'mejora la lista de #streamings de manis', u'http://wiki.15m.cc/wiki/Lista_de_streamings'],
