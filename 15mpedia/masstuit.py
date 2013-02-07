@@ -56,6 +56,8 @@ emoticonos = [ #no poner ;) ni :D ya que algunos tuits pueden ser sobre temas po
 
 cuerpos = [
     #todos los msg comienzan en minúscula
+    #no usar la palabra ayuda en el cuerpo, ya que se usa en la despedida a veces
+    
     #acampadas
     [u'revisa la lista de #acampadas y mejora la tuya!', u'http://wiki.15m.cc/wiki/Lista_de_acampadas'],
     [u'comprueba que en el listado de #acampadas no falte ninguna', u'http://wiki.15m.cc/wiki/Lista_de_acampadas'],
