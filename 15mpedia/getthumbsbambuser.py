@@ -32,9 +32,10 @@ for id in thumbs:
         print 'Error retrieveing the thumb url'
         continue
     
-    os.system('wget -c %s -O "Bambuser - %s - %s.jpg"' % (thumburl, uploader, id))
+    command = u'wget -c %s -O "Bambuser - %s - %s.jpg"' % (thumburl, uploader, id)
+    os.system(command.encode('utf-8'))
     time.sleep(2)
     
     c+=1
-    if c > 2000:
+    if c > 1000:
         break

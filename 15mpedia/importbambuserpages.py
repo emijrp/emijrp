@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
 import os
 import re
 import time
@@ -73,15 +74,24 @@ for id in ids:
         title = unquote(title)
         dateupload = u''
         daterecorded = u''
-        if re.search(ur'(?im)<div id="broadcast-date">\s*<p>\s*(\d+ [a-z]+ 20\d\d).*?</p>', raw):
-            dateupload = re.findall(ur'(?im)<div id="broadcast-date">\s*<p>\s*(\d+ [a-z]+ 20\d\d).*?</p>', raw)[0]
-            dateupload = u'%s-%s-%02d' % (dateupload.split(' ')[2], month2number(dateupload.split(' ')[1]), int(dateupload.split(' ')[0]))
+        if re.search(ur'(?im)<div id="broadcast-date">\s*<p>\s*(\d+ [a-z]+ [\d:]+) [^<]*?</p>', raw):
+            dateupload = re.findall(ur'(?im)<div id="broadcast-date">\s*<p>\s*(\d+ [a-z]+ [\d:]+) [^<]*?</p>', raw)[0]
+            if not ':' in dateupload:
+                dateupload = u'%s-%s-%02d' % (dateupload.split(' ')[2], month2number(dateupload.split(' ')[1]), int(dateupload.split(' ')[0]))
+            else:
+                dateupload = u'%s-%s-%02d' % (datetime.datetime.now().strftime('%Y'), month2number(dateupload.split(' ')[1]), int(dateupload.split(' ')[0])) 
             daterecorded = dateupload
         elif re.search(ur"(?im)<span class=\"date-label\">Recorded </span>", raw):
-            daterecorded = re.findall(ur'(?im)<span class="date-label">Recorded </span>(\d+ [a-z]+ 20\d\d)', raw)[0]
-            daterecorded = u'%s-%s-%02d' % (daterecorded.split(' ')[2], month2number(daterecorded.split(' ')[1]), int(daterecorded.split(' ')[0]))
-            dateupload = re.findall(ur'(?im)<span class="date-label">Uploaded </span>(\d+ [a-z]+ 20\d\d)', raw)[0]
-            dateupload = u'%s-%s-%02d' % (dateupload.split(' ')[2], month2number(dateupload.split(' ')[1]), int(dateupload.split(' ')[0]))
+            daterecorded = re.findall(ur'(?im)<span class="date-label">Recorded </span>(\d+ [a-z]+ [\d:]+) ', raw)[0]
+            if not ':' in dateupload:
+                daterecorded = u'%s-%s-%02d' % (daterecorded.split(' ')[2], month2number(daterecorded.split(' ')[1]), int(daterecorded.split(' ')[0]))
+            else:
+                daterecorded = u'%s-%s-%02d' % (datetime.datetime.now().strftime('%Y'), month2number(daterecorded.split(' ')[1]), int(daterecorded.split(' ')[0]))
+            dateupload = re.findall(ur'(?im)<span class="date-label">Uploaded </span>(\d+ [a-z]+ [\d:]+) ', raw)[0]
+            if not ':' in dateupload:
+                dateupload = u'%s-%s-%02d' % (dateupload.split(' ')[2], month2number(dateupload.split(' ')[1]), int(dateupload.split(' ')[0]))
+            else:
+                dateupload = u'%s-%s-%02d' % (datetime.datetime.now().strftime('%Y'), month2number(dateupload.split(' ')[1]), int(dateupload.split(' ')[0]))
         uploader = re.findall(ur'<span class="username" title="([^>]+?)"></span>', raw)[0]
         coord = u''
         if re.search(ur"bambuser_com:position:latitude", raw):
