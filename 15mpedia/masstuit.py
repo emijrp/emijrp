@@ -71,10 +71,10 @@ cuerpos = [
     
     #centros de salud
     [u'revisa la lista de centros de salud en peligro de cierre', u'http://wiki.15m.cc/wiki/Lista_de_centros_de_salud_y_servicios_de_urgencia_cerrados'],
-    [u'mejora la lista de centros de salud en peligro', u'http://wiki.15m.cc/wiki/Lista_de_centros_de_salud_y_servicios_de_urgencia_cerrados'],
+    [u'amplía la lista de centros de salud en peligro', u'http://wiki.15m.cc/wiki/Lista_de_centros_de_salud_y_servicios_de_urgencia_cerrados'],
     
     #centros sociales
-    [u'¿nos ayudas a completar la lista de centros sociales de toda España?', u'http://wiki.15m.cc/wiki/Lista_de_centros_sociales'],
+    [u'¿colaboras completando la lista de centros sociales de toda España?', u'http://wiki.15m.cc/wiki/Lista_de_centros_sociales'],
     [u'agrega tu #CSOA al listado, todavía faltan muchos!', u'http://wiki.15m.cc/wiki/Lista_de_centros_sociales'],
     [u'¿conoces algún #CSOA que no esté aquí puesto?', u'http://wiki.15m.cc/wiki/Lista_de_centros_sociales'],
     
@@ -83,11 +83,11 @@ cuerpos = [
     [u'aquí #comedoresociales, colabora a completarlo', u'http://wiki.15m.cc/wiki/Lista_de_comedores_sociales'],
     
     #cooperativas
-    [u'aquí un listado de #cooperativas, ayuda a completar!', u'http://wiki.15m.cc/wiki/Lista_de_cooperativas'],
+    [u'aquí un listado de #cooperativas, complétalo!', u'http://wiki.15m.cc/wiki/Lista_de_cooperativas'],
     [u'la lista de #cooperativas te necesita! mejórala!', u'http://wiki.15m.cc/wiki/Lista_de_cooperativas'],
     
     #desahucios
-    [u'ayuda a completar la lista de #desahucios parados #stopdesahucios', u'http://wiki.15m.cc/wiki/Lista_de_desahucios'],
+    [u'colabora completando la lista de #desahucios parados #stopdesahucios', u'http://wiki.15m.cc/wiki/Lista_de_desahucios'],
     [u'mira la lista de #desahucios y complétala', u'http://wiki.15m.cc/wiki/Lista_de_desahucios'],
     
     #indultos
@@ -106,8 +106,7 @@ cuerpos = [
     [u'participa en la página sobre #mareanegra', u'http://wiki.15m.cc/wiki/Marea_Negra'],
     [u'queremos completar la página de #marearoja, participa', u'http://wiki.15m.cc/wiki/Marea_Roja'],
     [u'en #mareaverde seguro que nos hemos olvidado algo, colabora', u'http://wiki.15m.cc/wiki/Marea_Verde'],
-    [u'', u'http://wiki.15m.cc/wiki/Marea_Violeta'],
-    [u'aquí está la lista de mareas ciudadanas, ayuda a completar!', u'http://wiki.15m.cc/wiki/Lista_de_mareas'],
+    [u'si sabes más sobre #mareavioleta, aquí puedes participar', u'http://wiki.15m.cc/wiki/Marea_Violeta'],
     
     #parados
     [u'estar en el paro no es estar parado, ¿conoces la asociación de tu ciudad?', u'http://wiki.15m.cc/wiki/Lista_de_asociaciones_de_parados'],
@@ -123,7 +122,7 @@ cuerpos = [
     [u'¿falta alguna plataforma? seguro que sí', u'http://wiki.15m.cc/wiki/Lista_de_plataformas'],
     
     #realojos
-    [u'ayuda a completar la lista de #realojos con datos de más lugares', u'http://wiki.15m.cc/wiki/Lista_de_realojos'],
+    [u'añade información a lista de #realojos y mejórala', u'http://wiki.15m.cc/wiki/Lista_de_realojos'],
     [u'un listado con #realojos esperando a que lo mejores', u'http://wiki.15m.cc/wiki/Lista_de_realojos'],
     
     #recortes
@@ -165,6 +164,7 @@ if len(l) < limit:
 random.shuffle(l)
 output = u''
 dstart = datetime.datetime.now() #mañana
+dstart = datetime.datetime(day=1, month=3, year=2013)
 ddelta = datetime.timedelta(days=1)
 c = 0
 while c<limit/3:
