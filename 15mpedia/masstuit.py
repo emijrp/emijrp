@@ -40,6 +40,7 @@ despedidas = [
 
 emoticonos = [
     u'',
+    u'',
     u':)',
     u';)',
     u':D',
@@ -58,8 +59,12 @@ cuerpos = [
     [u'puedes elegir tu #asamblea y mejora su artículo, adelante!', u'http://wiki.15m.cc/wiki/Lista_de_asambleas'],
     
     #bancos de tiempo
-    [u'', u''],
-    [u'', u''],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_bancos_de_tiempo'],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_bancos_de_tiempo'],
+    
+    #centros de salud
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_centros_de_salud_y_servicios_de_urgencia_cerrados'],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_centros_de_salud_y_servicios_de_urgencia_cerrados'],
     
     #centros sociales
     [u'¿nos ayudas a completar la lista de centros sociales de toda España?', u'http://wiki.15m.cc/wiki/Lista_de_centros_sociales'],
@@ -68,32 +73,48 @@ cuerpos = [
     [u'', u''],
     
     #comedores
-    [u'', u''],
-    [u'', u''],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_comedores_sociales'],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_comedores_sociales'],
     
     #cooperativas
-    [u'aquí un listado de cooperativas, ayuda a completar!', u'http://wiki.15m.cc/wiki/Lista_de_cooperativas'],
-    [u'la lista de cooperativas te necesita! mejórala!', u'http://wiki.15m.cc/wiki/Lista_de_cooperativas'],
+    [u'aquí un listado de #cooperativas, ayuda a completar!', u'http://wiki.15m.cc/wiki/Lista_de_cooperativas'],
+    [u'la lista de #cooperativas te necesita! mejórala!', u'http://wiki.15m.cc/wiki/Lista_de_cooperativas'],
     
     #desahucios
     [u'ayuda a completar la lista de #desahucios parados #stopdesahucios', u'http://wiki.15m.cc/wiki/Lista_de_desahucios'],
     [u'', u''],
     
     #indultos
-    [u'', u''],
-    [u'', u''],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_indultos'],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_indultos'],
     
     #manifestaciones
-    [u'', u''],
-    [u'', u''],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_manifestaciones'],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_manifestaciones'],
     
     #mareas
-    [u'', u''],
-    [u'', u''],
+    [u'', u'http://wiki.15m.cc/wiki/Marea_Amarilla'],
+    [u'', u'http://wiki.15m.cc/wiki/Marea_Azul'],
+    [u'', u'http://wiki.15m.cc/wiki/Marea_Blanca'],
+    [u'', u'http://wiki.15m.cc/wiki/Marea_Naranja'],
+    [u'', u'http://wiki.15m.cc/wiki/Marea_Negra'],
+    [u'', u'http://wiki.15m.cc/wiki/Marea_Roja'],
+    [u'', u'http://wiki.15m.cc/wiki/Marea_Verde'],
+    [u'', u'http://wiki.15m.cc/wiki/Marea_Violeta'],
+    [u'aquí está la lista de mareas ciudadanas, ayuda a completar!', u'http://wiki.15m.cc/wiki/Lista_de_mareas'],
+    
+    #parados
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_asociaciones_de_parados'],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_asociaciones_de_parados'],
+    
+    #partidos y fundaciones
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_partidos_pol%C3%ADticos'],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_fundaciones_de_partidos_pol%C3%ADticos'],
+    [u'', u'http://wiki.15m.cc/wiki/Financiaci%C3%B3n_de_partidos_pol%C3%ADticos'],
     
     #plataformas
-    [u'', u''],
-    [u'', u''],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_plataformas'],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_plataformas'],
     
     #realojos
     [u'ayuda a completar la lista de realojos con datos de más lugares', u'http://wiki.15m.cc/wiki/Lista_de_realojos'],
@@ -101,16 +122,16 @@ cuerpos = [
     [u'', u''],
     
     #recortes
-    [u'', u''],
-    [u'', u''],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_recortes'],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_recortes'],
     
     #streamings
-    [u'', u''],
-    [u'', u''],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_streamings'],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_streamings'],
     
     #suicidios
-    [u'', u''],
-    [u'', u''],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_suicidios_relacionados_con_la_crisis'],
+    [u'', u'http://wiki.15m.cc/wiki/Lista_de_suicidios_relacionados_con_desahucios'],
     
     #tutorial
     [u'hemos preparado un tutorial muy sencillo explicando cómo participar en 15Mpedia', u'http://wiki.15m.cc/wiki/Ayuda:B%C3%A1sica'],

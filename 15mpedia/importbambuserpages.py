@@ -110,4 +110,4 @@ for id in ids:
     if p.exists():# and len(p.get()) < 10:
         print output
         p.put(output, u'BOT - Importando metadatos del streaming de Bambuser http://bambuser.com/v/%s' % (id))
-        time.sleep(5)
+        time.sleep(3)
