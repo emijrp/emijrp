@@ -30,7 +30,9 @@ saludos = [
 
 despedidas = [
     u'',
+    u'Gracias',
     u'¡Gracias!',
+    u'Gracias por tu ayuda',
     u'Gracias por ayudar',
     u'¡Ánimo!',
     u'Adelante!',
@@ -52,27 +54,26 @@ cuerpos = [
     [u'comprueba que en el listado de #acampadas no falte ninguna', u'http://wiki.15m.cc/wiki/Lista_de_acampadas'],
     
     #asambleas
-    [u'esta es la lista de #asambleas, ayuda a ampliar!', u'http://wiki.15m.cc/wiki/Lista_de_asambleas'],
-    [u'elige tu #asamblea y echa una mano completándola!', u'http://wiki.15m.cc/wiki/Lista_de_asambleas'],
+    [u'esta es la lista de #asambleas, amplíala!', u'http://wiki.15m.cc/wiki/Lista_de_asambleas'],
+    [u'elige tu #asamblea y complétala!', u'http://wiki.15m.cc/wiki/Lista_de_asambleas'],
     [u'puedes elegir tu #asamblea y mejora su artículo, adelante!', u'http://wiki.15m.cc/wiki/Lista_de_asambleas'],
     
     #bancos de tiempo
     [u'comprueba que el #bancodetiempo de tu barrio o ciudad está aquí', u'http://wiki.15m.cc/wiki/Lista_de_bancos_de_tiempo'],
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_bancos_de_tiempo'],
+    [u'mira la lista de #bancodetiempo y colabora', u'http://wiki.15m.cc/wiki/Lista_de_bancos_de_tiempo'],
     
     #centros de salud
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_centros_de_salud_y_servicios_de_urgencia_cerrados'],
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_centros_de_salud_y_servicios_de_urgencia_cerrados'],
+    [u'revisa la lista de centros de salud en peligro de cierre', u'http://wiki.15m.cc/wiki/Lista_de_centros_de_salud_y_servicios_de_urgencia_cerrados'],
+    [u'aquí lista de centros de salud en peligro', u'http://wiki.15m.cc/wiki/Lista_de_centros_de_salud_y_servicios_de_urgencia_cerrados'],
     
     #centros sociales
     [u'¿nos ayudas a completar la lista de centros sociales de toda España?', u'http://wiki.15m.cc/wiki/Lista_de_centros_sociales'],
     [u'agrega tu #CSOA al listado, todavía faltan muchos!', u'http://wiki.15m.cc/wiki/Lista_de_centros_sociales'],
     [u'¿conoces algún #CSOA que no esté aquí puesto?', u'http://wiki.15m.cc/wiki/Lista_de_centros_sociales'],
-    [u'', u''],
     
     #comedores
     [u'cada vez más personas necesitan #comedorsocial ¿faltan?', u'http://wiki.15m.cc/wiki/Lista_de_comedores_sociales'],
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_comedores_sociales'],
+    [u'aquí #comedoresociales, colabora a completarlo', u'http://wiki.15m.cc/wiki/Lista_de_comedores_sociales'],
     
     #cooperativas
     [u'aquí un listado de #cooperativas, ayuda a completar!', u'http://wiki.15m.cc/wiki/Lista_de_cooperativas'],
@@ -80,7 +81,7 @@ cuerpos = [
     
     #desahucios
     [u'ayuda a completar la lista de #desahucios parados #stopdesahucios', u'http://wiki.15m.cc/wiki/Lista_de_desahucios'],
-    [u'', u''],
+    [u'mira la lista de #desahucios y complétala', u'http://wiki.15m.cc/wiki/Lista_de_desahucios'],
     
     #indultos
     [u'', u'http://wiki.15m.cc/wiki/Lista_de_indultos'],
@@ -91,19 +92,19 @@ cuerpos = [
     [u'', u'http://wiki.15m.cc/wiki/Lista_de_manifestaciones'],
     
     #mareas
-    [u'', u'http://wiki.15m.cc/wiki/Marea_Amarilla'],
-    [u'', u'http://wiki.15m.cc/wiki/Marea_Azul'],
-    [u'', u'http://wiki.15m.cc/wiki/Marea_Blanca'],
-    [u'', u'http://wiki.15m.cc/wiki/Marea_Naranja'],
-    [u'', u'http://wiki.15m.cc/wiki/Marea_Negra'],
-    [u'', u'http://wiki.15m.cc/wiki/Marea_Roja'],
-    [u'', u'http://wiki.15m.cc/wiki/Marea_Verde'],
+    [u'la página dedicada a la #mareaamarilla necesita más cosillas', u'http://wiki.15m.cc/wiki/Marea_Amarilla'],
+    [u'aquí la página para #mareaazul, complétala', u'http://wiki.15m.cc/wiki/Marea_Azul'],
+    [u'sobre #mareablanca tenemos esto, mejóralo', u'http://wiki.15m.cc/wiki/Marea_Blanca'],
+    [u'si sabes más sobre #mareanaranja, aquí puedes colaborar', u'http://wiki.15m.cc/wiki/Marea_Naranja'],
+    [u'participa en la página sobre #mareanegra', u'http://wiki.15m.cc/wiki/Marea_Negra'],
+    [u'queremos completar la página de #marearoja, participa', u'http://wiki.15m.cc/wiki/Marea_Roja'],
+    [u'en #mareaverde seguro que nos hemos olvidado algo, colabora', u'http://wiki.15m.cc/wiki/Marea_Verde'],
     [u'', u'http://wiki.15m.cc/wiki/Marea_Violeta'],
     [u'aquí está la lista de mareas ciudadanas, ayuda a completar!', u'http://wiki.15m.cc/wiki/Lista_de_mareas'],
     
     #parados
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_asociaciones_de_parados'],
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_asociaciones_de_parados'],
+    [u'estar en el paro no es estar parado, ¿conoces la asociación de tu ciudad?', u'http://wiki.15m.cc/wiki/Lista_de_asociaciones_de_parados'],
+    [u'completa', u'http://wiki.15m.cc/wiki/Lista_de_asociaciones_de_parados'],
     
     #partidos y fundaciones
     [u'', u'http://wiki.15m.cc/wiki/Lista_de_partidos_pol%C3%ADticos'],
