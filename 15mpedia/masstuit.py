@@ -59,7 +59,7 @@ cuerpos = [
     [u'puedes elegir tu #asamblea y mejora su artículo, adelante!', u'http://wiki.15m.cc/wiki/Lista_de_asambleas'],
     
     #bancos de tiempo
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_bancos_de_tiempo'],
+    [u'comprueba que el #bancodetiempo de tu barrio o ciudad está aquí', u'http://wiki.15m.cc/wiki/Lista_de_bancos_de_tiempo'],
     [u'', u'http://wiki.15m.cc/wiki/Lista_de_bancos_de_tiempo'],
     
     #centros de salud
@@ -130,8 +130,7 @@ cuerpos = [
     [u'tenemos muchos #streamings pero seguro faltan más', u'http://wiki.15m.cc/wiki/Lista_de_streamings'],
     
     #suicidios
-    [u'si ha habido otros casos de #suicidios, agrégalos', u'http://wiki.15m.cc/wiki/Lista_de_suicidios_relacionados_con_la_crisis'],
-    [u'si ha habido otros casos de #suicidios, agrégalos', u'http://wiki.15m.cc/wiki/Lista_de_suicidios_relacionados_con_desahucios'],
+    #tema delicado, no automatizar
     
     #tutorial
     [u'hemos preparado un tutorial muy sencillo explicando cómo participar en 15Mpedia', u'http://wiki.15m.cc/wiki/Ayuda:B%C3%A1sica'],
