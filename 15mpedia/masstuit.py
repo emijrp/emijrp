@@ -126,12 +126,12 @@ cuerpos = [
     [u'', u'http://wiki.15m.cc/wiki/Lista_de_recortes'],
     
     #streamings
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_streamings'],
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_streamings'],
+    [u'mejora la lista de #streamings de manis', u'http://wiki.15m.cc/wiki/Lista_de_streamings'],
+    [u'tenemos muchos #streamings pero seguro faltan más', u'http://wiki.15m.cc/wiki/Lista_de_streamings'],
     
     #suicidios
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_suicidios_relacionados_con_la_crisis'],
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_suicidios_relacionados_con_desahucios'],
+    [u'si ha habido otros casos de #suicidios, agrégalos', u'http://wiki.15m.cc/wiki/Lista_de_suicidios_relacionados_con_la_crisis'],
+    [u'si ha habido otros casos de #suicidios, agrégalos', u'http://wiki.15m.cc/wiki/Lista_de_suicidios_relacionados_con_desahucios'],
     
     #tutorial
     [u'hemos preparado un tutorial muy sencillo explicando cómo participar en 15Mpedia', u'http://wiki.15m.cc/wiki/Ayuda:B%C3%A1sica'],
