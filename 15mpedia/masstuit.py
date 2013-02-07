@@ -107,18 +107,17 @@ cuerpos = [
     [u'completa', u'http://wiki.15m.cc/wiki/Lista_de_asociaciones_de_parados'],
     
     #partidos y fundaciones
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_partidos_pol%C3%ADticos'],
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_fundaciones_de_partidos_pol%C3%ADticos'],
-    [u'', u'http://wiki.15m.cc/wiki/Financiaci%C3%B3n_de_partidos_pol%C3%ADticos'],
+    #[u'', u'http://wiki.15m.cc/wiki/Lista_de_partidos_pol%C3%ADticos'],
+    [u'completa la información sobre fundaciones de partidos políticos', u'http://wiki.15m.cc/wiki/Lista_de_fundaciones_de_partidos_pol%C3%ADticos'],
+    [u'mejora la información de financiación de partidos', u'http://wiki.15m.cc/wiki/Financiaci%C3%B3n_de_partidos_pol%C3%ADticos'],
     
     #plataformas
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_plataformas'],
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_plataformas'],
+    [u'mira las plataformas que hay y completa sus páginas', u'http://wiki.15m.cc/wiki/Lista_de_plataformas'],
+    [u'¿falta alguna plataforma? seguro que sí', u'http://wiki.15m.cc/wiki/Lista_de_plataformas'],
     
     #realojos
-    [u'ayuda a completar la lista de realojos con datos de más lugares', u'http://wiki.15m.cc/wiki/Lista_de_realojos'],
-    [u'un listado con realojos esperando a que lo mejores', u'http://wiki.15m.cc/wiki/Lista_de_realojos'],
-    [u'', u''],
+    [u'ayuda a completar la lista de #realojos con datos de más lugares', u'http://wiki.15m.cc/wiki/Lista_de_realojos'],
+    [u'un listado con #realojos esperando a que lo mejores', u'http://wiki.15m.cc/wiki/Lista_de_realojos'],
     
     #recortes
     [u'aquí la lista de recortes, complétala con más ejemplos', u'http://wiki.15m.cc/wiki/Lista_de_recortes'],
