@@ -15,10 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
 import random
 import re
+import sys
 
 saludos = [
+    u'',
+    u'',
+    u'',
+    u'',
     u'',
     u'',
     u'',
@@ -30,14 +36,15 @@ saludos = [
 
 despedidas = [
     u'',
-    u'Gracias',
-    u'¡Gracias!',
-    u'Gracias por tu ayuda',
-    u'Gracias por ayudar',
-    u'¡Ánimo!',
-    u'Adelante!',
-    u'Échale un ojo',
-    u'Échale un vistazo',
+    u'',
+    u'gracias',
+    u'¡gracias!',
+    u'gracias por tu ayuda',
+    u'gracias por ayudar',
+    u'¡ánimo!',
+    u'adelante!',
+    u'échale un ojo',
+    u'échale un vistazo',
 ]
 
 emoticonos = [ #no poner ;) ni :D ya que algunos tuits pueden ser sobre temas poco amables
@@ -56,15 +63,15 @@ cuerpos = [
     #asambleas
     [u'esta es la lista de #asambleas, amplíala!', u'http://wiki.15m.cc/wiki/Lista_de_asambleas'],
     [u'elige tu #asamblea y complétala!', u'http://wiki.15m.cc/wiki/Lista_de_asambleas'],
-    [u'puedes elegir tu #asamblea y mejora su artículo, adelante!', u'http://wiki.15m.cc/wiki/Lista_de_asambleas'],
+    [u'puedes elegir tu #asamblea y mejora su artículo', u'http://wiki.15m.cc/wiki/Lista_de_asambleas'],
     
     #bancos de tiempo
     [u'comprueba que el #bancodetiempo de tu barrio o ciudad está aquí', u'http://wiki.15m.cc/wiki/Lista_de_bancos_de_tiempo'],
-    [u'mira la lista de #bancodetiempo y colabora', u'http://wiki.15m.cc/wiki/Lista_de_bancos_de_tiempo'],
+    [u'amplía la lista de #bancodetiempo y colabora', u'http://wiki.15m.cc/wiki/Lista_de_bancos_de_tiempo'],
     
     #centros de salud
     [u'revisa la lista de centros de salud en peligro de cierre', u'http://wiki.15m.cc/wiki/Lista_de_centros_de_salud_y_servicios_de_urgencia_cerrados'],
-    [u'aquí lista de centros de salud en peligro', u'http://wiki.15m.cc/wiki/Lista_de_centros_de_salud_y_servicios_de_urgencia_cerrados'],
+    [u'mejora la lista de centros de salud en peligro', u'http://wiki.15m.cc/wiki/Lista_de_centros_de_salud_y_servicios_de_urgencia_cerrados'],
     
     #centros sociales
     [u'¿nos ayudas a completar la lista de centros sociales de toda España?', u'http://wiki.15m.cc/wiki/Lista_de_centros_sociales'],
@@ -72,7 +79,7 @@ cuerpos = [
     [u'¿conoces algún #CSOA que no esté aquí puesto?', u'http://wiki.15m.cc/wiki/Lista_de_centros_sociales'],
     
     #comedores
-    [u'cada vez más personas necesitan #comedorsocial ¿faltan?', u'http://wiki.15m.cc/wiki/Lista_de_comedores_sociales'],
+    [u'cada vez más personas necesitan #comedorsocial ¿faltan? mejóralo', u'http://wiki.15m.cc/wiki/Lista_de_comedores_sociales'],
     [u'aquí #comedoresociales, colabora a completarlo', u'http://wiki.15m.cc/wiki/Lista_de_comedores_sociales'],
     
     #cooperativas
@@ -84,12 +91,12 @@ cuerpos = [
     [u'mira la lista de #desahucios y complétala', u'http://wiki.15m.cc/wiki/Lista_de_desahucios'],
     
     #indultos
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_indultos'],
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_indultos'],
+    #[u'', u'http://wiki.15m.cc/wiki/Lista_de_indultos'],
+    #[u'', u'http://wiki.15m.cc/wiki/Lista_de_indultos'],
     
     #manifestaciones
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_manifestaciones'],
-    [u'', u'http://wiki.15m.cc/wiki/Lista_de_manifestaciones'],
+    #[u'', u'http://wiki.15m.cc/wiki/Lista_de_manifestaciones'],
+    #[u'', u'http://wiki.15m.cc/wiki/Lista_de_manifestaciones'],
     
     #mareas
     [u'la página dedicada a la #mareaamarilla necesita más cosillas', u'http://wiki.15m.cc/wiki/Marea_Amarilla'],
@@ -104,7 +111,7 @@ cuerpos = [
     
     #parados
     [u'estar en el paro no es estar parado, ¿conoces la asociación de tu ciudad?', u'http://wiki.15m.cc/wiki/Lista_de_asociaciones_de_parados'],
-    [u'completa', u'http://wiki.15m.cc/wiki/Lista_de_asociaciones_de_parados'],
+    [u'completa la lista de asociaciones de parados', u'http://wiki.15m.cc/wiki/Lista_de_asociaciones_de_parados'],
     
     #partidos y fundaciones
     #[u'', u'http://wiki.15m.cc/wiki/Lista_de_partidos_pol%C3%ADticos'],
@@ -142,14 +149,39 @@ for saludo in saludos:
         for cuerpo in cuerpos:
             for emoticono in emoticonos:
                 if cuerpo[0] and cuerpo[1]:
-                    msg = u'%s %s %s %s %s' % (saludo, cuerpo[0], cuerpo[1], despedida, emoticono)
+                    msg = u'"%s %s, %s %s","%s"' % (saludo, saludo and cuerpo[0] or '%s%s' % (cuerpo[0][0].upper(), cuerpo[0][1:]), despedida, emoticono, cuerpo[1])
                     msg = msg.strip()
                     msg = re.sub(ur'  +', u' ', msg)
-                    msg = msg[0].upper() + msg[1:]
+                    msg = re.sub(ur'(?im)^" *', u'"', msg)
+                    msg = re.sub(ur'(?im) *","', u'","', msg)
                     if not msg in l:
                         l.append(msg)
 
+limit = 300
+if len(l) < limit:
+    print 'Se necesitan mas de %d mensajes aleatorios' % (limit)
+    sys.exit()
+
 random.shuffle(l)
-output = u'\n'.join(l[:350])
+output = u''
+dstart = datetime.datetime.now() #mañana
+ddelta = datetime.timedelta(days=1)
+c = 0
+while c<limit/3:
+    dstart += ddelta
+    #mañana
+    h = '%02d:%02d' % (random.randrange(9,11+1), random.randrange(0,59+1))
+    d = u'%s %s' % (dstart.strftime('%m/%d/%Y'), h)
+    output += u'"%s",%s\n' % (d, l[c])
+    #tarde
+    h = '%02d:%02d' % (random.randrange(16,19+1), random.randrange(0,59+1))
+    d = u'%s %s' % (dstart.strftime('%m/%d/%Y'), h)
+    output += u'"%s",%s\n' % (d, l[c+100])
+    #noche
+    h = '%02d:%02d' % (random.randrange(22,23+1), random.randrange(0,59+1))
+    d = u'%s %s' % (dstart.strftime('%m/%d/%Y'), h)
+    output += u'"%s",%s\n' % (d, l[c+200])
+    c += 1
+
 print output.encode('utf-8')
 
