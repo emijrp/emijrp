@@ -34,7 +34,7 @@ for tag in tags:
                 l = l.strip()
                 if not l in videos:
                     videos.append(l)
-        rawhtml = unicode(urllib.urlopen("http://bambuser.com/search/bambuser_search/%s?page=%s" % (tag, pagenum)).read(), 'utf-8')
+        rawhtml = unicode(urllib.urlopen("http://bambuser.com/search/bambuser_search/%%2523%s?page=%s" % (tag, pagenum)).read(), 'utf-8') #prefijo # siempre
         
         #no hay ninguno?
         if re.search(ur"Your search yielded no results", rawhtml):
