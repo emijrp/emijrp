@@ -59,13 +59,14 @@ for id in ids:
     output = u"""{{Infobox Archivo
 |embebido=YouTube
 |embebido id=%s
+|embebido usuario=%s
 |embebido título=%s
 |descripción=%s
 |fecha de publicación=%s
 |autor={{youtube channel|%s}}
 |licencia=%s
 }}
-""" % (id, title, desc and u'{{descripción de youtube|1=%s}}' % (desc) or u'', date, uploader, license)
+""" % (id, uploader, title, desc and u'{{descripción de youtube|1=%s}}' % (desc) or u'', date, uploader, license)
     
     p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), 'File:YouTube - %s - %s.jpg' % (uploader, id))
     if p.exists() and len(p.get()) < 10:

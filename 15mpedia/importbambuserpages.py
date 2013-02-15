@@ -108,13 +108,14 @@ for id in ids:
     output = u"""{{Infobox Archivo
 |embebido=Bambuser
 |embebido id=%s
+|embebido usuario=%s
 |embebido título=%s
 |fecha de creación=%s
 |fecha de publicación=%s
 |autor={{bambuser channel|%s}}
 |coordenadas=%s
 }}
-""" % (id, title, daterecorded, dateupload, uploader, coord)
+""" % (id, uploader, title, daterecorded, dateupload, uploader, coord)
     
     p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), 'File:Bambuser - %s - %s.jpg' % (uploader, id))
     if p.exists():# and len(p.get()) < 10:
