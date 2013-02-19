@@ -9,8 +9,8 @@ import wikipedia
 import zipfile
 
 parlamento = u'Congreso de los Diputados'
-l = '10'
-s = '4'
+l = sys.argv[1]
+s = sys.argv[2]
 url = 'http://www.congreso.es/votaciones/OpenData?sesion=%s&completa=1&legislatura=%s' % (s, l)
 zipname = 'l%ss%s.zip' % (l, s)
 os.system('wget -c "%s" -O %s' % (url, zipname))
@@ -85,7 +85,8 @@ $votos{{votación votos fin}}
 
 == Enlaces externos ==
 * {{votaciones congreso xml|legislatura=$l|sesión=$sesion}}
-</noinclude>""")
+
+{{votaciones congreso}}</noinclude>""")
     output = output.safe_substitute({'parlamento':parlamento, 'l':l, 'legislatura':legislatura, 'sesion':sesion, 'numero':numero, 'fecha':fecha, 'titulo':titulo, 'textoexp':textoexp, 'titulosub':titulosub, 'textosub':textosub, 'asentimiento':asentimiento, 'presentes':presentes, 'afavor':afavor, 'encontra':encontra, 'abstenciones':abstenciones, 'novotan':novotan, 'votos':votos, })
     
     p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'Lista de votaciones del Congreso de los Diputados/%s/Sesión %s/Votación %s' % (legislatura, sesion, numero))
@@ -106,7 +107,9 @@ output = string.Template(u"""La siguiente es una '''lista de votaciones de la se
 $votaciones
 == Enlaces externos ==
 
-* {{votaciones congreso xml|legislatura=$l|sesión=$sesion}}""")
+* {{votaciones congreso xml|legislatura=$l|sesión=$sesion}}
+
+{{votaciones congreso}}""")
 output = output.safe_substitute({'parlamento':parlamento, 'l':l, 'legislatura':legislatura, 'sesion':sesion, 'votaciones':votaciones, })
 p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'Lista de votaciones del Congreso de los Diputados/%s/Sesión %s' % (legislatura, sesion))
 p.put(output, u'BOT - Creando página de votación del Congreso de los Diputados')
