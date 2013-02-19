@@ -38,8 +38,8 @@ for zipp in zipfile.namelist():
         print 'Error, no coinciden los numeros de sesion'
         sys.exit()
     
-    numero = re.findall(ur"(?im)<numerovotacion>(\d+)</numerovotacion>", xmlraw)[0]
-    votacionesids.append(int(numero))
+    numerovotacion = re.findall(ur"(?im)<numerovotacion>(\d+)</numerovotacion>", xmlraw)[0]
+    votacionesids.append(int(numerovotacion))
     fecha = re.findall(ur"(?im)<fecha>([^<]+)</fecha>", xmlraw)[0]
     fecha = u'%s-%s-%s' % (fecha.split('/')[2], '%02d' % (int(fecha.split('/')[1])), '%02d' % (int(fecha.split('/')[0])))
     titulo = re.search(ur"(?im)<titulo>", xmlraw) and re.findall(ur"(?im)<titulo>([^<]+)</titulo>", xmlraw)[0] or u''
@@ -47,7 +47,7 @@ for zipp in zipfile.namelist():
     titulosub = re.search(ur"(?im)<titulosubgrupo>", xmlraw) and re.findall(ur"(?im)<titulosubgrupo>([^<]+)</titulosubgrupo>", xmlraw)[0] or u''
     textosub = re.search(ur"(?im)<textosubgrupo>", xmlraw) and re.findall(ur"(?im)<textosubgrupo>([^<]+)</textosubgrupo>", xmlraw)[0] or u''
     
-    print sesion, numero, fecha
+    print sesion, numerovotacion, fecha
 
     asentimiento = re.search(ur"(?im)<asentimiento>", xmlraw) and re.findall(ur"(?im)<asentimiento>([^<]+)</asentimiento>", xmlraw)[0] or u''
     presentes = re.search(ur"(?im)<presentes>", xmlraw) and re.findall(ur"(?im)<presentes>([^<]+)</presentes>", xmlraw)[0] or u''
@@ -61,14 +61,14 @@ for zipp in zipfile.namelist():
     votosraw = re.search(ur"(?im)<votaciones>", xmlraw) and re.findall(ur"(?im)<votacion>\s*<asiento>([^<]+)</asiento>\s*<diputado>([^<]+)</diputado>\s*<voto>([^<]+)</voto>\s*</votacion>", xmlraw) or []
     votos = u''
     for asiento, votante, voto in votosraw:
-        votos += u'{{votación voto|parlamento=%s|legislatura=%s|sesión=%s|número=%s|asiento=%s|votante=%s|voto=%s}}\n' % (parlamento, legislatura, sesion, numero, asiento, votante, voto)
+        votos += u'{{votación voto|parlamento=%s|legislatura=%s|sesión=%s|votación=%s|asiento=%s|votante=%s|voto=%s}}\n' % (parlamento, legislatura, sesion, numerovotacion, asiento, votante, voto)
     #print votos
     
     output = string.Template(u"""{{Votación información
 |parlamento=$parlamento
 |legislatura=$legislatura
 |sesión=$sesion
-|número=$numero
+|votación=$numerovotacion
 |fecha=$fecha
 |título=$titulo
 |texto expediente=$textoexp
@@ -92,9 +92,9 @@ $votos{{votación votos fin}}
 * {{votaciones congreso xml|legislatura=$l|sesión=$sesion}}
 
 {{votaciones congreso}}</noinclude>""")
-    output = output.safe_substitute({'parlamento':parlamento, 'l':l, 'legislatura':legislatura, 'sesion':sesion, 'numero':numero, 'fecha':fecha, 'titulo':titulo, 'textoexp':textoexp, 'titulosub':titulosub, 'textosub':textosub, 'asentimiento':asentimiento, 'presentes':presentes, 'afavor':afavor, 'encontra':encontra, 'abstenciones':abstenciones, 'novotan':novotan, 'votos':votos, })
+    output = output.safe_substitute({'parlamento':parlamento, 'l':l, 'legislatura':legislatura, 'sesion':sesion, 'numerovotacion':numerovotacion, 'fecha':fecha, 'titulo':titulo, 'textoexp':textoexp, 'titulosub':titulosub, 'textosub':textosub, 'asentimiento':asentimiento, 'presentes':presentes, 'afavor':afavor, 'encontra':encontra, 'abstenciones':abstenciones, 'novotan':novotan, 'votos':votos, })
     
-    p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'Lista de votaciones del Congreso de los Diputados/%s/Sesión %s/Votación %s' % (legislatura, sesion, numero))
+    p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'Lista de votaciones del Congreso de los Diputados/%s/Sesión %s/Votación %s' % (legislatura, sesion, numerovotacion))
     p.put(output, u'BOT - Creando página de votación del Congreso de los Diputados')
     
 votaciones = u''
