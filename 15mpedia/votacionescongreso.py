@@ -8,6 +8,11 @@ import sys
 import wikipedia
 import zipfile
 
+if len(sys.argv)<3:
+    print 'Error, ejecuta este script asi: python votacionescongreso.py legislatura sesion'
+    print 'Donde legislatura es el numero decimal de la legislatura y sesion el numero de sesion'
+    print 'De momento solo hay XML de la 10 legislatura en adelante'
+
 parlamento = u'Congreso de los Diputados'
 l = sys.argv[1]
 s = sys.argv[2]
