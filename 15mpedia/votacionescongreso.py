@@ -4,6 +4,7 @@
 import os
 import re
 import string
+import sys
 import wikipedia
 import zipfile
 
@@ -12,22 +13,28 @@ l = '10'
 s = '4'
 url = 'http://www.congreso.es/votaciones/OpenData?sesion=%s&completa=1&legislatura=%s' % (s, l)
 zipname = 'l%ss%s.zip' % (l, s)
-#os.system('wget -c "%s" -O %s' % (url, zipname))
+os.system('wget -c "%s" -O %s' % (url, zipname))
 
+legislatura = u''
+if l == '10':
+    legislatura = u'X Legislatura'
+else:
+    print 'Error legislatura'
+    sys.exit()
+
+votacionesids = []
 zipfile = zipfile.ZipFile(zipname)
 for zipp in zipfile.namelist():
     xmlraw = unicode(zipfile.read(zipp), 'ISO-8859-1')
     #print xmlraw
-
-    legislatura = u''
-    if l == '10':
-        legislatura = u'X Legislatura'
-    else:
-        print 'Error legislatura'
-        break
-    
+   
     sesion = re.findall(ur"(?im)<sesion>(\d+)</sesion>", xmlraw)[0]
+    if sesion != s:
+        print 'Error, no coinciden los numeros de sesion'
+        sys.exit()
+    
     numero = re.findall(ur"(?im)<numerovotacion>(\d+)</numerovotacion>", xmlraw)[0]
+    votacionesids.append(int(numero))
     fecha = re.findall(ur"(?im)<fecha>([^<]+)</fecha>", xmlraw)[0]
     fecha = u'%s-%s-%s' % (fecha.split('/')[2], '%02d' % (int(fecha.split('/')[1])), '%02d' % (int(fecha.split('/')[0])))
     titulo = re.search(ur"(?im)<titulo>", xmlraw) and re.findall(ur"(?im)<titulo>([^<]+)</titulo>", xmlraw)[0] or u''
@@ -74,12 +81,33 @@ for zipp in zipfile.namelist():
 }}
 <noinclude>
 {{votación votos inicio}}
-%s
-{{votación votos fin}}
+$votos{{votación votos fin}}
 
 == Enlaces externos ==
-* {{votaciones congreso xml|legislatura=$legislatura|sesión=$sesion}}
+* {{votaciones congreso xml|legislatura=$l|sesión=$sesion}}
 </noinclude>""")
-    print output%{'parlamento':parlamento, 'legislatura':legislatura, 'sesion':sesion, 'numero':numero, 'fecha':fecha, 'titulo':titulo, 'textoexp':textoexp, 'titulosub':titulosub, 'textosub':textosub, 'asentimiento':asentimiento, 'presentes':presentes, 'afavor':afavor, 'encontra':encontra, 'abstenciones':abstenciones, 'novotan':novotan, 'votos':votos, }
+    output = output.safe_substitute({'parlamento':parlamento, 'l':l, 'legislatura':legislatura, 'sesion':sesion, 'numero':numero, 'fecha':fecha, 'titulo':titulo, 'textoexp':textoexp, 'titulosub':titulosub, 'textosub':textosub, 'asentimiento':asentimiento, 'presentes':presentes, 'afavor':afavor, 'encontra':encontra, 'abstenciones':abstenciones, 'novotan':novotan, 'votos':votos, })
     
+    p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'Lista de votaciones del Congreso de los Diputados/%s/Sesión %s/Votación %s' % (legislatura, sesion, numero))
+    p.put(output, u'BOT - Creando página de votación del Congreso de los Diputados')
     
+votaciones = u''
+votacionesids.sort()
+for votacionid in votacionesids:
+    votaciones += u"""
+=== Votación %s ===
+{{main|Lista de votaciones del Congreso de los Diputados/%s/Sesión %s/Votación %s}}
+{{:Lista de votaciones del Congreso de los Diputados/%s/Sesión %s/Votación %s}}
+""" % (votacionid, legislatura, sesion, votacionid, legislatura, sesion, votacionid)
+
+output = string.Template(u"""La siguiente es una '''lista de votaciones de la sesión $sesion de la $legislatura del $parlamento'''.
+
+== Votaciones de la sesión $sesion de la $legislatura del $parlamento ==
+$votaciones
+== Enlaces externos ==
+
+* {{votaciones congreso xml|legislatura=$l|sesión=$sesion}}""")
+output = output.safe_substitute({'parlamento':parlamento, 'l':l, 'legislatura':legislatura, 'sesion':sesion, 'votaciones':votaciones, })
+p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'Lista de votaciones del Congreso de los Diputados/%s/Sesión %s' % (legislatura, sesion))
+p.put(output, u'BOT - Creando página de votación del Congreso de los Diputados')
+
