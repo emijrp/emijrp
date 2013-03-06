@@ -21,12 +21,12 @@ for url in urls:
     
     sitetitle = u''
     if re.search(ur"(?im)>([^<>]*?)</title>", xml):
-        sitetitle = re.findall(ur">([^<>]*?)</title>", xml)[0]
+        sitetitle = re.findall(ur"(?im)>([^<>]*?)</title>", xml)[0]
     else:
         sitetitle = url
     sitesubtitle = u''
     if re.search(ur"(?im)>([^<>]*?)</subtitle>", xml):
-        sitesubtitle = re.findall(ur">([^<>]*?)</subtitle>", xml)[0]
+        sitesubtitle = re.findall(ur"(?im)>([^<>]*?)</subtitle>", xml)[0]
     
     print sitetitle
     print sitesubtitle
