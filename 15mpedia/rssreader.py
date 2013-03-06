@@ -20,10 +20,12 @@ for url in urls:
     chunks = '</entry>'.join('<entry>'.join(xml.split('<entry>')[1:]).split('</entry>')[:-1]).split('</entry><entry>') #</entry><entry>
     
     sitetitle = u''
-    if re.search(ur"(?im)</title>", xml):
+    if re.search(ur"(?im)>([^<>]*?)</title>", xml):
         sitetitle = re.findall(ur">([^<>]*?)</title>", xml)[0]
+    else:
+        sitetitle = url
     sitesubtitle = u''
-    if re.search(ur"(?im)</subtitle>", xml):
+    if re.search(ur"(?im)>([^<>]*?)</subtitle>", xml):
         sitesubtitle = re.findall(ur">([^<>]*?)</subtitle>", xml)[0]
     
     print sitetitle
