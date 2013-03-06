@@ -10,7 +10,13 @@ urls.sort()
 
 content = []
 for url in urls:
-    xml = unicode(urllib.urlopen(url).read(), 'utf-8')
+    try:
+        xml = unicode(urllib.urlopen(url).read(), 'utf-8')
+    except:
+        try:
+            xml = unicode(urllib.urlopen(url).read(), 'iso-8859-1')
+        except:
+            continue
     chunks = '</entry>'.join('<entry>'.join(xml.split('<entry>')[1:]).split('</entry>')[:-1]).split('</entry><entry>') #</entry><entry>
     
     sitetitle = u''
