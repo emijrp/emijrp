@@ -30,9 +30,6 @@ def getBlogs():
     
     content = []
     for url in rss:
-        if url.startswith('http://a'):
-            break
-
         try:
             xml = uncode(urllib.urlopen(url).read())
         except:
