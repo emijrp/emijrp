@@ -92,6 +92,14 @@ def getFacebook():
     content.sort(reverse=True)
     return content 
 
+def getFlickr():
+    
+    return []
+
+def getN1():
+    
+    return []
+
 def getYouTube():
     rss = getLines(u'Actualizaciones/YouTube (RSS)')
     print 'Loaded %d RSS for YouTube' % (len(rss))
@@ -166,14 +174,18 @@ def convertToText(l):
 def main():
     b = getBlogs()
     f = getFacebook()
+    fl = getFlickr()
+    n = getN1()
     y = getYouTube()
-    a = b + f + y
+    a = b + f + fl + n + y
     a.sort(reverse=True)
     
     all = convertToText(a)
     blogosfera = convertToText(b)
     facebook = convertToText(f)
-    twitter = u''#convertToText(f)
+    flickr = u''#convertToText(fl)
+    n1 = u''#convertToText(n)
+    twitter = u''#convertToText(t)
     youtube = convertToText(y)
     
     hv = [video[3].split('?v=')[1] for video in y[:3]]
@@ -187,7 +199,7 @@ def main():
 
 Estas son las últimas '''actualizaciones del 15M'''.
 %s
-{{twitter widget|#15M|height=400px}}
+{{twitter widget|#15M|height=400}}
 %s
 
 = Blogosfera =
@@ -206,10 +218,24 @@ Estas son las últimas actualizaciones en las '''cuentas de Facebook del 15M'''.
 
 :''Para añadir un nuevo RSS entra en [[Actualizaciones/Facebook (RSS)]]''
 
+= Flickr =
+
+Estas son las últimas actualizaciones en las '''cuentas de Flickr del 15M'''.
+
+%s
+
+:''Para añadir un nuevo RSS entra en [[Actualizaciones/Flickr (RSS)]]''
+
+= n-1 =
+
+Estas son las últimas actualizaciones en '''n-1'''.
+
+%s
+
 = Twitter =
 
 Estas son las últimas actualizaciones en las '''cuentas de Twitter del 15M'''.
-{{twitter widget|#15M|height=400px}}
+{{twitter widget|#15M|height=400}}
 %s
 
 = YouTube =
@@ -223,7 +249,7 @@ Estas son las últimas actualizaciones en los '''canales de YouTube del 15M'''.
 <headertabs/>
 __NOTOC__ __NOEDITSECTION__
 [[Categoría:15Mpedia]]
-""" % (headervideos, all, blogosfera, facebook, twitter, headervideos, youtube)
+""" % (headervideos, all, blogosfera, facebook, flickr, n1, twitter, headervideos, youtube)
     page = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'Actualizaciones')
     page.put(output, u"BOT - Añadiendo actualizaciones")
 
