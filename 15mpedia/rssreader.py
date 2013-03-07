@@ -30,6 +30,9 @@ def getBlogs():
     
     content = []
     for url in rss:
+        if url.startswith('http://a'):
+            break
+
         try:
             xml = uncode(urllib.urlopen(url).read())
         except:
@@ -168,16 +171,38 @@ def getMonthName(m):
     else:
         return ''
 
+def convertToTextCore(sitetitle, buff):
+    t = u''
+    if len(buff) > 1:
+        t += u"\n* '''%s:'''\n" % (sitetitle)
+        for lbuff in buff:
+            [lupdated, lsitetitle, ltitle, lurl] = lbuff
+            t += u"** [%s %s]\n" % (lurl, re.sub(ur"[\[\]]", ur"", ltitle and ltitle or u'Sin título'))
+    else:
+        lbuff = buff[0]
+        [lupdated, lsitetitle, ltitle, lurl] = lbuff
+        t += u"\n* [%s %s]\n" % (lurl, re.sub(ur"[\[\]]", ur"", ltitle and ltitle or u'Sin título'))
+    return t
+    
 def convertToText(l):
     day = u''
+    sitetitle = u''
     t = u''
-    for updated, sitetitle, title, url in l[:100]:
+    buff = []
+    for ll in l[:200]:
+        [updated, sitetitle2, title, url] = ll
         day2 = updated.split('T')[0]
         if day != day2:
             sectionday = u'== %d de %s ==\n' % (int(day2.split('-')[2]), getMonthName(int(day2.split('-')[1])))
             t += t and u'\n%s' % (sectionday) or u'%s' % (sectionday)
             day = day2
-        t += u"* '''%s:''' [%s %s]\n" % (sitetitle, url, title)
+        if buff and sitetitle != sitetitle2:
+            t += convertToTextCore(sitetitle, buff)
+            sitetitle = sitetitle2
+            buff = []
+        buff.append(ll)
+    if buff:
+        t += convertToTextCore(sitetitle, buff)
     return t
 
 def main():
@@ -192,28 +217,32 @@ def main():
     all = convertToText(a)
     blogosfera = convertToText(b)
     facebook = convertToText(f)
-    flickr = u''#convertToText(fl)
-    n1 = u''#convertToText(n)
-    twitter = u''#convertToText(t)
+    flickr = u'En desarrollo...'#convertToText(fl)
+    n1 = u'En desarrollo...'#convertToText(n)
+    twitter = u'En desarrollo...'#convertToText(t)
     youtube = convertToText(y)
     
+    #print blogosfera
+    
     hv = [video[3].split('?v=')[1] for video in y[:3]]
-    headervideos = u"""{|
+    headervideos = u"""<center>
+{|
 | valign=top | {{youtube|%s|left}}
 | valign=top | {{youtube|%s|left}}
 | valign=top | {{youtube|%s|left}}
-|}"""% (hv[0], hv[1], hv[2])
+|}
+</center>"""% (hv[0], hv[1], hv[2])
 
     output = u"""= Actualizaciones =
 
-Estas son las últimas '''actualizaciones del 15M'''.
+Estas son las últimas '''actualizaciones'''.
 %s
 {{twitter widget|#15M|height=400}}
 %s
 
 = Blogosfera =
 
-Estas son las últimas actualizaciones en la '''blogosfera del 15M'''.
+Estas son las últimas actualizaciones en la '''blogosfera'''.
 
 %s
 
@@ -221,7 +250,7 @@ Estas son las últimas actualizaciones en la '''blogosfera del 15M'''.
 
 = Facebook =
 
-Estas son las últimas actualizaciones en las '''cuentas de Facebook del 15M'''.
+Estas son las últimas actualizaciones en las '''cuentas de Facebook'''.
 
 %s
 
@@ -229,7 +258,7 @@ Estas son las últimas actualizaciones en las '''cuentas de Facebook del 15M'''.
 
 = Flickr =
 
-Estas son las últimas actualizaciones en las '''cuentas de Flickr del 15M'''.
+Estas son las últimas actualizaciones en las '''cuentas de Flickr'''.
 
 %s
 
@@ -243,13 +272,13 @@ Estas son las últimas actualizaciones en '''n-1'''.
 
 = Twitter =
 
-Estas son las últimas actualizaciones en las '''cuentas de Twitter del 15M'''.
+Estas son las últimas actualizaciones en las '''cuentas de Twitter'''.
 {{twitter widget|#15M|height=400}}
 %s
 
 = YouTube =
 
-Estas son las últimas actualizaciones en los '''canales de YouTube del 15M'''.
+Estas son las últimas actualizaciones en los '''canales de YouTube'''.
 %s
 %s
 
