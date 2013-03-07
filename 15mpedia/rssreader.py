@@ -30,7 +30,10 @@ def getBlogs():
     
     content = []
     for url in rss:
-        xml = uncode(urllib.urlopen(url).read())
+        try:
+            xml = uncode(urllib.urlopen(url).read())
+        except:
+            continue
         chunks = '</entry>'.join('<entry>'.join(xml.split('<entry>')[1:]).split('</entry>')[:-1]).split('</entry><entry>') #</entry><entry>
         
         sitetitle = u''
@@ -67,7 +70,10 @@ def getFacebook():
     
     content = []
     for url in rss:
-        xml = uncode(urllib.urlopen(url).read())
+        try:
+            xml = uncode(urllib.urlopen(url).read())
+        except:
+            continue
         chunks = [u'%s</entry>' % (s) for s in '</entry>'.join('<entry>'.join(xml.split('<entry>')[1:]).split('</entry>')[:-1]).split("""</entry>""")]
         
         sitetitle = u''
@@ -106,7 +112,10 @@ def getYouTube():
     
     content = []
     for url in rss:
-        xml = uncode(urllib.urlopen(url).read())
+        try:
+            xml = uncode(urllib.urlopen(url).read())
+        except:
+            continue
         chunks = '</entry>'.join('<entry>'.join(xml.split('<entry>')[1:]).split('</entry>')[:-1]).split('</entry><entry>') #</entry><entry>
         
         sitetitle = u''
