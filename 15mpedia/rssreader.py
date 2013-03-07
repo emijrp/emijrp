@@ -193,10 +193,13 @@ def convertToText(l):
             sectionday = u'== %d de %s ==\n' % (int(day2.split('-')[2]), getMonthName(int(day2.split('-')[1])))
             t += t and u'\n%s' % (sectionday) or u'%s' % (sectionday)
             day = day2
-        if buff and sitetitle != sitetitle2:
-            t += convertToTextCore(sitetitle, buff)
+        if buff:
+            if sitetitle != sitetitle2:
+                t += convertToTextCore(sitetitle, buff)
+                sitetitle = sitetitle2
+                buff = []
+        else: #first url
             sitetitle = sitetitle2
-            buff = []
         buff.append(ll)
     if buff:
         t += convertToTextCore(sitetitle, buff)
