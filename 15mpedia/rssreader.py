@@ -193,7 +193,7 @@ def convertToText(l):
         day2 = updated
         if day != day2:
             if buff:
-                t += convertToTextCore(sitetitle, buff)
+                t += convertToTextCore(buff)
                 buff = []
             sectionday = u'== %d de %s ==\n' % (int(day2.split('-')[2]), getMonthName(int(day2.split('-')[1])))
             t += t and u'\n%s' % (sectionday) or u'%s' % (sectionday)
