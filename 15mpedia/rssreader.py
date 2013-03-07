@@ -35,6 +35,7 @@ for url in urls:
         if not re.search(ur"(?im)</title>", chunk) or not re.search(ur"(?im)</updated>", chunk):
             continue
         
+        title = u'Sin título'
         title = re.findall(ur"(?im)>([^<>]*?)</title>", chunk)[0]
         updated = re.findall(ur"(?im)>([^<>]*?)</updated>", chunk)[0]
         updated = updated.split('.')[0]
