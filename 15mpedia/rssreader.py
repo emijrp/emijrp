@@ -178,7 +178,7 @@ def convertToTextCore(sitetitle, buff):
     else:
         lbuff = buff[0]
         [lupdated, lsitetitle, ltitle, lurl] = lbuff
-        t += u"\n* [%s %s]\n" % (lurl, re.sub(ur"[\[\]]", ur"", ltitle and ltitle or u'Sin título'))
+        t += u"\n* '''%s:''' [%s %s]\n" % (sitetitle, lurl, re.sub(ur"[\[\]]", ur"", ltitle and ltitle or u'Sin título'))
     return t
     
 def convertToText(l):
