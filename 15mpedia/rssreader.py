@@ -209,13 +209,13 @@ Estas son las últimas actualizaciones en las '''cuentas de Facebook del 15M'''.
 = Twitter =
 
 Estas son las últimas actualizaciones en las '''cuentas de Twitter del 15M'''.
-
+{{twitter widget|#15M|height=400px}}
 %s
 
 = YouTube =
 
 Estas son las últimas actualizaciones en los '''canales de YouTube del 15M'''.
-
+%s
 %s
 
 :''Para añadir un nuevo RSS entra en [[Actualizaciones/YouTube (RSS)]]''
@@ -223,7 +223,7 @@ Estas son las últimas actualizaciones en los '''canales de YouTube del 15M'''.
 <headertabs/>
 __NOTOC__ __NOEDITSECTION__
 [[Categoría:15Mpedia]]
-""" % (headervideos, all, blogosfera, facebook, twitter, youtube)
+""" % (headervideos, all, blogosfera, facebook, twitter, headervideos, youtube)
     page = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'Actualizaciones')
     page.put(output, u"BOT - Añadiendo actualizaciones")
 
