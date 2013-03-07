@@ -190,16 +190,16 @@ def convertToText(l):
         [updated, sitetitle2, title, url] = ll
         day2 = updated.split('T')[0]
         if day != day2:
+            if buff:
+                if sitetitle != sitetitle2:
+                    t += convertToTextCore(sitetitle, buff)
+                    sitetitle = sitetitle2
+                    buff = []
+            else: #first loop
+                sitetitle = sitetitle2
             sectionday = u'== %d de %s ==\n' % (int(day2.split('-')[2]), getMonthName(int(day2.split('-')[1])))
             t += t and u'\n%s' % (sectionday) or u'%s' % (sectionday)
             day = day2
-        if buff:
-            if sitetitle != sitetitle2:
-                t += convertToTextCore(sitetitle, buff)
-                sitetitle = sitetitle2
-                buff = []
-        else: #first url
-            sitetitle = sitetitle2
         buff.append(ll)
     if buff:
         t += convertToTextCore(sitetitle, buff)
