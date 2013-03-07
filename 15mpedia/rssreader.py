@@ -55,7 +55,7 @@ def getBlogs():
             title = u'Sin título'
             title = re.findall(ur"(?im)>([^<>]*?)</title>", chunk)[0]
             updated = re.findall(ur"(?im)>([^<>]*?)</updated>", chunk)[0]
-            updated = updated.split('.')[0]
+            updated = updated.split('T')[0]
             url = re.findall(ur"(?im)<link rel='alternate' type='text/html' href='([^>]*?)' title='", chunk)[0]
             
             #print updated, title, url
@@ -89,7 +89,7 @@ def getFacebook():
             title = u'Sin título'
             title = unescape(re.findall(ur"(?im)<title>([^\n]*?)</title>", chunk)[0][10:-3])
             published = re.findall(ur"(?im)>([^<>]*?)</published>", chunk)[0]
-            published = published.split('+')[0]
+            published = published.split('T')[0]
             url = re.findall(ur'(?im)<link rel="alternate" type="text/html" href="([^>]*?)" />', chunk)[0]
             
             #print published, title, url
@@ -131,7 +131,7 @@ def getYouTube():
             title = u'Sin título'
             title = re.findall(ur"(?im)>([^<>]*?)</title>", chunk)[0]
             published = re.findall(ur"(?im)>([^<>]*?)</published>", chunk)[0]
-            published = published.split('.')[0]
+            published = published.split('T')[0]
             url = re.findall(ur"(?im)<link rel='alternate' type='text/html' href='([^>&]*?)&", chunk)[0]
             
             #print published, title, url
@@ -168,17 +168,19 @@ def getMonthName(m):
     else:
         return ''
 
-def convertToTextCore(sitetitle, buff):
+def convertToTextCore(buff):
     t = u''
     if len(buff) > 1:
-        t += u"\n* '''%s:'''\n" % (sitetitle)
-        for lbuff in buff:
-            [lupdated, lsitetitle, ltitle, lurl] = lbuff
+        sitetitle = u''
+        for lupdated, lsitetitle, ltitle, lurl in buff:
+            if lsitetitle != sitetitle:
+                t += u"\n* '''%s:'''\n" % (lsitetitle)
+                sitetitle = lsitetitle
             t += u"** [%s %s]\n" % (lurl, re.sub(ur"[\[\]]", ur"", ltitle and ltitle or u'Sin título'))
     else:
         lbuff = buff[0]
         [lupdated, lsitetitle, ltitle, lurl] = lbuff
-        t += u"\n* '''%s:''' [%s %s]\n" % (sitetitle, lurl, re.sub(ur"[\[\]]", ur"", ltitle and ltitle or u'Sin título'))
+        t += u"\n* '''%s:''' [%s %s]\n" % (lsitetitle, lurl, re.sub(ur"[\[\]]", ur"", ltitle and ltitle or u'Sin título'))
     return t
     
 def convertToText(l):
@@ -188,21 +190,17 @@ def convertToText(l):
     buff = []
     for ll in l[:200]:
         [updated, sitetitle2, title, url] = ll
-        day2 = updated.split('T')[0]
+        day2 = updated
         if day != day2:
             if buff:
-                if sitetitle != sitetitle2:
-                    t += convertToTextCore(sitetitle, buff)
-                    sitetitle = sitetitle2
-                    buff = []
-            else: #first loop
-                sitetitle = sitetitle2
+                t += convertToTextCore(sitetitle, buff)
+                buff = []
             sectionday = u'== %d de %s ==\n' % (int(day2.split('-')[2]), getMonthName(int(day2.split('-')[1])))
             t += t and u'\n%s' % (sectionday) or u'%s' % (sectionday)
             day = day2
         buff.append(ll)
     if buff:
-        t += convertToTextCore(sitetitle, buff)
+        t += convertToTextCore(buff)
     return t
 
 def main():
