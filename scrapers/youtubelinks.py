@@ -33,7 +33,7 @@ for tag in tags:
                 l = l.strip()
                 if not l in videos:
                     videos.append(l)
-        rawhtml = unicode(urllib.urlopen("http://www.youtube.com/results?search_type=videos&search_query=%s&page=%s" % (tag, pagenum)).read(), 'utf-8')
+        rawhtml = unicode(urllib.urlopen('http://www.youtube.com/results?search_type=videos&search_query="%s"&page=%s' % (tag, pagenum)).read(), 'utf-8')
         
         #no hay ninguno?
         if re.search(ur"No hay resultados de vídeo de", rawhtml):
@@ -57,4 +57,4 @@ for tag in tags:
             print 'No more videos for this tag'
             break
         
-        time.sleep(0.2)
+        time.sleep(0.5)
