@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from bz2 import BZ2File
-from wmf import dump
+from wmf import dump #https://bitbucket.org/halfak/wikimedia-utilities/wiki/Home
 import re
 import time
 import sys
@@ -281,27 +281,30 @@ for page in dumpIterator.readPages():
             if images and images[0]:
                 selectedimage = images[0]
                 commonspage = wikipedia.Page(commonssite, u'File:%s' % (selectedimage))
-                if commonspage.exists():
-                    caption = revtext.split(selectedimage)[1].strip()
-                    if caption.startswith('|thumb') or caption.startswith('|left') or caption.startswith('|right'):
-                        m = re.findall(ur'(?im)^\s*\|\s*(?:thumb|thumbnail|frame|(?:(?:up)?(?:left|right|center)(?:\s*=?\s*\d*\.?\d*)?))([^\[\]]*?)\]\]', caption)
-                        if m:
-                            caption = m[0].strip().lstrip('|')
-                        else:
-                            brackets = 2
-                            c = 0
-                            while len(caption) > c and c <= 500 and brackets != 0:
-                                if caption[c] == '[':
-                                    brackets += 1
-                                elif caption[c] == ']':
-                                    brackets -= 1
-                                c += 1
-                            if brackets == 0:
-                                caption = caption[:c-2]
+                try:
+                    if commonspage.exists():
+                        caption = revtext.split(selectedimage)[1].strip()
+                        if caption.startswith('|thumb') or caption.startswith('|left') or caption.startswith('|right'):
+                            m = re.findall(ur'(?im)^\s*\|\s*(?:thumb|thumbnail|frame|(?:(?:up)?(?:left|right|center)(?:\s*=?\s*\d*\.?\d*)?))([^\[\]]*?)\]\]', caption)
+                            if m:
+                                caption = m[0].strip().lstrip('|')
                             else:
-                                caption = u''
-                    else:
-                        caption = u''
+                                brackets = 2
+                                c = 0
+                                while len(caption) > c and c <= 500 and brackets != 0:
+                                    if caption[c] == '[':
+                                        brackets += 1
+                                    elif caption[c] == ']':
+                                        brackets -= 1
+                                    c += 1
+                                if brackets == 0:
+                                    caption = caption[:c-2]
+                                else:
+                                    caption = u''
+                        else:
+                            caption = u''
+                except:
+                    pass
             caption = re.sub(ur"(((up)?(right|center|left)(\s*=?\s*\d+\.?\d*)?)|thumb|thumbnail|frame|\d+ *px)\s*\|", ur"", caption)
             caption = hidetemplates(removerefs(caption.strip().lstrip('|'))).strip().lstrip('|')
             if re.search(ur'alt *=', caption) or len(caption)>500:
