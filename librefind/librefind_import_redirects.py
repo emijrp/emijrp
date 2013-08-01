@@ -16,9 +16,10 @@
 
 import catlib
 import pagegenerators
+import sys
 import wikipedia
 
-start = u'!'
+start = sys.argv[1]
 lfsite = wikipedia.Site('librefind', 'librefind')
 ensite = wikipedia.Site('en', 'wikipedia')
 
