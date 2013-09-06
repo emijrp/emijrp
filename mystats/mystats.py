@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2012 emijrp <emijrp@gmail.com>
+# Copyright (C) 2012-2013 emijrp <emijrp@gmail.com>
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -90,41 +90,6 @@ $("#placeholder").bind("plothover", function (event, pos, item) {
 });
 </script>
 
-
-<p><script src="http://widgets.twimg.com/j/2/widget.js"></script><script>
-new TWTR.Widget({
-  version: 2,
-  type: 'search',
-  search: '15Mpedia OR wiki.15m.cc',
-  interval: 6000,
-  title: '15Mpedia OR wiki.15m.cc',
-  subject: '',
-  width: 300,
-  height: 300,
-  theme: {
-    shell: {
-      background: '#8ec1da',
-      color: '#ffffff'
-    },
-    tweets: {
-      background: '#ffffff',
-      color: '#444444',
-      links: '#1985b5'
-    }
-  },
-  features: {
-    scrollbar: false,
-    loop: true,
-    live: true,
-    hashtags: true,
-    timestamp: true,
-    avatars: true,
-    behavior: 'default'
-  }
-}).render().start();
-</script>
-</p>
-
 <hr/>
 <p><i>This page was last modified on <!-- timestamp -->%s<!-- timestamp --> (UTC).</i></p>
 <!-- end content -->
@@ -211,5 +176,5 @@ js = """function p() {
 }
 p();""" % (var_, data_, len(var))
 
-output = generateHTML(title='My stats', description='', js=js)
+output = generateHTML(title='My stats v0.1', description='', js=js)
 writeHTML(filename='mystats.html', output=output)
