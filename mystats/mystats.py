@@ -34,21 +34,21 @@ def convert2unix(mwtimestamp):
 def generateHTML(title, description, js):
     return """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
- <head>
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>%s</title>
     <link href="style.css" rel="stylesheet" type="text/css"></link>
     <!--[if IE]><script language="javascript" type="text/javascript" src="lib/flot/excanvas.min.js"></script><![endif]-->
     <script language="javascript" type="text/javascript" src="lib/flot/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="lib/flot/jquery.flot.js"></script>
- </head>
-    <body>
-    <!-- start content -->
-    <h1>%s</h1>
-    
-    <div id="placeholder" style="width:98%%;height:250px;"></div>
+</head>
+<body>
+<!-- start content -->
+<h1>%s</h1>
 
-    <p>%s</p>
+<div id="placeholder" style="width:48%%;height:200px;"></div>
+
+<p>%s</p>
 
 <script id="source">
 %s
@@ -90,12 +90,47 @@ $("#placeholder").bind("plothover", function (event, pos, item) {
 });
 </script>
 
+
+<p><script src="http://widgets.twimg.com/j/2/widget.js"></script><script>
+new TWTR.Widget({
+  version: 2,
+  type: 'search',
+  search: '15Mpedia OR wiki.15m.cc',
+  interval: 6000,
+  title: '15Mpedia OR wiki.15m.cc',
+  subject: '',
+  width: 300,
+  height: 300,
+  theme: {
+    shell: {
+      background: '#8ec1da',
+      color: '#ffffff'
+    },
+    tweets: {
+      background: '#ffffff',
+      color: '#444444',
+      links: '#1985b5'
+    }
+  },
+  features: {
+    scrollbar: false,
+    loop: true,
+    live: true,
+    hashtags: true,
+    timestamp: true,
+    avatars: true,
+    behavior: 'default'
+  }
+}).render().start();
+</script>
+</p>
+
 <hr/>
 <p><i>This page was last modified on <!-- timestamp -->%s<!-- timestamp --> (UTC).</i></p>
 <!-- end content -->
 </body>
 </html>
-""" % (title, title, description, js, datetime.datetime.now())
+""" % (title, title, description, js, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 def writeHTML(filename, output):
     f = open(os.path.expanduser('./%s' % (filename)), 'w')
@@ -127,13 +162,16 @@ for nick, project, api in projects:
     apiquery = '?action=query&list=usercontribs&ucuser=%s&uclimit=500&ucprop=timestamp|title|comment&format=json&ucstart=' % (nick)
     dic[project] = {}
     ucstart = '2099-01-01T00:00:00Z'
-    while ucstart:
+    datelimit = (datetime.datetime.now()-datetime.timedelta(days=30)).strftime('%Y-%m-%dT00:00:00Z')
+    while ucstart >= datelimit:
         sys.stderr.write(".")
         json_data = urllib.urlopen(api+apiquery+ucstart)
         data = json.load(json_data)
         for edit in data['query']['usercontribs']:
             d = datetime.datetime.strptime(edit['timestamp'], "%Y-%m-%dT%H:%M:%SZ")
-            t = d.strftime('%Y-%m-01T00:00:00Z')
+            t = d.strftime('%Y-%m-%dT00:00:00Z')
+            if datelimit > t:
+                continue
             if dic[project].has_key(t):
                 dic[project][t] += 1
             else:
