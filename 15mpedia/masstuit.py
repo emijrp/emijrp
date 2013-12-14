@@ -166,7 +166,7 @@ if len(l) < limit:
 random.shuffle(l)
 output = u''
 dstart = datetime.datetime.now() #mañana
-dstart = datetime.datetime(day=1, month=3, year=2013)
+#dstart = datetime.datetime(day=1, month=3, year=2013)
 ddelta = datetime.timedelta(days=1)
 c = 0
 while c<limit/3:
