@@ -35,8 +35,8 @@ def sortLines(page):
     p.put(ur"%s" % (u'\n'.join(raw)), u"BOT - Ordenando enlaces")
 
 def getBlogs():
-    rss = sortLines(u'15Mpedia:Actualizaciones/Blogosfera (RSS)')
-    rss = getLines(u'15Mpedia:Actualizaciones/Blogosfera (RSS)')
+    rss = sortLines(u'Actualizaciones en las redes/Blogosfera (RSS)')
+    rss = getLines(u'Actualizaciones en las redes/Blogosfera (RSS)')
     print 'Loaded %d RSS for blogs' % (len(rss))
     
     content = []
@@ -79,7 +79,7 @@ def getBlogs():
     return content
 
 def getFacebook():
-    rss = getLines(u'15Mpedia:Actualizaciones/Facebook (RSS)')
+    rss = getLines(u'Actualizaciones en las redes/Facebook (RSS)')
     print 'Loaded %d RSS for Facebook' % (len(rss))
     
     content = []
@@ -121,8 +121,8 @@ def getN1():
     return []
 
 def getYouTube():
-    rss = sortLines(u'15Mpedia:Actualizaciones/YouTube (RSS)')
-    rss = getLines(u'15Mpedia:Actualizaciones/YouTube (RSS)')
+    rss = sortLines(u'Actualizaciones en las redes/YouTube (RSS)')
+    rss = getLines(u'Actualizaciones en las redes/YouTube (RSS)')
     print 'Loaded %d RSS for YouTube' % (len(rss))
     
     content = []
@@ -203,10 +203,13 @@ def printContent(l, source=''):
             day1_stuff += u"* {{actualización|titular=%s|enlace=%s|fuente=%s|fecha=%s}}\n" % (title, url, sitetitle, updated)
         if updated == day2:
             day2_stuff += u"* {{actualización|titular=%s|enlace=%s|fuente=%s|fecha=%s}}\n" % (title, url, sitetitle, updated)
+    day0_stuff += u"<noinclude>{{actualizaciones en las redes}}</noinclude>"
+    day1_stuff += u"<noinclude>{{actualizaciones en las redes}}</noinclude>"
+    day2_stuff += u"<noinclude>{{actualizaciones en las redes}}</noinclude>"
     
     for k, v in [[day0, day0_stuff], [day1, day1_stuff], [day2, day2_stuff], ]:
         if v:
-            page = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'15Mpedia:Actualizaciones/%s/%s' % (source, k))
+            page = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'Actualizaciones en las redes/%s/%s' % (source, k))
             page.put(v, u"BOT - Añadiendo actualizaciones: %s [%d], %s [%d], %s [%d]" % (day0, len(re.findall(ur'\n', day0_stuff)), day1, len(re.findall(ur'\n', day1_stuff)), day2, len(re.findall(ur'\n', day2_stuff)), ))
     
 def main():
