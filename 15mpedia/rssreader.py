@@ -191,10 +191,12 @@ def printContent(l, source=''):
     day0 = datetime.datetime.now().strftime('%Y-%m-%d')
     day1 = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
     day2 = (datetime.datetime.now() - datetime.timedelta(days=2)).strftime('%Y-%m-%d')
+    day3 = (datetime.datetime.now() - datetime.timedelta(days=3)).strftime('%Y-%m-%d')
     
-    day0_stuff = u""
-    day1_stuff = u""
-    day2_stuff = u""
+    day0_stuff = u"<noinclude>{{actualizaciones en las redes/inicio}}</noinclude>\n"
+    day1_stuff = u"<noinclude>{{actualizaciones en las redes/inicio}}</noinclude>\n"
+    day2_stuff = u"<noinclude>{{actualizaciones en las redes/inicio}}</noinclude>\n"
+    day3_stuff = u"<noinclude>{{actualizaciones en las redes/inicio}}</noinclude>\n"
     for ll in l:
         [updated, sitetitle, title, url] = ll
         if updated == day0:
@@ -203,14 +205,17 @@ def printContent(l, source=''):
             day1_stuff += u"* {{actualización|titular=%s|enlace=%s|fuente=%s|fecha=%s}}\n" % (title, url, sitetitle, updated)
         if updated == day2:
             day2_stuff += u"* {{actualización|titular=%s|enlace=%s|fuente=%s|fecha=%s}}\n" % (title, url, sitetitle, updated)
-    day0_stuff += u"<noinclude>{{actualizaciones en las redes}}</noinclude>"
-    day1_stuff += u"<noinclude>{{actualizaciones en las redes}}</noinclude>"
-    day2_stuff += u"<noinclude>{{actualizaciones en las redes}}</noinclude>"
+        if updated == day3:
+            day3_stuff += u"* {{actualización|titular=%s|enlace=%s|fuente=%s|fecha=%s}}\n" % (title, url, sitetitle, updated)
+    day0_stuff += u"<noinclude>{{actualizaciones en las redes/fin}}</noinclude>"
+    day1_stuff += u"<noinclude>{{actualizaciones en las redes/fin}}</noinclude>"
+    day2_stuff += u"<noinclude>{{actualizaciones en las redes/fin}}</noinclude>"
+    day3_stuff += u"<noinclude>{{actualizaciones en las redes/fin}}</noinclude>"
     
-    for k, v in [[day0, day0_stuff], [day1, day1_stuff], [day2, day2_stuff], ]:
+    for k, v in [[day0, day0_stuff], [day1, day1_stuff], [day2, day2_stuff], [day3, day3_stuff], ]:
         if v:
-            page = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'Actualizaciones en las redes/%s/%s' % (source, k))
-            page.put(v, u"BOT - Añadiendo actualizaciones: %s [%d], %s [%d], %s [%d]" % (day0, len(re.findall(ur'\n', day0_stuff)), day1, len(re.findall(ur'\n', day1_stuff)), day2, len(re.findall(ur'\n', day2_stuff)), ))
+            page = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'Plantilla:Actualizaciones en las redes/%s/%s' % (source, k))
+            page.put(v, u"BOT - Añadiendo actualizaciones: %s [%d], %s [%d], %s [%d], %s [%d]" % (day0, len(re.findall(ur'\n', day0_stuff))-1, day1, len(re.findall(ur'\n', day1_stuff))-1, day2, len(re.findall(ur'\n', day2_stuff))-1, day3, len(re.findall(ur'\n', day3_stuff))-1, ))
     
 def main():
     b = getBlogs()
