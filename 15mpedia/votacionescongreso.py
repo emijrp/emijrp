@@ -58,10 +58,10 @@ for zipp in zipfile.namelist():
     
     print asentimiento, presentes, afavor, encontra, abstenciones, novotan
     
-    votosraw = re.search(ur"(?im)<votaciones>", xmlraw) and re.findall(ur"(?im)<votacion>\s*<asiento>([^<]+)</asiento>\s*<diputado>([^<]+)</diputado>\s*<voto>([^<]+)</voto>\s*</votacion>", xmlraw) or []
+    votosraw = re.search(ur"(?im)<votaciones>", xmlraw) and re.findall(ur"(?im)<votacion>\s*<asiento>([^<]+)</asiento>\s*<diputado>([^<]+)</diputado>\s*(<grupo>([^<]+)</grupo>)?\s*<voto>([^<]+)</voto>\s*</votacion>", xmlraw) or []
     votos = u''
-    for asiento, votante, voto in votosraw:
-        votos += u'{{votación voto|parlamento=%s|legislatura=%s|sesión=%s|votación=%s|asiento=%s|votante=%s|voto=%s}}\n' % (parlamento, legislatura, sesion, numerovotacion, asiento, votante, voto)
+    for asiento, votante, gr, grupo, voto in votosraw:
+        votos += u'{{votación voto|parlamento=%s|legislatura=%s|sesión=%s|votación=%s|asiento=%s|votante=%s|grupo=%s|voto=%s}}\n' % (parlamento, legislatura, sesion, numerovotacion, asiento, votante, grupo, voto)
     #print votos
     
     output = string.Template(u"""{{Votación información
@@ -118,4 +118,5 @@ $votaciones
 output = output.safe_substitute({'parlamento':parlamento, 'l':l, 'legislatura':legislatura, 'sesion':sesion, 'votaciones':votaciones, })
 p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), u'Lista de votaciones del Congreso de los Diputados/%s/Sesión %s' % (legislatura, sesion))
 p.put(output, u'BOT - Creando página de votación del Congreso de los Diputados')
-
+p.protect(editcreate='sysop', move='sysop', unprotect=False, reason=u"Protegiendo en cascada página de votaciones", editcreate_duration='infinite',
+	move_duration='infinite', cascading=True, prompt=False, throttle=True)
