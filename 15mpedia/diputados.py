@@ -158,7 +158,7 @@ for grupo in j["objects"]:
 			if diputado['congress_id'] and not re.search(ur"(?im){{ficha congreso", newtext):
 				print "no tiene {{ficha congreso"
 				if re.search(ur"(?im){{wikipedia", newtext):
-					newtext = re.sub(ur"(?im)(\*\s*{{wikipedia[^}]*}}\n)", ur"\1* {{ficha congreso|legislatura=%s|diputado=%s}}\n" % (legislaturaid, diputado['congress_id']), newtext)
+					newtext = re.sub(ur"(?im)(\*\s*{{wikipedia[^\n]*}}\n)", ur"\1* {{ficha congreso|legislatura=%s|diputado=%s}}\n" % (legislaturaid, diputado['congress_id']), newtext)
 				else:
 					newtext = re.sub(ur"(?im)(==\s*Enlaces externos\s*==\n)", ur"\1* {{ficha congreso|legislatura=%s|diputado=%s}}\n" % (legislaturaid, diputado['congress_id']), newtext)
 				summary += u'diputadoID %s; ' % diputado['congress_id']
