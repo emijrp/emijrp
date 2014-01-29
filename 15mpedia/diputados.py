@@ -132,10 +132,13 @@ for grupo in j["objects"]:
 				print "no tiene |sitio web="
 				newtext = re.sub(ur"{{Infobox Persona", ur"{{Infobox Persona\n|sitio web=%s" % (diputado['web']), newtext)
 			
-			if re.search(ur"(?im)\|parlamentario=\n\|", newtext):
-				print "no tiene |parlamentario="
+			if not re.search(ur"(?im){{Parlamentario\|", newtext):
+				print "no tiene {{Parlamentario"
 				parlamentariolegislatura = u"{{Parlamentario|Congreso de los Diputados|%s|%s|%s}}" % (legislaturatext, gruponombre, circunscripcion)
-				newtext = re.sub(ur"(\|parlamentario=)", ur"\1%s" % (parlamentariolegislatura), newtext)
+				if re.search(ur"(?im)\|parlamentario=\n\|", newtext):
+					newtext = re.sub(ur"(\|parlamentario=)", ur"\1%s" % (parlamentariolegislatura), newtext)
+				elif not re.search(ur"(?im)\|parlamentario=", newtext):
+					newtext = re.sub(ur"{{Infobox Persona", ur"{{Infobox Persona\n|parlamentario=%s" % (parlamentariolegislatura), newtext)
 				summary += u"%s circunscripción; " % circunscripcion
 				newtext = re.sub(ur"(?im)\[\[Categoría:Diputado de la X legislatura[^]]*\]\]", "", newtext)
 			
@@ -165,11 +168,12 @@ for grupo in j["objects"]:
 			
 			if not re.search(ur"(?im){{políticos}}", newtext):
 				print "no tiene {{políticos}}"
-				newtext = re.sub(ur"(\n\n\[\[Categoría:)", ur"\n\n{{políticos}}\1", newtext)
+				if re.search(ur"(?im)\[\[Categoría:", newtext):
+					newtext = re.sub(ur"(\n\n\[\[Categoría:)", ur"\n\n{{políticos}}\1", newtext)
+				else:
+					newtext = u"%s\n\n{{políticos}}" % (newtext.strip())
 			
-			#if re.search(ur"''' es ...", newtext):
-			#	newtext = re.sub(ur"''' es ...", ur"''' es un político.", newtext)
-			
+			#guardar
 			if wtext != newtext:
 				wikipedia.showDiff(wtext, newtext)
 				summary += u'...'
