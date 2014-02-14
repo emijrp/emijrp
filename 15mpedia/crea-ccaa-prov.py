@@ -6,8 +6,8 @@ import wikipedia
 site = wikipedia.Site('15mpedia', '15mpedia')
 
 overwrite = False
-colectivo = u"Comedor social"
-colectivos = u"Comedores sociales"
+colectivo = u"Manifestación"
+colectivos = u"Manifestaciones"
 
 ccaa = {
 	u"Andalucía": [u"Almería", u"Cádiz", u"Córdoba", u"Granada", u"Huelva", u"Jaén", u"Málaga", u"Sevilla"], 
