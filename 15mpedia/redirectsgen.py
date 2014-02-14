@@ -71,9 +71,23 @@ def main():
                 
                 #redirects para Lista de ...
                 if wtitle.startswith('Lista de ') and len(wtitle)>10:
-					listade = wtitle[9:]
-					listade = listade[0].upper()+listade[1:]
-					redirects.add(listade)
+                    listade = wtitle[9:]
+                    listade = listade[0].upper()+listade[1:]
+                    redirects.add(listade)
+                
+                #redirects para Lista de acampadas/asambleas/... de/del/de la Madrid/provincia de Madrid
+                if sys.argv[1].lower() == '15mpedia':
+                    for colectivo in [u'acampadas', u'asambleas', u'bancos de tiempo', u'centros sociales', u'comedores sociales']:
+                        #!!!no incluir asociaciones, ni comisiones, ni manifestaciones, ni plataformas porque detrás del "de " puede venir un tema y no un lugar
+                        if wtitle.startswith('Lista de %s de ' % colectivo):
+                            redirects.add(re.sub(ur"Lista de %s de " % colectivo, ur"Lista de %s en " % colectivo, wtitle))
+                        elif wtitle.startswith('Lista de %s del ' % colectivo):
+                            redirects.add(re.sub(ur"Lista de %s del " % colectivo, ur"Lista de %s en el " % colectivo, wtitle))
+                        elif wtitle.startswith('Lista de %s de la ' % colectivo):
+                            redirects.add(re.sub(ur"Lista de %s de la " % colectivo, ur"Lista de %s en la " % colectivo, wtitle))
+                     
+                     if wtitle.startswith('Lista de comedores sociales ') and len(wtitle)>30:
+						 redirects.add(re.sub(ur"Lista de comedores sociales ", ur"Lista de comedores ", wtitle))
             
             print redirects
             for redirect in redirects:
