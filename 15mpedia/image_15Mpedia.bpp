@@ -1,0 +1,17 @@
+#
+#// encoding: UTF-8
+#// in: common:Common, upload:Upload
+#
+{{Infobox Archivo
+| descripción = $(common.description)
+| fuente = $(common.source)
+| fecha de creación = $(upload.date.equals("") ? common.date : upload.date)
+| autor = $(common.author)
+| permiso = $(common.permission)
+| licencia = $(common.licenseTemplate)
+}}
+
+$(common.categories)
+$(upload.categories)
+
+
