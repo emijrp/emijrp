@@ -16,8 +16,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
+import os
 import re
 import sys
+import time
 import urllib
 
 def month2number(month):
@@ -49,13 +51,19 @@ def month2number(month):
     return ''
 
 user = sys.argv[1]
+if len(sys.argv) > 2:
+    skipuntil = sys.argv[2]
+path = user
+if not os.path.exists('%s/' % (path)):
+    os.makedirs(user)
+
 channel = 'http://bambuser.com/channel/%s' % (user)
 rss = 'http://feed.bambuser.com/channel/%s.rss' % (user)
 
-#load bambuser ids uploaded in the past (to exclude them)
-f = open('uploadedinthepast', 'r')
-uploaded = f.read()
-uploaded = uploaded.split('\n')
+#load bambuser ids imported in the past (to exclude them)
+f = open('imported', 'r')
+imported = f.read()
+imported = imported.split('\n')
 f.close()
 
 raw = urllib.urlopen(rss).read()
@@ -84,7 +92,7 @@ while c < limit:
 print 'Loaded ids for %d videos' % (len(videoids))
 
 #save ids
-f = open('bambuser-%s-ids.txt' % (user), 'w')
+f = open('%s/bambuser-%s-ids.txt' % (path, user), 'w')
 save = '\n'.join(videoids)
 f.write(save.encode('utf-8'))
 f.close()
@@ -92,19 +100,37 @@ f.close()
 videos = {}
 c = 0
 save = ''
+if skipuntil:
+    print 'Skipping until', skipuntil
+
 for videoid in videoids:
-    if videoid in uploaded:
-        print 'Video %d was uploaded in the past, skipping' % (videoid)
+    if skipuntil:
+        if videoid == skipuntil:
+            skipuntil = ''
+        continue
+        
+    if videoid in imported:
+        print 'Video %s was imported in the past, skipping' % (videoid)
         continue
     else:
-        print 'Loading metadata for video %s' % (videoid)
+        print 'Downloading metadata and screenshot for video %s' % (videoid)
     
     videourl = "http://bambuser.com/v/%s" % (videoid)
     raw4 = urllib.urlopen(videourl).read()
     title = re.findall(ur"<span class=\"title\" title=\"([^>]*?)\"></span>", raw4)[0]
     length = lengths[c]
     thumb = re.findall(ur"(?im)<meta property=\"og:image\" content=\"([^>]*?)\" />", raw4)[0]
-    urllib.urlretrieve(thumb, 'Bambuser - %s - %s.%s' % (user, videoid, thumb.split('.')[-1]))
+    try:
+        urllib.urlretrieve(thumb, '%s/Bambuser - %s - %s.%s' % (path, user, videoid, thumb.split('.')[-1]))
+    except:
+        print 'Error while downloading image, trying again in 10 seconds'
+        time.sleep(10)
+        try:
+            urllib.urlretrieve(thumb, '%s/Bambuser - %s - %s.%s' % (path, user, videoid, thumb.split('.')[-1]))
+        except:
+            print 'Failed again, skipping this video'
+            continue
+        
     try:
         [likes, views, lives] = re.findall(ur"(?im)<div class=\"like\" data-upvotes=\"([0-9]+?)\">.*?<span class=\"broadcast-views\"><span class=\"views-total\">([0-9]+?)</span> views \(<span class=\"views-live\">([0-9]+?)</span>", raw4)[0]
     except:
@@ -148,8 +174,9 @@ for videoid in videoids:
     save += '\n'
     save += save1
     c += 1
+    time.sleep(0.3)
 
 #save metadata
-f = open('bambuser-%s-metadata.txt' % (user), 'w')
+f = open('%s/bambuser-%s-metadata.txt' % (path, user), 'w')
 f.write(save.encode('utf-8'))
 f.close()
