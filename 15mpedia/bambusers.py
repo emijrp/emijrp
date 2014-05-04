@@ -74,7 +74,7 @@ videoids = []
 thumbs = []
 c = 0
 pageurl = "http://bambuser.com/v/%s?page_profile_more_user=" % (lastvideoid)
-raw2 = urllib.urlopen(pageurl).read()
+raw2 = unicode(urllib.urlopen(pageurl).read(), 'utf-8')
 limit = 1
 try:
     limit = int(re.findall(ur"(?im)page_profile_more_user=\d+\">(\d+)</a></li></ul>", raw2)[0])
@@ -95,13 +95,14 @@ f = open('bambuser-%s-ids.txt' % (user), 'w')
 save = '\n'.join(videoids)
 f.write(save.encode('utf-8'))
 f.close()
+save = ''
 
 videos = {}
 c = 0
-save = ''
 if skipuntil:
     print 'Skipping until', skipuntil
 
+f = open('bambuser-%s-metadata.txt' % (user), 'a')
 for videoid in videoids:
     if skipuntil:
         if videoid == skipuntil:
@@ -115,7 +116,7 @@ for videoid in videoids:
         print 'Downloading metadata and screenshot for video %s' % (videoid)
     
     videourl = "http://bambuser.com/v/%s" % (videoid)
-    raw4 = urllib.urlopen(videourl).read()
+    raw4 = unicode(urllib.urlopen(videourl).read(), 'utf-8')
     title = re.findall(ur"<span class=\"title\" title=\"([^>]*?)\"></span>", raw4)[0]
     thumb = re.findall(ur"(?im)<meta property=\"og:image\" content=\"([^>]*?)\" />", raw4)[0].split('?')[0] #removing trailing .jpg?2
     try:
@@ -166,14 +167,11 @@ for videoid in videoids:
         'tags': tags,
         'user': user,
     }
-    save1 = ';;;'.join([videoid, coord, date, hour, likes, views, lives, title, ', '.join(tags), user])
+    save1 = u';;;'.join([videoid, coord, date, hour, likes, views, lives, title, ', '.join(tags), user])
+    save1 += u'\n'
     #print save1
-    save += '\n'
-    save += save1
+    f.write(save1.encode('utf-8'))
     c += 1
     time.sleep(0.3)
 
-#save metadata
-f = open('bambuser-%s-metadata.txt' % (user), 'w')
-f.write(save.encode('utf-8'))
 f.close()
