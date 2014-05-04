@@ -52,6 +52,12 @@ user = sys.argv[1]
 channel = 'http://bambuser.com/channel/%s' % (user)
 rss = 'http://feed.bambuser.com/channel/%s.rss' % (user)
 
+#load bambuser ids uploaded in the past (to exclude them)
+f = open('uploadedinthepast', 'r')
+uploaded = f.read()
+uploaded = uploaded.split('\n')
+f.close()
+
 raw = urllib.urlopen(rss).read()
 lastvideoid = re.findall(ur"(?im)<link>http://bambuser\.com/v/(\d+)</link>", raw)[0]
 
@@ -72,29 +78,44 @@ while c < limit:
     raw3 = urllib.urlopen(pageurl2).read()
     videoids += re.findall(ur"(?im)<a class=\"preview-wrapper\" href=\"http://bambuser.com/v/(\d+)\">", raw3)
     lengths += re.findall(ur"(?im)<div class=\"preview-length\"><span>([^<]*?)</span></div>", raw3)
-    thumbs += re.findall(ur"(?im)<img class=\"preview\" src=\"(https?://[^\"]+?\.(?:jpe?g|pne?g))\"", raw3)
     c += 1
+    #break
 
 print 'Loaded ids for %d videos' % (len(videoids))
 
+#save ids
+f = open('bambuser-%s-ids.txt' % (user), 'w')
+save = '\n'.join(videoids)
+f.write(save.encode('utf-8'))
+f.close()
+
 videos = {}
 c = 0
+save = ''
 for videoid in videoids:
-    #print 'Loading metadata for video %s' % (videoid)
+    if videoid in uploaded:
+        print 'Video %d was uploaded in the past, skipping' % (videoid)
+        continue
+    else:
+        print 'Loading metadata for video %s' % (videoid)
+    
     videourl = "http://bambuser.com/v/%s" % (videoid)
     raw4 = urllib.urlopen(videourl).read()
     title = re.findall(ur"<span class=\"title\" title=\"([^>]*?)\"></span>", raw4)[0]
     length = lengths[c]
-    thumb = thumbs[c]
-    urllib.urlretrieve(thumb, 'Bambuser %s %s.%s' % (videoid, user, thumb.split('.')[-1]))
+    thumb = re.findall(ur"(?im)<meta property=\"og:image\" content=\"([^>]*?)\" />", raw4)[0]
+    urllib.urlretrieve(thumb, 'Bambuser - %s - %s.%s' % (user, videoid, thumb.split('.')[-1]))
     try:
-        [likes, views, lives] = re.findall(ur"(?im)<span class=\"count-wrapper\">(\d+)? ?likes?</span></form><span class=\"broadcast-views\">(\d+) views? \((\d+) lives?\)</span>", raw4)[0]
+        [likes, views, lives] = re.findall(ur"(?im)<div class=\"like\" data-upvotes=\"([0-9]+?)\">.*?<span class=\"broadcast-views\"><span class=\"views-total\">([0-9]+?)</span> views \(<span class=\"views-live\">([0-9]+?)</span>", raw4)[0]
     except:
         [likes, views, lives] = ['0', '0', '0']
     comments = ''
-    coord = re.findall(ur"(?im)\"lat\":\"([^\"]+?)\",\"lon\":\"([^\"]+?)\"", raw4)[0]
-    if coord:
-        coord = '%s, %s' % (coord[0], coord[1])
+    try:
+        coord = re.findall(ur"(?im)<meta property=\"bambuser_com:position:latitude\" content=\"([^\"]+?)\" /><meta property=\"bambuser_com:position:longitude\" content=\"([^\"]+?)\" />", raw4)[0]
+        if coord:
+            coord = '%s, %s' % (coord[0], coord[1])
+    except:
+        coord = ''
     date = ''
     date2 = ''
     hour = ''
@@ -122,6 +143,13 @@ for videoid in videoids:
         'tags': tags,
         'user': user,
     }
-    print ';;;'.join([videoid, coord, date, hour, length, likes, views, lives, title, ', '.join(tags), user])
+    save1 = ';;;'.join([videoid, coord, date, hour, length, likes, views, lives, title, ', '.join(tags), user])
+    #print save1
+    save += '\n'
+    save += save1
     c += 1
 
+#save metadata
+f = open('bambuser-%s-metadata.txt' % (user), 'w')
+f.write(save.encode('utf-8'))
+f.close()
