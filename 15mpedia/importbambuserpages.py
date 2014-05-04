@@ -18,6 +18,7 @@
 import datetime
 import os
 import re
+import sys
 import time
 import urllib
 import wikipedia
@@ -64,9 +65,40 @@ def gethtml(url):
     f.close()
     return raw
 
-ids = open('bambuser-videos.txt', 'r').read().splitlines()
-for id in ids:
-    url = 'http://bambuser.com/v/%s' % (id)
+filename = sys.argv[1]
+lines = open(filename, 'r').read().strip().splitlines()
+for line in lines:
+    values = line.split(';;;')
+    #2585770;;;51.165691, 10.451526;;;2012/04/25;;;19:48;;;1:43:42;;;0;;;4;;;1;;;Berlin square opening for journalist;;;;;;7BerlinBiennale
+    id = values[0]
+    coord = values[1]
+    daterecorded = values[2]
+    dateupload = values[2]
+    #values 3 is hour
+    #4, 5, 6 are likes, views and live views
+    title = values[7]
+    #8 is tags
+    uploader = values[9]
+            
+    output = u"""{{Infobox Archivo
+|embebido=Bambuser
+|embebido id=%s
+|embebido usuario=%s
+|embebido título=%s
+|fecha de creación=%s
+|fecha de publicación=%s
+|autor={{bambuser channel|%s}}
+|coordenadas=%s
+}}
+""" % (id, uploader, title, daterecorded, dateupload, uploader, coord)
+    
+    p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), 'File:Bambuser - %s - %s.jpg' % (uploader, id))
+    if p.exists():# and len(p.get()) < 10:
+        print output
+        p.put(output, u'BOT - Importando metadatos del streaming de Bambuser http://bambuser.com/v/%s' % (id))
+
+    
+    """url = 'http://bambuser.com/v/%s' % (id)
     raw = gethtml(url)
     
     try:
@@ -103,22 +135,4 @@ for id in ids:
         g = open('streamingerrors.ids', 'a')
         g.write(u'%s\n' % (id))
         g.close()
-        continue
-        
-    output = u"""{{Infobox Archivo
-|embebido=Bambuser
-|embebido id=%s
-|embebido usuario=%s
-|embebido título=%s
-|fecha de creación=%s
-|fecha de publicación=%s
-|autor={{bambuser channel|%s}}
-|coordenadas=%s
-}}
-""" % (id, uploader, title, daterecorded, dateupload, uploader, coord)
-    
-    p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), 'File:Bambuser - %s - %s.jpg' % (uploader, id))
-    if p.exists():# and len(p.get()) < 10:
-        print output
-        p.put(output, u'BOT - Importando metadatos del streaming de Bambuser http://bambuser.com/v/%s' % (id))
-        time.sleep(3)
+        continue"""

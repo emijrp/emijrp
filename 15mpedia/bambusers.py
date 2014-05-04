@@ -51,6 +51,7 @@ def month2number(month):
     return ''
 
 user = sys.argv[1]
+skipuntil = ''
 if len(sys.argv) > 2:
     skipuntil = sys.argv[2]
 path = user
@@ -70,7 +71,6 @@ raw = urllib.urlopen(rss).read()
 lastvideoid = re.findall(ur"(?im)<link>http://bambuser\.com/v/(\d+)</link>", raw)[0]
 
 videoids = []
-lengths = []
 thumbs = []
 c = 0
 pageurl = "http://bambuser.com/v/%s?page_profile_more_user=" % (lastvideoid)
@@ -85,14 +85,13 @@ while c < limit:
     pageurl2 = pageurl + str(c)
     raw3 = urllib.urlopen(pageurl2).read()
     videoids += re.findall(ur"(?im)<a class=\"preview-wrapper\" href=\"http://bambuser.com/v/(\d+)\">", raw3)
-    lengths += re.findall(ur"(?im)<div class=\"preview-length\"><span>([^<]*?)</span></div>", raw3)
     c += 1
     #break
 
 print 'Loaded ids for %d videos' % (len(videoids))
 
 #save ids
-f = open('%s/bambuser-%s-ids.txt' % (path, user), 'w')
+f = open('bambuser-%s-ids.txt' % (user), 'w')
 save = '\n'.join(videoids)
 f.write(save.encode('utf-8'))
 f.close()
@@ -118,7 +117,6 @@ for videoid in videoids:
     videourl = "http://bambuser.com/v/%s" % (videoid)
     raw4 = urllib.urlopen(videourl).read()
     title = re.findall(ur"<span class=\"title\" title=\"([^>]*?)\"></span>", raw4)[0]
-    length = lengths[c]
     thumb = re.findall(ur"(?im)<meta property=\"og:image\" content=\"([^>]*?)\" />", raw4)[0].split('?')[0] #removing trailing .jpg?2
     try:
         urllib.urlretrieve(thumb, '%s/Bambuser - %s - %s.%s' % (path, user, videoid, thumb.split('.')[-1]))
@@ -165,11 +163,10 @@ for videoid in videoids:
         'coord': coord,
         'date': date,
         'hour': hour,
-        'length': length,
         'tags': tags,
         'user': user,
     }
-    save1 = ';;;'.join([videoid, coord, date, hour, length, likes, views, lives, title, ', '.join(tags), user])
+    save1 = ';;;'.join([videoid, coord, date, hour, likes, views, lives, title, ', '.join(tags), user])
     #print save1
     save += '\n'
     save += save1
@@ -177,6 +174,6 @@ for videoid in videoids:
     time.sleep(0.3)
 
 #save metadata
-f = open('%s/bambuser-%s-metadata.txt' % (path, user), 'w')
+f = open('bambuser-%s-metadata.txt' % (user), 'w')
 f.write(save.encode('utf-8'))
 f.close()
