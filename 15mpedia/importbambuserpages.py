@@ -96,7 +96,11 @@ for line in lines:
     if p.exists():# and len(p.get()) < 10:
         print output
         p.put(output, u'BOT - Importando metadatos del streaming de Bambuser http://bambuser.com/v/%s' % (id))
-
+    else:
+        p = wikipedia.Page(wikipedia.Site('15mpedia', '15mpedia'), 'File:Bambuser - %s - %s.png' % (uploader, id))
+        if p.exists():# and len(p.get()) < 10:
+            print output
+            p.put(output, u'BOT - Importando metadatos del streaming de Bambuser http://bambuser.com/v/%s' % (id))
     
     """url = 'http://bambuser.com/v/%s' % (id)
     raw = gethtml(url)
