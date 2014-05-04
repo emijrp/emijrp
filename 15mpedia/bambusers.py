@@ -119,7 +119,7 @@ for videoid in videoids:
     raw4 = urllib.urlopen(videourl).read()
     title = re.findall(ur"<span class=\"title\" title=\"([^>]*?)\"></span>", raw4)[0]
     length = lengths[c]
-    thumb = re.findall(ur"(?im)<meta property=\"og:image\" content=\"([^>]*?)\" />", raw4)[0]
+    thumb = re.findall(ur"(?im)<meta property=\"og:image\" content=\"([^>]*?)\" />", raw4)[0].split('?')[0] #removing trailing .jpg?2
     try:
         urllib.urlretrieve(thumb, '%s/Bambuser - %s - %s.%s' % (path, user, videoid, thumb.split('.')[-1]))
     except:
