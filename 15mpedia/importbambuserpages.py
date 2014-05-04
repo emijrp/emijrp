@@ -66,7 +66,7 @@ def gethtml(url):
     return raw
 
 filename = sys.argv[1]
-lines = open(filename, 'r').read().strip().splitlines()
+lines = unicode(open(filename, 'r').read(), 'utf-8').strip().splitlines()
 for line in lines:
     values = line.split(';;;')
     #2585770;;;51.165691, 10.451526;;;2012/04/25;;;19:48;;;1:43:42;;;0;;;4;;;1;;;Berlin square opening for journalist;;;;;;7BerlinBiennale
