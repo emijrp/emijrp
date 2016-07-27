@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+
+
+
+# This is an old version. Current repository is https://github.com/emijrp/currentevents
+
+
+
+
+
 #sudo apt-get install p7zip-full (for 7za)
 import csv
 import datetime
